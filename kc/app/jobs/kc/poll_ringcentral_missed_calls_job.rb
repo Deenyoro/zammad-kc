@@ -17,6 +17,12 @@
 #     (the API query param may be silently ignored by some RC endpoints)
 #   - Checks settings before creating tickets or sending SMS
 class Kc::PollRingcentralMissedCallsJob < ApplicationJob
+  include Kc::RingcentralAuthRecovery
+
+  # RingCentral finalizes call-log records with a delay; overlap the window
+  # so a call published late is still picked up (session-ID dedup absorbs it).
+  FINALIZE_LAG = 15.minutes
+  PAGE_LIMIT   = 10
 
   def perform
     return unless feature_enabled?
@@ -50,7 +56,7 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
     begin
       rc = rc_class.with_channel_tokens(channel)
     rescue StandardError => e
-      Rails.logger.error "KC RingCentral Missed Calls: Token refresh failed for channel #{channel.id}: #{e.message}"
+      rc_record_auth_failure(channel, 'KC RingCentral Missed Calls', e.message)
       return
     end
 
@@ -64,20 +70,36 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
                   channel.created_at.utc.iso8601
                 end
 
-    begin
-      api_result = rc.get_call_log(
-        direction: 'Inbound',
-        result:    'Missed',
-        date_from: date_from,
-        per_page:  100,
-        type:      'Voice',
-      )
-    rescue StandardError => e
-      Rails.logger.error "KC RingCentral Missed Calls: Call log query failed for channel #{channel.id}: #{e.message}"
-      return
-    end
+    records = []
+    page    = 1
+    loop do
+      begin
+        api_result, rc = rc_call_with_auth_recovery(channel, 'KC RingCentral Missed Calls', client: rc) do |client|
+          client.get_call_log(
+            direction: 'Inbound',
+            result:    'Missed',
+            date_from: date_from,
+            per_page:  100,
+            type:      'Voice',
+            page:      page,
+          )
+        end
+      rescue StandardError => e
+        Rails.logger.error "KC RingCentral Missed Calls: Call log query failed for channel #{channel.id}: #{e.message}"
+        return
+      end
+      return if api_result.nil?
 
-    records = api_result['records'] || api_result[:records] || []
+      page_records = api_result['records'] || api_result[:records] || []
+      records.concat(page_records)
+      break if page_records.size < 100
+
+      page += 1
+      if page > PAGE_LIMIT
+        Rails.logger.warn "KC RingCentral Missed Calls: Page cap (#{PAGE_LIMIT}) hit for channel #{channel.id}"
+        break
+      end
+    end
 
     # Defense-in-depth: filter client-side in case the API ignores
     # the result=Missed query parameter on certain RC plan tiers.
@@ -99,10 +121,11 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
       Rails.logger.error "KC RingCentral Missed Calls: Failed to process call #{session_id}: #{e.message}"
     end
 
-    # Update last poll timestamp
+    # Update last poll timestamp. Lags behind now so late-finalized call
+    # records are not skipped; the overlap is absorbed by session-ID dedup.
     channel.with_lock do
       channel.reload
-      channel.options[:last_missed_call_poll_at] = Time.current.utc.iso8601
+      channel.options[:last_missed_call_poll_at] = FINALIZE_LAG.ago.utc.iso8601
       channel.save!
     end
   rescue StandardError => e

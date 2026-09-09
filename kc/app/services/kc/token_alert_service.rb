@@ -35,6 +35,7 @@ class Kc::TokenAlertService
 
     # Closes any open alert tickets for this channel/service when auth succeeds.
     def clear_alerts(channel:, service:)
+      Rails.cache.delete(alert_cache_key(channel, service))
       find_alert_tickets(channel, service, states: %w[new open]).each do |ticket|
         close_ticket(ticket, service)
       end

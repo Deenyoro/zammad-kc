@@ -44,9 +44,10 @@ module Kc
       # Internal notes should not affect customer-facing state
       return if internal
 
-      # Agent articles should not reset — the agent set the state intentionally
+      # Only a customer reply resets the state — agent and system articles
+      # (triggers, schedulers, notifications) must leave it alone.
       sender = Ticket::Article::Sender.lookup(id: sender_id)
-      return if sender.nil? || sender.name == 'Agent'
+      return unless sender&.name == 'Customer'
 
       # Only communication articles (not notes, etc.) indicate a reply
       article_type = Ticket::Article::Type.lookup(id: type_id)

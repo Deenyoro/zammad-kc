@@ -24,6 +24,13 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     ticket = article.ticket
     return if ticket.nil?
 
+    # retry_on re-runs this job after a timeout even when RingCentral already
+    # accepted the message; never send the same article twice.
+    if article.preferences&.dig(:ringcentral_sms, :delivery_status) == 'sent'
+      Rails.logger.info "KC RingCentral SMS Job: Article #{article_id} already sent — skipping"
+      return
+    end
+
     # Determine which channel and phone to send to.
     sms_prefs     = ticket.preferences&.dig(:ringcentral_sms) || {}
     article_prefs = article.preferences&.dig(:ringcentral_sms) || {}

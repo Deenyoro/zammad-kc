@@ -58,6 +58,7 @@ Rails.application.config.to_prepare do
     Rails.logger.error "KC: Failed to prepend #{concern_module_name} into #{target_class_name}: #{e.message}"
   end
 
+  kc_prepend.call('Channel', 'Kc::ChannelSensitiveFields')
   kc_prepend.call('Ticket::TimeAccounting', 'Kc::TimeAccountingAgent')
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateTeamsChatJob')
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateRingcentralSmsJob')

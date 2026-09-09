@@ -4,7 +4,7 @@
 # Safety: Wrapped in safe_constantize so the app boots even if upstream
 # renames or removes the target class.
 
-Rails.application.config.after_initialize do
+Rails.application.config.to_prepare do
   article_input = 'Gql::Types::Input::Ticket::ArticleInputType'.safe_constantize
   if article_input.nil?
     Rails.logger.warn 'KC: Gql::Types::Input::Ticket::ArticleInputType not found — skipping bcc argument'
