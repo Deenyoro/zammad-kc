@@ -77,6 +77,21 @@
           <input type="checkbox" name="sync_job_title" <% if @settings.sync_job_title: %>checked<% end %>>
         </td>
       </tr>
+      <tr>
+        <td>
+          <span><%- @T('Default Account') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Account preselected when an agent starts a new Teams conversation.') %></p>
+        </td>
+        <td>
+          <select name="default_channel_id" class="form-control" style="width: 300px;">
+            <option value="" <% if !@settings.default_channel_id: %>selected<% end %>><%- @T('First active account') %></option>
+            <% for channel in @channels: %>
+              <% opts = channel.options || {} %>
+              <option value="<%= channel.id %>" <% if String(channel.id) is @settings.default_channel_id: %>selected<% end %>><%= opts.user_display_name || opts.user_email || channel.id %><% if opts.user_email and opts.user_display_name: %> (<%= opts.user_email %>)<% end %></option>
+            <% end %>
+          </select>
+        </td>
+      </tr>
     </table>
     <button class="btn btn--primary js-saveSettings" style="margin-top: 10px;"><%- @T('Save Settings') %></button>
   </div>

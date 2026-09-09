@@ -22,6 +22,9 @@
 #
 module Kc
   class RingcentralApi
+    # Raised when RingCentral rejects the access token (HTTP 401).
+    class AuthError < StandardError; end
+
     API_BASE_URL   = 'https://platform.ringcentral.com'.freeze
     OAUTH_BASE_URL = 'https://platform.ringcentral.com/restapi/oauth'.freeze
 
@@ -460,7 +463,13 @@ module Kc
         raise "Token request failed (HTTP #{response.code})"
       end
 
-      result = JSON.parse(response.body).with_indifferent_access
+      result = begin
+        JSON.parse(response.body).with_indifferent_access
+      rescue JSON::ParserError
+        # Non-JSON body (proxy/ingress error page) — report the HTTP status
+        # instead of a parser error that would be mistaken for bad credentials.
+        raise "Token request failed (HTTP #{response.code})"
+      end
       if result[:error].present? && response.code.to_i != 200
         raise "Token request failed: #{result[:error]} (#{result[:error_description]})"
       end
@@ -479,8 +488,15 @@ module Kc
         rescue JSON::ParserError
           {}
         end
-        error_msg = error_body.dig('message') || error_body.dig('errorCode') || error_body.dig('error', 'message') || "HTTP #{response.code}"
-        raise "RingCentral API error (#{response.code}): #{error_msg}"
+        error_body = {} unless error_body.is_a?(Hash)
+        error_msg = error_body['message'] || error_body['errorCode'] || (error_body['error'].is_a?(Hash) && error_body['error']['message']) || "HTTP #{response.code}"
+        message = "RingCentral API error (#{response.code}): #{error_msg}"
+        # 401 means the access token was rejected (expired, revoked, or the
+        # refresh token chain was broken). Callers use AuthError to force a
+        # refresh and — if that fails — surface the failure on the channel.
+        raise AuthError, message if response.code.to_i == 401
+
+        raise message
       end
 
       response.data || response.body

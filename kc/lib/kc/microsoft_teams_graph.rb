@@ -360,13 +360,12 @@ module Kc
       loop do
         result = graph_get(url)
         users = result['value'] || []
-        break if users.empty?
 
-        if block
-          block.call(users)
-        else
-          return result
-        end
+        return result if !block
+
+        # An empty page is not the end of the listing — Graph may return
+        # "value": [] together with a nextLink under paging/throttling.
+        block.call(users) if users.any?
 
         url = result['@odata.nextLink']
         break if url.blank?
@@ -472,7 +471,11 @@ module Kc
         raise "Token request failed (HTTP #{response.code})"
       end
 
-      result = JSON.parse(response.body).with_indifferent_access
+      result = begin
+        JSON.parse(response.body).with_indifferent_access
+      rescue JSON::ParserError
+        raise "Token request failed (HTTP #{response.code})"
+      end
       if result[:error].present? && response.code.to_i != 200
         raise "Token request failed: #{result[:error]} (#{result[:error_description]})"
       end

@@ -135,6 +135,8 @@ class Kc::DiscordBotHealthCheckService
   end
 
   def clear_alerts
+    Rails.cache.delete('kc_discord_bot_health_check:last_alert')
+
     open_state_ids = Ticket::State.where(name: %w[new open]).pluck(:id)
     return if open_state_ids.empty?
 

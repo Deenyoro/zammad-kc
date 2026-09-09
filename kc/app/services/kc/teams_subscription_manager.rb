@@ -33,16 +33,21 @@ class Kc::TeamsSubscriptionManager
     sub_class = subscription_class
     return nil if sub_class.nil?
 
-    existing = sub_class.find_by(channel: channel, chat_id: chat_id)
+    # The 30 s poll and the 10 min renewal run on different scheduler
+    # threads; serialize on the channel row so they cannot both create a
+    # Graph subscription for the same chat (which delivers every message twice).
+    channel.with_lock do
+      existing = sub_class.find_by(channel: channel, chat_id: chat_id)
 
-    if existing && existing.expires_at > Time.current
-      return existing
+      if existing && existing.expires_at.present? && existing.expires_at > Time.current
+        return existing
+      end
+
+      # Remove expired record if present
+      existing&.destroy
+
+      create_subscription(chat_id)
     end
-
-    # Remove expired record if present
-    existing&.destroy
-
-    create_subscription(chat_id)
   end
 
   # Renews all subscriptions for this channel that are expiring soon.
@@ -162,8 +167,10 @@ class Kc::TeamsSubscriptionManager
     if e.message.to_s.include?('404')
       Rails.logger.warn "KC Teams: Subscription #{subscription.subscription_id} gone (404), recreating..."
       chat_id = subscription.chat_id
-      subscription.destroy
-      create_subscription(chat_id)
+      channel.with_lock do
+        subscription.destroy
+        create_subscription(chat_id)
+      end
     else
       raise
     end

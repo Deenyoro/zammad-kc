@@ -122,7 +122,7 @@ const onSearchInput = () => {
   searchTimeout = setTimeout(async () => {
     try {
       const data = await kcApiFetch<SearchResponse>(
-        `/conversations/teams_contacts?query=${encodeURIComponent(searchQuery.value)}`,
+        `/conversations/teams_contacts?query=${encodeURIComponent(searchQuery.value)}${channelId.value ? `&channel_id=${encodeURIComponent(channelId.value)}` : ''}`,
       )
       searchResults.value = data.contacts
       showResults.value = data.contacts.length > 0

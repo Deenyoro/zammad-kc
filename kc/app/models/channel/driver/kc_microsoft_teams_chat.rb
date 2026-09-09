@@ -70,6 +70,14 @@ class Channel::Driver::KcMicrosoftTeamsChat
         return nil
       end
 
+      # Image messages sent by Kc::CommunicateTeamsChatJob carry no
+      # article.message_id (only the text message does), so match them via
+      # the ids the job stored on the originating article.
+      if sent_by_kc_image?(ticket, message_data[:message_id])
+        Rails.logger.info "KC Teams Chat: Skipping agent message #{message_data[:message_id]} — image sent from Zammad"
+        return nil
+      end
+
       Rails.logger.info "KC Teams Chat: Creating agent note for message #{message_data[:message_id]} in ticket #{ticket.id} from #{message_data[:from_email]}"
 
       # Update group chat ticket title if needed
@@ -130,6 +138,26 @@ class Channel::Driver::KcMicrosoftTeamsChat
   end
 
   private
+
+  # True when the Graph message id belongs to an image the Teams communicate
+  # job sent for one of this ticket's agent articles.
+  def sent_by_kc_image?(ticket, graph_message_id)
+    return false if graph_message_id.blank?
+
+    agent_sender = Ticket::Article::Sender.lookup(name: 'Agent')
+    return false if agent_sender.nil?
+
+    ticket.articles
+          .where(sender_id: agent_sender.id)
+          .order(created_at: :desc)
+          .limit(25)
+          .any? do |art|
+      Array(art.preferences&.dig(:teams_chat, :image_message_ids)).map(&:to_s).include?(graph_message_id.to_s)
+    end
+  rescue StandardError => e
+    Rails.logger.warn "KC Teams Chat: image dedup lookup failed: #{e.message}"
+    false
+  end
 
   def find_or_create_user(message_data)
     email        = message_data[:from_email].to_s.downcase.presence
