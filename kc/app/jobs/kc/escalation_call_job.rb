@@ -29,14 +29,21 @@ class Kc::EscalationCallJob < ApplicationJob
     escalated_tickets.each do |ticket|
       key = "zammad:escalation:#{ticket.id}"
       reported << key
+
+      # Ring once, when the escalation first happens. We keep reporting
+      # until the PBX confirms it placed the call, because the delay is
+      # applied there and the first report usually arrives before it is due.
+      next if already_called?(ticket)
+
       begin
-        api.alert(
+        result = api.alert(
           key:     key,
           message: alert_message(ticket),
           since:   ticket.escalation_at.utc.iso8601,
           policy:  'escalation',
           source:  'zammad',
         )
+        mark_called(ticket) if result.is_a?(Hash) && (result['called'] || result[:called])
       rescue StandardError => e
         Rails.logger.error "KC Escalation Calls: Failed to report ticket #{ticket.id}: #{e.message}"
       end
@@ -55,6 +62,9 @@ class Kc::EscalationCallJob < ApplicationJob
   # Tickets whose escalation has already passed and that nobody has closed.
   # States flagged ignore_escalation (the KC waiting/on-site/project states)
   # never carry an escalation_at, so they fall out naturally.
+  #
+  # Anything that was already overdue when calling was switched on is
+  # backlog rather than a new escalation, and is skipped for good.
   def escalated_tickets
     open_state_ids = Ticket::State.by_category(:open).pluck(:id)
     return Ticket.none if open_state_ids.empty?
@@ -62,9 +72,34 @@ class Kc::EscalationCallJob < ApplicationJob
     Ticket
       .where(state_id: open_state_ids)
       .where.not(escalation_at: nil)
-      .where(escalation_at: ...Time.current)
+      .where(escalation_at: watching_since...Time.current)
       .reorder(escalation_at: :asc)
       .limit(25)
+  end
+
+  # The moment escalation calling started watching. Stamped on first run.
+  def watching_since
+    raw = Setting.get('kc_escalation_call_since').to_s.presence
+    return Time.zone.parse(raw) if raw
+
+    now = Time.current
+    Setting.set('kc_escalation_call_since', now.utc.iso8601)
+    Rails.logger.info "KC Escalation Calls: watching escalations from #{now.utc.iso8601}; anything older is treated as backlog"
+    now
+  rescue StandardError => e
+    Rails.logger.error "KC Escalation Calls: Failed to read the watch start time: #{e.message}"
+    Time.current
+  end
+
+  # One call per escalation. If the ticket later stops being escalated and
+  # escalates again, escalation_at changes and it rings again.
+  def already_called?(ticket)
+    Rails.cache.read("kc_escalation_call:called:#{ticket.id}") == ticket.escalation_at.to_i
+  end
+
+  def mark_called(ticket)
+    Rails.cache.write("kc_escalation_call:called:#{ticket.id}", ticket.escalation_at.to_i, expires_in: 30.days)
+    Rails.logger.info "KC Escalation Calls: placed a call for ticket #{ticket.number}"
   end
 
   def alert_message(ticket)
