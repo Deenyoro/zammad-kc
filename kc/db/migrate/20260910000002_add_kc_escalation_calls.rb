@@ -20,6 +20,19 @@ class AddKcEscalationCalls < ActiveRecord::Migration[7.0]
       frontend:    true,
     )
 
+    # Set the first time the job runs. Anything already escalated before
+    # that moment is backlog, not a new escalation, and never rings.
+    Setting.create_if_not_exists(
+      title:       'KC Escalation Calls — Watching Since',
+      name:        'kc_escalation_call_since',
+      area:        'Kc::Freepbx',
+      description: 'Escalations older than this are treated as pre-existing backlog and never trigger a call. Set automatically the first time escalation calling runs.',
+      options:     {},
+      state:       '',
+      preferences: { permission: ['admin'] },
+      frontend:    false,
+    )
+
     Scheduler.create_if_not_exists(
       name:          'Call about unfixed KC escalations.',
       method:        'Kc::EscalationCallJob.perform_now',
@@ -34,6 +47,6 @@ class AddKcEscalationCalls < ActiveRecord::Migration[7.0]
 
   def down
     Scheduler.find_by(name: 'Call about unfixed KC escalations.')&.destroy
-    Setting.find_by(name: 'kc_escalation_call_enabled')&.destroy
+    Setting.where(name: %w[kc_escalation_call_enabled kc_escalation_call_since]).destroy_all
   end
 end
