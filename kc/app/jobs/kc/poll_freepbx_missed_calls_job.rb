@@ -67,17 +67,22 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
 
     Rails.logger.info "KC FreePBX Missed Calls: Found #{calls.size} missed call(s) for channel #{channel.id}"
 
+    # Advance only up to the last row we actually handled. A row that blows up
+    # stops the watermark where it is, so the next run re-reads it instead of
+    # silently dropping a missed call; dedup keeps the rows before it from
+    # being handled twice.
     watermark = nil
     calls.each do |call|
       call = call.with_indifferent_access
-      process_call(channel, call)
+      begin
+        process_call(channel, call)
+      rescue StandardError => e
+        Rails.logger.error "KC FreePBX Missed Calls: Failed to process call #{call[:uniqueid]}: #{e.message}"
+        break
+      end
       watermark = call[:calldate] if call[:calldate].present?
-    rescue StandardError => e
-      Rails.logger.error "KC FreePBX Missed Calls: Failed to process call #{call[:uniqueid]}: #{e.message}"
     end
 
-    # Advance only as far as the last row actually seen, so a failure mid-page
-    # does not skip the rest of the window on the next run.
     return if watermark.blank?
 
     channel.with_lock do
@@ -109,16 +114,20 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
 
     reply_from = Setting.get('kc_freepbx_missed_call_autoreply_from').to_s.presence
 
+    # Claim the call before acting on it. The dedup key is a reservation, not
+    # a receipt: if the ticket or the text fails halfway we would rather drop
+    # this call — and say so in the log — than text the customer twice on the
+    # next run.
+    mark_processed(channel, unique_id)
+
     create_missed_call_ticket(channel, dedup_key, caller, dialed, call, reply_from) if create_ticket
 
-    if send_reply
-      message = Setting.get('kc_freepbx_missed_call_autoreply_message').to_s.presence ||
-                'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
-      Kc::OutboundSms.deliver(to: caller, text: message, from: reply_from,
-                              label: 'KC FreePBX Missed Calls')
-    end
+    return if !send_reply
 
-    mark_processed(channel, unique_id)
+    message = Setting.get('kc_freepbx_missed_call_autoreply_message').to_s.presence ||
+              'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
+    Kc::OutboundSms.deliver(to: caller, text: message, from: reply_from,
+                            label: 'KC FreePBX Missed Calls')
   end
 
   def already_processed?(channel, dedup_key, unique_id)
