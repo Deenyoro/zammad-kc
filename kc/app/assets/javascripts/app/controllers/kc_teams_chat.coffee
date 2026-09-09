@@ -42,6 +42,16 @@ class KcTeamsChat extends App.ControllerSubContent
         @html '<div class="alert alert--danger">' + App.i18n.translateInline('Failed to load Teams Chat channels.') + '</div>'
     )
 
+  # App.Setting.get throws when a setting is not in the Spine collection;
+  # one missing setting must not blank the whole page.
+  setting: (name, fallback) ->
+    try
+      value = App.Setting.get(name)
+      return fallback if !value?
+      value
+    catch
+      fallback
+
   render: =>
     channels = []
     for id in @channelIds
@@ -52,13 +62,14 @@ class KcTeamsChat extends App.ControllerSubContent
     @html App.view('kc_teams_chat/index')(
       channels: channels
       settings:
-        ticket_title_template:      App.Setting.get('kc_teams_chat_ticket_title_template') ? 'Teams Message from {user_name}'
-        thread_window_hours:        App.Setting.get('kc_teams_chat_thread_window_hours') ? 24
-        active_lookback_hours:      App.Setting.get('kc_teams_chat_active_lookback_hours') ? 2
-        discovery_interval_minutes: App.Setting.get('kc_teams_chat_discovery_interval_minutes') ? 2
-        deactivate_stale:           App.Setting.get('kc_teams_directory_deactivate_stale') ? false
-        sync_phone:                 App.Setting.get('kc_teams_directory_sync_phone') ? false
-        sync_job_title:             App.Setting.get('kc_teams_directory_sync_job_title') ? false
+        ticket_title_template:      @setting('kc_teams_chat_ticket_title_template', 'Teams Message from {user_name}')
+        thread_window_hours:        @setting('kc_teams_chat_thread_window_hours', 24)
+        active_lookback_hours:      @setting('kc_teams_chat_active_lookback_hours', 2)
+        discovery_interval_minutes: @setting('kc_teams_chat_discovery_interval_minutes', 2)
+        deactivate_stale:           @setting('kc_teams_directory_deactivate_stale', false)
+        sync_phone:                 @setting('kc_teams_directory_sync_phone', false)
+        sync_job_title:             @setting('kc_teams_directory_sync_job_title', false)
+        default_channel_id:         String(@setting('kc_teams_default_channel_id', '') || '')
     )
 
   addAccount: (e) =>
@@ -188,6 +199,7 @@ class KcTeamsChat extends App.ControllerSubContent
       kc_teams_directory_deactivate_stale:      form.find('[name=deactivate_stale]').is(':checked')
       kc_teams_directory_sync_phone:            form.find('[name=sync_phone]').is(':checked')
       kc_teams_directory_sync_job_title:        form.find('[name=sync_job_title]').is(':checked')
+      kc_teams_default_channel_id:              form.find('[name=default_channel_id]').val() || ''
 
     pending = Object.keys(settings).length
     failed  = false

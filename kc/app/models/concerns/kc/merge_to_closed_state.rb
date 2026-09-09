@@ -66,9 +66,13 @@ module Kc
           return result
         end
 
-        # Override state from "merged" to "closed"
+        # Override state from "merged" to "closed". Same handle context as
+        # upstream's merge so required custom attributes are not enforced
+        # on a ticket the agent is not editing.
         reload
-        update!(state: closed_state)
+        ApplicationHandleInfo.in_context('merge') do
+          update!(state: closed_state)
+        end
 
         # Add KC note explaining the merge
         parent_ticket = Ticket.find_by(id: data[:ticket_id])
