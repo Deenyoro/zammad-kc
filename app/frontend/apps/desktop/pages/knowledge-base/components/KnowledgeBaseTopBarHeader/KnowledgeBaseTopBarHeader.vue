@@ -23,13 +23,14 @@ import { openKnowledgeBaseCategoryEditFlyout } from '../../composables/useKnowle
 import { openKnowledgeBaseEditFlyout } from '../../composables/useKnowledgeBaseEditFlyout.ts'
 import { useKnowledgeBaseFeedAction } from '../../composables/useKnowledgeBaseFeedAction.ts'
 import { knowledgeBasePreviewUrl } from '../../composables/useKnowledgeBasePreviewUrl.ts'
+import { armKnowledgeBaseSorting } from '../../composables/useKnowledgeBaseSorting.ts'
 import { knowledgeBaseBreadcrumbItems } from '../../utils/knowledgeBaseBreadcrumbItems.ts'
 import { knowledgeBaseBrowsedTitle } from '../../utils/knowledgeBaseBrowsedTitle.ts'
 
 import { useKnowledgeBaseHeaderLocales } from './useKnowledgeBaseHeaderLocales.ts'
 
 import type { TopBarHeaderProps } from './types.ts'
-import type { CategoryBreadcrumb } from '../../types.ts'
+import type { CategoryBreadcrumb, KnowledgeBaseSortingModes } from '../../types.ts'
 
 type Props = {
   contentContainerElement: HTMLElement | null
@@ -47,6 +48,14 @@ type Props = {
   // Per-record permissions of the opened category; undefined until its query resolves,
   //   which withholds the actions rather than offering ones the mutation would refuse.
   categoryPolicy?: KnowledgeBaseCategoryPolicyFragment['policy']
+  // Whether the browsed node has content worth sorting: the editor access to arrange it, and
+  //   more than one category or more than one answer to arrange. Decided by the page, which is
+  //   the one holding both listings.
+  canSortContent?: boolean
+  // The modes the browsed node's lists are stored with, which is where the sorting bar starts.
+  //   Likewise from the page: the root reads its one mode off the knowledge base, a category the
+  //   two of its own. Empty until they resolve, which leaves each list on the default.
+  sortingModes?: KnowledgeBaseSortingModes
   // The page's content-loading state (a fresh, uncached category load), so the
   //   header can skeleton in lockstep instead of flashing a stale title.
   loading?: boolean
@@ -66,7 +75,7 @@ const loading = computed(() => baseLoading.value || Boolean(props.loading))
 const title = computed(() =>
   knowledgeBaseBrowsedTitle({
     categoryBreadcrumb: props.categoryBreadcrumb,
-    knowledgeBaseTitle: knowledgeBase.value?.title,
+    knowledgeBaseTitle: knowledgeBase.value?.translation?.title,
   }),
 )
 
@@ -98,9 +107,9 @@ const openedCategoryId = computed(() => props.categoryBreadcrumb?.at(-1)?.id)
 const { feedActions } = useKnowledgeBaseFeedAction(openedCategoryId)
 
 const metaTitle = computed(() => {
-  const categoryTitle = props.categoryBreadcrumb?.at(-1)?.title
+  const categoryTitle = props.categoryBreadcrumb?.at(-1)?.translation?.title
 
-  const kbTitle = knowledgeBase.value?.title ?? __('Knowledge Base')
+  const kbTitle = knowledgeBase.value?.translation?.title ?? __('Knowledge Base')
 
   return categoryTitle ? `${kbTitle} - ${categoryTitle}` : kbTitle
 })
@@ -135,8 +144,24 @@ const { localeItems, selectedLocaleItem, selectedLocaleCode } = useKnowledgeBase
 //   per record as well).
 const { confirmCategoryDelete } = useKnowledgeBaseCategoryDelete()
 
+// The same entry on both levels - the root arranges its top-level categories, a category its
+//   own children and answers.
+const sortContentAction: MenuItem = {
+  key: 'sort-content',
+  label: __('Sort content'),
+  icon: 'grid',
+  onClick: () => armKnowledgeBaseSorting(props.sortingModes),
+}
+
 const actions = computed<MenuItem[]>(() => {
-  const openedCategory = props.categoryBreadcrumb?.at(-1)
+  const breadcrumbCategory = props.categoryBreadcrumb?.at(-1)
+
+  // Flattened for the two dialogs, which prefill a form rather than read the graph.
+  const openedCategory = breadcrumbCategory && {
+    id: breadcrumbCategory.id,
+    title: breadcrumbCategory.translation?.title ?? '',
+    categoryIcon: breadcrumbCategory.categoryIcon,
+  }
 
   const items: MenuItem[] = [...feedActions.value]
 
@@ -150,6 +175,8 @@ const actions = computed<MenuItem[]>(() => {
       })
     }
 
+    if (props.canSortContent) items.push(sortContentAction)
+
     return items
   }
 
@@ -161,6 +188,8 @@ const actions = computed<MenuItem[]>(() => {
       onClick: () => openKnowledgeBaseCategoryEditFlyout(openedCategory),
     })
   }
+
+  if (props.canSortContent) items.push(sortContentAction)
 
   if (props.categoryPolicy?.destroy) {
     items.push({
@@ -203,7 +232,7 @@ const headerProps = computed<TopBarHeaderProps>((currentProps) => {
     :content-container-element="contentContainerElement"
     :loading="loading"
     :alert-message="
-      categoryTranslationMissing ? $t('No translation for this locale available') : undefined
+      categoryTranslationMissing ? $t('No translation available for this locale') : undefined
     "
   >
     <template #compact="{ inert }">

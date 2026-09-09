@@ -361,4 +361,20 @@ describe('SearchContent', () => {
 
     expect(wrapper.queryByRole('button', { name: 'Bulk actions' })).not.toBeInTheDocument()
   })
+
+  // The counts query behind the tab badges asks for every registered plugin, knowledge base answers
+  //   included - that request is what the answers tab's counter reads.
+  it('asks for the knowledge base answer count behind its tab badge', async () => {
+    mockPermissions(['ticket.agent', 'knowledge_base.reader'])
+    mockApplicationConfig({ kb_active: true })
+
+    mockTicketSearchResult(0, [])
+    mockSearchCountsQuery({ searchCounts: [] })
+
+    renderSearchContent({ searchTerm: '123' })
+
+    const calls = await waitForSearchCountsQueryCalls()
+
+    expect(calls[0].variables.onlyIn).toContain(EnumSearchableModels.KnowledgeBaseAnswerTranslation)
+  })
 })

@@ -38,26 +38,120 @@ RSpec.describe Service::KnowledgeBase::Search do
     end
   end
 
-  def search_output(query = search_term, scope: nil)
+  def search_output(query = search_term, entity: :answer, scope: nil, for_user: user)
     described_class
-      .with_current_user(user)
-      .execute(query: query, knowledge_base: knowledge_base, scope: scope, locale: primary_locale)
+      .with_current_user(for_user)
+      .execute(query: query, knowledge_base: knowledge_base, entity: entity, scope: scope, locale: primary_locale)
   end
 
-  def search(query = search_term, scope: nil)
-    search_output(query, scope: scope).results
+  def search(query = search_term, entity: :answer, scope: nil, for_user: user)
+    search_output(query, entity: entity, scope: scope, for_user: for_user).results
   end
 
   def visibility_of(category)
-    search_output.category_visibility[category.id]
+    search_output(entity: :category).category_visibility[category.id]
   end
 
-  def result_for(answer)
-    search.find { |result| result.item == answer }
+  # Looked up under the kind the record is, so an example only has to name the record - one run
+  #   returns one kind of content.
+  def result_for(item)
+    entity = item.is_a?(KnowledgeBase::Category) ? :category : :answer
+
+    search(entity: entity).find { |result| result.item == item }
   end
 
   def highlighted(segments)
     segments.select(&:highlight).map(&:text)
+  end
+
+  # The mode the quicksearch group asks for: answers alone, and none of the enrichment the search
+  #   page's result list renders. Covered against both backends, because a hit means something
+  #   different in each (Elasticsearch narrows to the browsed locale, the SQL fallback does not).
+  def quick_search_output(query = search_term, limit: described_class::MAX_RESULTS)
+    described_class
+      .with_current_user(user)
+      .execute(
+        query:          query,
+        knowledge_base: knowledge_base,
+        locale:         primary_locale,
+        entity:         :answer,
+        limit:          limit,
+        enriched:       false,
+      )
+  end
+
+  def quick_search(query = search_term, limit: described_class::MAX_RESULTS)
+    quick_search_output(query, limit: limit).results
+  end
+
+  shared_examples 'an answers-only, unenriched search' do
+    it 'still finds answers' do
+      expect(quick_search.map(&:item)).to include(matching_answer)
+    end
+
+    it 'returns answers alone, never a category' do
+      expect(quick_search.map(&:item)).to all(be_a(KnowledgeBase::Answer))
+    end
+
+    # The searchable unit, and what Gql::Types::SearchResult::ItemType exposes for this model - so
+    #   the quicksearch group is a list of these rather than of their answers.
+    it 'carries the hit translation next to the answer' do
+      result = quick_search.find { |elem| elem.item == matching_answer }
+
+      expect(result.translation).to eq(matching_answer.translations.first)
+    end
+
+    it 'builds no title preview' do
+      expect(quick_search.map(&:title_preview)).to all(be_empty)
+    end
+
+    it 'builds no body preview' do
+      expect(quick_search.map(&:body_preview)).to all(be_empty)
+    end
+
+    # The preview being empty does not prove the body was never fetched: reading it loads the
+    #   translation's content row and runs the whole HTML body through html2text. That is why the
+    #   fallback is passed to #preview as a block rather than as an argument.
+    it 'never loads the answer bodies' do
+      expect(quick_search.map { |result| result.translation.association(:content).loaded? }).to all(be(false))
+    end
+
+    it 'builds no category path' do
+      expect(quick_search.map(&:category_path)).to all(be_empty)
+    end
+
+    it 'hands out no batched category data' do
+      output = quick_search_output
+
+      expect([output.category_translations, output.category_visibility]).to all(be_empty)
+    end
+
+    # The two costs the mode exists to avoid, and the reason it exists at all: quicksearch fires on
+    #   every debounced keystroke. Pinned on the calls rather than only on the empty output, because
+    #   an output can be empty while the work was still done.
+    it 'does not ask the backend for highlights' do
+      allow(SearchKnowledgeBaseBackend).to receive(:new).and_call_original
+
+      quick_search
+
+      expect(SearchKnowledgeBaseBackend).to have_received(:new).with(hash_including(highlight_enabled: false))
+    end
+
+    it 'never loads the category tree' do
+      allow(knowledge_base).to receive(:categories).and_call_original
+
+      quick_search
+
+      expect(knowledge_base).not_to have_received(:categories)
+    end
+
+    it 'honours a limit below the default cap' do
+      expect(quick_search(limit: 1).size).to eq(1)
+    end
+
+    it 'returns nothing for a blank query' do
+      expect(quick_search('')).to be_empty
+    end
   end
 
   before do
@@ -77,12 +171,22 @@ RSpec.describe Service::KnowledgeBase::Search do
       expect(search('')).to be_empty
     end
 
-    it 'finds answers and categories alike' do
-      expect(search.map(&:item)).to include(matching_answer, matching_category)
+    it 'finds answers' do
+      expect(search.map(&:item)).to include(matching_answer)
     end
 
-    it 'never returns the knowledge base node itself' do
-      expect(search.map { |result| result.item.class }).to all(be_in([KnowledgeBase::Answer, KnowledgeBase::Category]))
+    it 'finds categories' do
+      expect(search(entity: :category).map(&:item)).to include(matching_category)
+    end
+
+    # The knowledge base node itself is not one of the searchable kinds at all, so no run can
+    #   return it - which is what ENTITY_MODELS leaves out.
+    it 'returns answers alone when asked for answers' do
+      expect(search.map(&:item)).to be_present.and(all(be_a(KnowledgeBase::Answer)))
+    end
+
+    it 'returns categories alone when asked for categories' do
+      expect(search(entity: :category).map(&:item)).to be_present.and(all(be_a(KnowledgeBase::Category)))
     end
 
     it 'marks the matched run of the title' do
@@ -140,6 +244,40 @@ RSpec.describe Service::KnowledgeBase::Search do
       expect(result_for(matching_category).category_path).to eq([category])
     end
 
+    # How many hits a kind has is what its tab badge reads, and each kind is searched on its own -
+    #   so the categories cannot be moved by how many answers the same term hit.
+    it 'finds each kind of content independently of the other' do
+      expect(search(entity: :category).size).to eq(1)
+    end
+
+    # The cap bounds one kind of content, because one run searches one index — a term with many
+    #   answer hits must not leave the categories reading zero.
+    context 'when the result cap is reached' do
+      before { stub_const('Service::KnowledgeBase::Search::MAX_RESULTS', 2) }
+
+      it 'caps the kind that was searched' do
+        expect(search.size).to eq(2)
+      end
+
+      it 'leaves the other kind its own full count' do
+        expect(search(entity: :category).size).to eq(1)
+      end
+    end
+
+    # Filtered by permission before anything is counted: a draft is a hit for an editor and not one
+    #   for a customer, and a tab badge has to say so.
+    describe 'permission filtering' do
+      before do
+        create(:knowledge_base_answer, :draft, category: category, translation_attributes: { title: 'Ocarina repairs' })
+        searchindex_model_reload([KnowledgeBase::Answer::Translation])
+      end
+
+      it 'finds a draft for an editor but not for a customer' do
+        expect(search(for_user: create(:admin)).size)
+          .to eq(search(for_user: create(:customer)).size + 1)
+      end
+    end
+
     # CategoryType#visibility renders the status icon of a result from this. It is batched here
     #   because the fallback, KnowledgeBase::Category#content_visibility, walks the subtree with a
     #   recursive query once per publication state — for every category on the page.
@@ -176,6 +314,11 @@ RSpec.describe Service::KnowledgeBase::Search do
                                                    translation_attributes: { kb_locale: alternative_locale })
 
         expect(visibility_of(matching_category)).to eq(:draft)
+      end
+
+      # An answer search has no category hits, so it needs none of it.
+      it 'is empty when answers were searched' do
+        expect(search_output.category_visibility).to be_empty
       end
     end
 
@@ -218,6 +361,8 @@ RSpec.describe Service::KnowledgeBase::Search do
         expect(search.map(&:item)).to include(matching_answer)
       end
     end
+
+    it_behaves_like 'an answers-only, unenriched search'
   end
 
   context 'without Elasticsearch' do
@@ -225,6 +370,10 @@ RSpec.describe Service::KnowledgeBase::Search do
 
     it 'still finds answers' do
       expect(search.map(&:item)).to include(matching_answer)
+    end
+
+    it 'still finds categories' do
+      expect(search(entity: :category).map(&:item)).to include(matching_category)
     end
 
     it 'returns the plain title as a single unmarked segment' do
@@ -237,5 +386,7 @@ RSpec.describe Service::KnowledgeBase::Search do
 
       expect(preview.map(&:highlight)).to eq([false])
     end
+
+    it_behaves_like 'an answers-only, unenriched search'
   end
 end

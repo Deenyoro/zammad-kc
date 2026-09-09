@@ -2,31 +2,35 @@
 
 # Returns the browsable content of a single node in the knowledge base tree:
 #   the breadcrumb path, the visible child categories, and their per-category
-#   details (subtree answer/subcategory counts and content visibility), all
-#   batched here and keyed by category id so the GraphQL type does not query
-#   per category.
+#   details (subtree answer/subcategory counts and content visibility) and
+#   translations, all batched here and keyed by category id so the GraphQL type
+#   does not query per category.
 #
 # `category` nil means the knowledge base root (only categories, no answers).
 class Service::KnowledgeBase::CategoryContent < Service::Base
   include Service::KnowledgeBase::Concerns::WalksCategoryTree
 
-  attr_reader :knowledge_base, :category, :locale
+  attr_reader :knowledge_base, :category, :locale, :sorting_mode
 
   # `locale` is the resolved KnowledgeBase::Locale used to localize titles.
-  def initialize(knowledge_base:, category: nil, locale: nil)
+  #
+  # `sorting_mode` overrides the node's stored `category_sorting_mode` for this listing alone,
+  #   which is what lets the sorting bar preview a mode before it is saved. One of
+  #   KnowledgeBase::SORTING_MODES; nil (the normal case) lists in the stored mode.
+  def initialize(knowledge_base:, category: nil, locale: nil, sorting_mode: nil)
     @knowledge_base = knowledge_base
     @category = category
     @locale = locale
+    @sorting_mode = sorting_mode
   end
 
   def execute
     {
-      category:                     category,
-      subcategories:                visible_child_categories,
-      category_details:             category_details,
-      category_titles:              category_titles,
-      category_translation_missing: category_translation_missing,
-      category_breadcrumbs:         category_breadcrumbs,
+      category:              category,
+      subcategories:         visible_child_categories,
+      category_details:      category_details,
+      category_translations: category_translations,
+      category_breadcrumbs:  category_breadcrumbs,
     }
   end
 
@@ -45,53 +49,55 @@ class Service::KnowledgeBase::CategoryContent < Service::Base
     (visible_child_categories + [category].compact).to_h { |cat| [cat.id, trail_of(cat)] }
   end
 
-  # Visible children of the current node (root when `category` is nil), resolved
-  #   from the in-memory tree and the batched visibility set.
+  # Visible children of the current node (root when `category` is nil), in the
+  #   node's category sorting mode, resolved against the loaded tree and the
+  #   batched visibility set.
   def visible_child_categories
-    @visible_child_categories ||= Array(children_by_parent[category&.id])
+    @visible_child_categories ||= ordered_child_ids
+      .filter_map { |id| categories_by_id[id] }
       .select { |child| visible_category_ids.include?(child.id) }
-      .sort_by(&:position)
   end
 
-  # Categories shown in the payload (breadcrumb + children), whose titles and
-  #   translation state are resolved from a single translation load.
+  # The children in display order, as ids only. The order is settled by the
+  #   database rather than in Ruby, which compares strings by codepoint and would
+  #   file every non-ASCII title after `Z`, disagreeing with the order the help
+  #   site renders from the same data (KnowledgeBase::Category.sorted_by_mode).
+  #
+  # Only the ids: the records themselves are already loaded with the tree, so
+  #   this asks the database to arrange one node's children and nothing more.
+  def ordered_child_ids
+    @ordered_child_ids ||= child_scope
+      .sorted_by_mode(sorting_mode || node_category_sorting_mode, system_locale_or_id: locale&.system_locale_id)
+      .pluck(:id)
+  end
+
+  def child_scope
+    category&.children || knowledge_base.categories.root
+  end
+
+  # Stored sorting mode of the *categories* listed in the browsed node: the opened
+  #   category's, or the knowledge base's own at the root, which lists categories
+  #   just the same. The answers of the same category are listed by
+  #   Service::KnowledgeBase::Answers, in the mode of their own.
+  def node_category_sorting_mode
+    (category || knowledge_base).category_sorting_mode
+  end
+
+  # Categories shown in the payload (breadcrumb + children), whose titles are resolved from a
+  #   single translation load.
   def localized_categories
     @localized_categories ||= (breadcrumb + visible_child_categories).uniq
   end
 
-  # Translations of every shown category, keyed by category id, loaded once and
-  #   reused for both the localized titles and the missing-translation flags.
-  def translations_by_category
-    @translations_by_category ||= ::KnowledgeBase::Category::Translation
-      .where(category_id: localized_categories.map(&:id))
-      .group_by(&:category_id)
-  end
+  # Preferred translation of every shown category, keyed by category id: the browsed locale, then
+  #   the primary locale, then any - resolved in one query for all of them.
+  def category_translations
+    locale_id = locale&.id || primary_kb_locale_id
+    return {} if locale_id.nil?
 
-  # Localized titles for every category shown in the payload (breadcrumb +
-  #   children), keyed by category id, mirroring
-  #   KnowledgeBase::Category#translation_preferred.
-  def category_titles
-    localized_categories.to_h { |cat| [cat.id, preferred_title(translations_by_category[cat.id] || [])] }
-  end
-
-  # Whether each shown category lacks its own translation in the browsed locale
-  #   (so its title falls back to the primary/any locale), keyed by category id.
-  #   With no locale requested nothing counts as missing.
-  def category_translation_missing
-    localized_categories.to_h do |cat|
-      translations = translations_by_category[cat.id] || []
-      [cat.id, locale.present? && translations.none? { |t| t.kb_locale_id == locale.id }]
-    end
-  end
-
-  # Preferred translation title: requested locale, then the primary locale,
-  #   then any translation.
-  def preferred_title(translations)
-    translation = (locale && translations.find { |t| t.kb_locale_id == locale.id }) ||
-                  translations.find { |t| t.kb_locale_id == primary_kb_locale_id } ||
-                  translations.first
-
-    translation&.title
+    ::KnowledgeBase::Category
+      .preferred_translations_for(localized_categories.map { |cat| [cat.id, locale_id] })
+      .transform_keys(&:first)
   end
 
   def primary_kb_locale_id
