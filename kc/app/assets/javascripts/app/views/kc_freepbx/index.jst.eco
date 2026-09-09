@@ -71,6 +71,17 @@
         <textarea name="missed_call_autoreply_message" class="form-control" rows="3" style="width: 300px;"><%= @settings.missed_call_autoreply_message %></textarea>
       </td>
     </tr>
+    <tr>
+      <td>
+        <span><%- @T('Call About Unfixed Escalations') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Phone a human when a ticket escalation goes unfixed. The PBX holds calls overnight and resumes in the morning.') %></p>
+      </td>
+      <td>
+        <label class="inline-label">
+          <input type="checkbox" name="escalation_call_enabled" value="true" <% if @settings.escalation_call_enabled: %>checked<% end %>>
+        </label>
+      </td>
+    </tr>
   </table>
   <button class="btn btn--primary js-saveMissedCallSettings" style="margin-top: 10px;"><%- @T('Save Missed Call Settings') %></button>
 
