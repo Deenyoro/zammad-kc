@@ -11,6 +11,10 @@
 # anything that came due during the night until the morning.
 class Kc::EscalationCallJob < ApplicationJob
 
+  # How many escalations we report to the PBX per run. The PBX places at most
+  # one call at a time anyway; the rest are picked up on the next run.
+  ALERT_BATCH_SIZE = 25
+
   def perform
     return if Setting.get('kc_escalation_call_enabled') != true
 
@@ -23,12 +27,16 @@ class Kc::EscalationCallJob < ApplicationJob
     api_class = 'Kc::FreepbxApi'.safe_constantize
     return if api_class.nil?
 
-    api      = api_class.for_channel(channel)
-    reported = []
+    api = api_class.for_channel(channel)
 
-    escalated_tickets.each do |ticket|
+    # Bookkeeping covers every ticket that is still escalated, not just the
+    # page we alert on this run, so a backlog deeper than the page size does
+    # not have its PBX state cleared out from under it.
+    tickets  = escalated_tickets
+    reported = tickets.pluck(:id).map { |id| "zammad:escalation:#{id}" }
+
+    tickets.limit(ALERT_BATCH_SIZE).each do |ticket|
       key = "zammad:escalation:#{ticket.id}"
-      reported << key
 
       # Ring once, when the escalation first happens. We keep reporting
       # until the PBX confirms it placed the call, because the delay is
@@ -74,7 +82,6 @@ class Kc::EscalationCallJob < ApplicationJob
       .where.not(escalation_at: nil)
       .where(escalation_at: watching_since...Time.current)
       .reorder(escalation_at: :asc)
-      .limit(25)
   end
 
   # The moment escalation calling started watching. Stamped on first run.

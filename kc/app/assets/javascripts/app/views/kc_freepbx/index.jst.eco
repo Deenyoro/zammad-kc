@@ -86,36 +86,36 @@
   <button class="btn btn--primary js-saveMissedCallSettings" style="margin-top: 10px;"><%- @T('Save Missed Call Settings') %></button>
 
   <h2 style="margin-top: 30px;"><%- @T('Connections') %></h2>
-  <table class="settings-list settings-list--stretch settings-list--placeholder">
-    <% if @channels.length is 0: %>
-      <tr><td><%- @T('No FreePBX connection configured yet.') %></td></tr>
-    <% end %>
-    <% for channel in @channels: %>
-      <% options = channel.options || {} %>
-      <div class="action <% if channel.active isnt true: %>is-inactive<% end %>" data-id="<%= channel.id %>">
-        <% if options.last_connection_error: %>
-          <div class="alert alert--danger" style="margin-bottom: 8px;">
-            <strong><%- @T('Connection Error') %>:</strong> <%= options.last_connection_error %>
-          </div>
-        <% end %>
-        <div class="action-flow action-flow--row">
-          <div class="action-block action-block--flex">
-            <%- @Icon('status', if options.last_connection_error then 'error-color inline' else if channel.active then 'supergood-color inline' else 'error-color inline') %>
-            <%= options.label || 'FreePBX' %>
-            <span class="text-muted"><%= options.base_url %></span>
-          </div>
-          <div class="action-block action-block--flex">
-            <div class="btn btn--danger btn--secondary js-deleteConnection"><%- @T('Delete') %></div>
-            <% if channel.active: %>
-              <div class="btn btn--secondary js-disableConnection"><%- @T('Disable') %></div>
-            <% else: %>
-              <div class="btn btn--secondary js-enableConnection"><%- @T('Enable') %></div>
-            <% end %>
-            <div class="btn btn--secondary js-testConnection"><%- @T('Test') %></div>
-            <div class="btn js-editConnection"><%- @T('Edit') %></div>
-          </div>
+  <% if @channels.length is 0: %>
+    <table class="settings-list settings-list--stretch settings-list--placeholder">
+      <thead><tr><th><%- @T('No FreePBX connection configured yet.') %></th></tr></thead>
+    </table>
+  <% end %>
+  <% for channel in @channels: %>
+    <% options = channel.options || {} %>
+    <div class="action <% if channel.active isnt true: %>is-inactive<% end %>" data-id="<%= channel.id %>">
+      <% if options.last_connection_error: %>
+        <div class="alert alert--danger" style="margin-bottom: 8px;">
+          <strong><%- @T('Connection Error') %>:</strong> <%= options.last_connection_error %>
+        </div>
+      <% end %>
+      <div class="action-flow action-flow--row">
+        <div class="action-block action-block--flex">
+          <%- @Icon('status', if options.last_connection_error then 'error-color inline' else if channel.active then 'supergood-color inline' else 'error-color inline') %>
+          <%= options.label || 'FreePBX' %>
+          <span class="text-muted"><%= options.base_url %></span>
+        </div>
+        <div class="action-block action-block--flex">
+          <div class="btn btn--danger btn--secondary js-deleteConnection"><%- @T('Delete') %></div>
+          <% if channel.active: %>
+            <div class="btn btn--secondary js-disableConnection"><%- @T('Disable') %></div>
+          <% else: %>
+            <div class="btn btn--secondary js-enableConnection"><%- @T('Enable') %></div>
+          <% end %>
+          <div class="btn btn--secondary js-testConnection"><%- @T('Test') %></div>
+          <div class="btn js-editConnection"><%- @T('Edit') %></div>
         </div>
       </div>
-    <% end %>
-  </table>
+    </div>
+  <% end %>
 </div>
