@@ -83,7 +83,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
     @ajax(
       id:   'kc-teams-contact-search'
       type: 'GET'
-      url:  "#{App.Config.get('api_path')}/kc/conversations/teams_contacts?query=#{encodeURIComponent(query)}"
+      url:  "#{App.Config.get('api_path')}/kc/conversations/teams_contacts?query=#{encodeURIComponent(query)}&channel_id=#{encodeURIComponent(@el.find('.js-fromAccount').val() || '')}"
       success: (data) =>
         @renderContactResults(data.contacts || [])
       error: =>

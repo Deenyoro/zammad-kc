@@ -356,7 +356,9 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
-    channel = Channel.where(area: 'MicrosoftTeamsChat::Account', active: true).first
+    # Search the directory of the channel the agent selected, not the first
+    # one — with several tenants the ids would not exist on the other tenant.
+    channel = resolve_teams_channel(params[:channel_id])
     if channel.nil?
       render json: { error: 'No active Microsoft Teams channel configured' }, status: :unprocessable_content
       return

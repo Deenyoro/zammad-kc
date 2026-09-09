@@ -51,10 +51,15 @@ module Kc
             next if link['link_type'] != 'parent'
             next if link['link_object'] != 'Ticket'
 
-            Ticket
+            candidate = Ticket
               .joins(state: :state_type)
               .where.not(ticket_state_types: { name: 'merged' })
               .find_by(id: link['link_object_value'])
+            # KC merges leave the child in "closed" (not "merged") — skip
+            # those shells too, or follow-ups land on a dead ticket.
+            next if candidate.respond_to?(:kc_merged_shell?) && candidate.kc_merged_shell?
+
+            candidate
           end
           .first
       rescue => e

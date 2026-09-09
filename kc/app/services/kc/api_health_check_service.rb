@@ -15,6 +15,7 @@
 # Follows Kc::TokenAlertService patterns but with independent title patterns
 # and configurable ticket settings (group, priority, owner).
 class Kc::ApiHealthCheckService
+  include Kc::RingcentralAuthRecovery
   DEDUP_WINDOW = 24.hours
 
   def execute
@@ -118,15 +119,23 @@ class Kc::ApiHealthCheckService
     # token rotation. RingCentral invalidates refresh tokens on each use, so
     # force_refresh every 5 min would burn ~12 tokens/hour and reintroduce the
     # race condition that causes permanent token death on pod kill.
-    rc = rc_class.with_channel_tokens(channel)
-
-    # Verify extension access
-    rc.extension_info
+    # A 401 on the cached token forces exactly one refresh (see
+    # Kc::RingcentralAuthRecovery); if that fails the channel is flagged so
+    # the admin page shows the authentication banner immediately.
+    result, _client = rc_call_with_auth_recovery(channel, 'KC HealthCheck') do |client|
+      client.extension_info
+    end
+    if result.nil?
+      error = channel.reload.options.with_indifferent_access[:last_auth_error].presence || 'RingCentral authentication failed'
+      raise error
+    end
 
     Rails.logger.info "KC HealthCheck: #{service_name} channel #{channel.id} — OK"
+    clear_auth_error(channel) if channel.options[:last_auth_error].present?
     clear_alerts(channel, service_name)
   rescue => e
     Rails.logger.error "KC HealthCheck: #{service_name} channel #{channel.id} — FAILED: #{e.message}"
+    store_auth_error(channel, e.message) if channel.options[:last_auth_error].blank?
     create_alert(channel, service_name, e.message)
   end
 
@@ -151,6 +160,10 @@ class Kc::ApiHealthCheckService
   end
 
   def clear_alerts(channel, service_name)
+    # Recovery resets the dedup window; otherwise a second outage inside the
+    # same 24 h would be silently suppressed.
+    Rails.cache.delete("kc_api_health_check:#{service_name.parameterize}:#{channel.id}")
+
     title = alert_ticket_title(service_name, channel)
     open_state_ids = Ticket::State.where(name: %w[new open]).pluck(:id)
     return if open_state_ids.empty?

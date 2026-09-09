@@ -67,6 +67,7 @@ class KcRingcentralSms extends App.ControllerSubContent
       settings:
         ticket_title_template:        @setting('kc_ringcentral_sms_ticket_title_template', 'SMS from {phone}')
         thread_window_hours:          @setting('kc_ringcentral_sms_thread_window_hours', 24)
+        default_channel_id:            String(@setting('kc_ringcentral_sms_default_channel_id', '') || '')
         poll_interval_seconds:        @setting('kc_ringcentral_sms_poll_interval_seconds', 60)
         missed_call_ticket:           @setting('kc_ringcentral_sms_missed_call_ticket', false) is true
         missed_call_ticket_title:     @setting('kc_ringcentral_sms_missed_call_ticket_title', 'Missed call from {phone}')
@@ -167,6 +168,7 @@ class KcRingcentralSms extends App.ControllerSubContent
       kc_ringcentral_sms_ticket_title_template: form.find('[name=ticket_title_template]').val() || 'SMS from {phone}'
       kc_ringcentral_sms_thread_window_hours:   parseInt(form.find('[name=thread_window_hours]').val()) || 24
       kc_ringcentral_sms_poll_interval_seconds: parseInt(form.find('[name=poll_interval_seconds]').val()) || 60
+      kc_ringcentral_sms_default_channel_id:    form.find('[name=default_channel_id]').val() || ''
 
     pending = Object.keys(settings).length
     failed  = false

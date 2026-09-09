@@ -72,7 +72,7 @@ module Kc::EmailFromOriginByFix
       return super
     end
 
-    if effective_user.id != 1
+    if created_by_id != 1
       case Setting.get('ticket_define_email_from')
       when 'AgentNameSystemAddressName'
         separator = Setting.get('ticket_define_email_from_separator')

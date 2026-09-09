@@ -18,6 +18,13 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
     ticket = article.ticket
     return if ticket.nil?
 
+    # retry_on re-runs this job after a timeout even when Graph already
+    # accepted the message; never send the same article twice.
+    if article.preferences&.dig(:teams_chat, :delivery_status) == 'sent'
+      Rails.logger.info "KC Teams Chat Job: Article #{article_id} already sent — skipping"
+      return
+    end
+
     # Determine which channel and chat to send to.
     # Zammad's `store` serializes with symbol keys.
     chat_prefs    = ticket.preferences&.dig(:teams_chat) || {}
@@ -60,8 +67,15 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
       article.save!
     end
 
-    # Send image attachments as separate messages (hostedContents, max 4 MB each)
-    send_image_attachments(article, graph, chat_id)
+    # Send image attachments as separate messages (hostedContents, max 4 MB each).
+    # Their Graph ids are stored so the poller recognises them as our own
+    # messages instead of creating a ghost internal note for each image.
+    image_ids = send_image_attachments(article, graph, chat_id)
+    if image_ids.any?
+      article.preferences[:teams_chat] ||= {}
+      article.preferences[:teams_chat][:image_message_ids] = image_ids
+      article.save!
+    end
 
     Rails.logger.info "KC Teams Chat: Sent article #{article_id} to chat #{chat_id}"
   rescue => e
@@ -105,12 +119,14 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
   IMAGE_MIME_TYPES = %w[image/png image/jpeg image/gif image/webp image/bmp image/pjpeg].freeze
   MAX_HOSTED_CONTENT_SIZE = 4.megabytes
 
+  # Returns the Graph message ids of the images that were sent.
   def send_image_attachments(article, graph, chat_id)
+    sent_ids = []
     image_attachments = article.attachments.select do |att|
       mime = att.preferences['Content-Type'] || att.preferences['Mime-Type'] || ''
       IMAGE_MIME_TYPES.include?(mime.split(';').first&.strip&.downcase)
     end
-    return if image_attachments.empty?
+    return sent_ids if image_attachments.empty?
 
     image_attachments.each do |att|
       mime = (att.preferences['Content-Type'] || att.preferences['Mime-Type'] || 'image/png').split(';').first.strip
@@ -124,11 +140,14 @@ class Kc::CommunicateTeamsChatJob < ApplicationJob
         next
       end
 
-      graph.send_chat_image(chat_id, content, content_type: mime, filename: att.filename)
+      result = graph.send_chat_image(chat_id, content, content_type: mime, filename: att.filename)
+      image_id = result.is_a?(Hash) ? (result['id'] || result[:id]) : nil
+      sent_ids << image_id.to_s if image_id.present?
       Rails.logger.info "KC Teams Chat: Sent image '#{att.filename}' for article #{article.id} to chat #{chat_id}"
     rescue => e
       Rails.logger.error "KC Teams Chat: Failed to send image '#{att.filename}' for article #{article.id}: #{e.message}"
     end
+    sent_ids
   end
 
 end

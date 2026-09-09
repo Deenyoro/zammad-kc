@@ -6,7 +6,6 @@
 #   - Table guard — skips if upstream renamed or removed the table.
 class AddKcBccToTicketArticles < ActiveRecord::Migration[7.0]
   def up
-    return if !Setting.exists?(name: 'system_init_done')
 
     unless table_exists?(:ticket_articles)
       say 'KC: ticket_articles table not found — skipping'

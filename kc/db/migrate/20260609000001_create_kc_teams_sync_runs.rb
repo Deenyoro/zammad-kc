@@ -11,7 +11,6 @@
 #   - Boots cleanly before the migration runs (model has table_exists? guard)
 class CreateKcTeamsSyncRuns < ActiveRecord::Migration[7.0]
   def up
-    return if !Setting.exists?(name: 'system_init_done')
     return if table_exists?(:kc_teams_sync_runs)
 
     create_table :kc_teams_sync_runs do |t|

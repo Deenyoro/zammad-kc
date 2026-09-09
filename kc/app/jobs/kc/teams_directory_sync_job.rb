@@ -344,6 +344,14 @@ class Kc::TeamsDirectorySyncJob < ApplicationJob
   end
 
   def deactivate_stale_users(organization, synced_user_ids)
+    # An empty sync result means the directory listing failed or returned
+    # nothing — `where.not(id: [])` matches EVERY user, so bail out instead
+    # of deactivating the whole organization.
+    if synced_user_ids.blank?
+      Rails.logger.warn "KC Teams Directory Sync: No users synced for organization #{organization.id} — skipping stale-user deactivation"
+      return 0
+    end
+
     # Find users in this org who have a microsoft_teams authorization
     # but were NOT seen in the current sync
     stale_users = User.joins(:authorizations)

@@ -26,6 +26,7 @@
 #   - Page cap per run; call-log is a heavy-rate-limit RC endpoint, so
 #     paging sleeps between requests
 class Kc::PollRingcentralCallHistoryJob < ApplicationJob
+  include Kc::RingcentralAuthRecovery
 
   PAGE_LIMIT       = 10
   PAGE_SLEEP       = 7 # seconds; RC call-log endpoint is heavy-throttled
@@ -59,7 +60,7 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
     begin
       rc = rc_class.with_channel_tokens(channel)
     rescue StandardError => e
-      Rails.logger.error "KC RingCentral Call History: Token refresh failed for channel #{channel.id}: #{e.message}"
+      rc_record_auth_failure(channel, 'KC RingCentral Call History', e.message)
       return
     end
 
@@ -67,13 +68,21 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
     date_from = opts[:last_call_history_poll_at].presence || 24.hours.ago.utc.iso8601
     skip_missed = Setting.get('kc_ringcentral_sms_missed_call_ticket') == true
 
-    created = 0
-    page    = 1
+    created  = 0
+    page     = 1
+    fetch_ok = true
     loop do
       begin
-        api_result = rc.get_call_log(date_from: date_from, per_page: 100, type: 'Voice', page: page)
+        api_result, rc = rc_call_with_auth_recovery(channel, 'KC RingCentral Call History', client: rc) do |client|
+          client.get_call_log(date_from: date_from, per_page: 100, type: 'Voice', page: page)
+        end
       rescue StandardError => e
         Rails.logger.error "KC RingCentral Call History: Call log query failed for channel #{channel.id}: #{e.message}"
+        fetch_ok = false
+        break
+      end
+      if api_result.nil?
+        fetch_ok = false
         break
       end
 
@@ -102,6 +111,13 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
     end
 
     Rails.logger.info "KC RingCentral Call History: Created #{created} call ticket(s) for channel #{channel.id}" if created.positive?
+
+    # A failed fetch must not move the watermark, otherwise the calls in the
+    # unread window are never fetched.
+    if !fetch_ok
+      Rails.logger.warn "KC RingCentral Call History: Fetch failed for channel #{channel.id} — watermark not advanced"
+      return
+    end
 
     # Watermark lags behind now so RingCentral has time to finalize
     # records; the overlap is absorbed by session-ID dedup.

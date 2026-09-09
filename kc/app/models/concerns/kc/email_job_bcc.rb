@@ -14,7 +14,7 @@ module Kc
     def perform(article_id)
       record = Ticket::Article.find_by(id: article_id)
 
-      if record&.bcc.present?
+      if record.respond_to?(:bcc) && record.bcc.present?
         Thread.current[:kc_article_bcc] = record.bcc
         Rails.logger.info "KC: EmailJobBcc — article #{article_id} has bcc=#{record.bcc.inspect}, set thread-local"
       else

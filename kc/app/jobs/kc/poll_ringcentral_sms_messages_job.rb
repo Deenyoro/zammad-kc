@@ -16,6 +16,8 @@
 #   - Per-channel rescue so one broken channel doesn't stop the others
 #   - Only processes messages created after last poll (or channel creation)
 class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
+  include Kc::RingcentralAuthRecovery
+
 
   def perform
     Channel.where(area: 'RingCentralSms::Account', active: true).find_each do |channel|
@@ -41,11 +43,8 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
 
     begin
       rc = rc_class.with_channel_tokens(channel)
-      clear_auth_error(channel)
     rescue StandardError => e
-      store_auth_error(channel, e.message)
-      Rails.logger.error "KC RingCentral Poll: Token refresh failed for channel #{channel.id}: #{e.message} — " \
-                         'Polling skipped this cycle. Reauthenticate the channel in Admin > KC Extensions > RingCentral SMS if this persists.'
+      rc_record_auth_failure(channel, 'KC RingCentral Poll', e.message)
       return
     end
 
@@ -67,16 +66,22 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
                 end
 
     begin
-      result = rc.get_message_store(
-        message_type: 'SMS',
-        direction:    'Inbound',
-        date_from:    date_from,
-        per_page:     100,
-      )
+      result, rc = rc_call_with_auth_recovery(channel, 'KC RingCentral Poll', client: rc) do |client|
+        client.get_message_store(
+          message_type: 'SMS',
+          direction:    'Inbound',
+          date_from:    date_from,
+          per_page:     100,
+        )
+      end
     rescue StandardError => e
       Rails.logger.error "KC RingCentral Poll: Message store query failed for channel #{channel.id}: #{e.message}"
       return
     end
+    return if result.nil?
+
+    # The token worked — drop any stale auth banner from a previous failure.
+    clear_auth_error(channel) if channel.options[:last_auth_error].present?
 
     messages = result['records'] || result[:records] || []
     Rails.logger.info "KC RingCentral Poll: Found #{messages.size} messages for channel #{channel.id}" if messages.any?
@@ -90,8 +95,14 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
       Rails.logger.error "KC RingCentral Poll: Failed to process message #{msg_id}: #{e.message}"
     end
 
-    # Pass 2: poll outbound messages for replies sent from the RC app
-    poll_outbound_messages(driver, channel, rc, opts, date_from)
+    # Pass 2: poll outbound messages for replies sent from the RC app.
+    # If this pass failed, leave the watermark where it is so the window is
+    # re-read next cycle (message-ID dedup absorbs the overlap) instead of
+    # silently dropping every agent reply sent from the RC app meanwhile.
+    if !poll_outbound_messages(driver, channel, rc, opts, date_from)
+      Rails.logger.warn "KC RingCentral Poll: Outbound pass failed for channel #{channel.id} — watermark not advanced"
+      return
+    end
 
     # Update last_poll_at timestamp
     channel.with_lock do
@@ -148,21 +159,25 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     driver.process(channel.options, message_data, channel)
   end
 
+  # Returns true when the outbound window was read successfully.
   def poll_outbound_messages(driver, channel, rc, opts, date_from)
     begin
-      result = rc.get_message_store(
-        message_type: 'SMS',
-        direction:    'Outbound',
-        date_from:    date_from,
-        per_page:     100,
-      )
+      result, _client = rc_call_with_auth_recovery(channel, 'KC RingCentral Poll', client: rc) do |client|
+        client.get_message_store(
+          message_type: 'SMS',
+          direction:    'Outbound',
+          date_from:    date_from,
+          per_page:     100,
+        )
+      end
     rescue StandardError => e
       Rails.logger.error "KC RingCentral Poll: Outbound message store query failed for channel #{channel.id}: #{e.message}"
-      return
+      return false
     end
+    return false if result.nil?
 
     messages = result['records'] || result[:records] || []
-    return if messages.empty?
+    return true if messages.empty?
 
     Rails.logger.info "KC RingCentral Poll: Found #{messages.size} outbound messages for channel #{channel.id}"
 
@@ -172,6 +187,7 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
       msg_id = (message['id'] || message[:id]) rescue 'unknown' # rubocop:disable Style/RescueModifier
       Rails.logger.error "KC RingCentral Poll: Failed to process outbound message #{msg_id}: #{e.message}"
     end
+    true
   end
 
   def process_outbound_message(driver, channel, message, opts)
@@ -200,30 +216,6 @@ class Kc::PollRingcentralSmsMessagesJob < ApplicationJob
     }
 
     driver.process_outbound(channel.options, message_data, channel)
-  end
-
-  def store_auth_error(channel, message)
-    channel.with_lock do
-      channel.reload
-      channel.options[:last_auth_error] = message
-      channel.options[:last_auth_error_at] = Time.current.utc.iso8601
-      channel.save!
-    end
-  rescue StandardError => e
-    Rails.logger.error "KC RingCentral Poll: Failed to store auth error: #{e.message}"
-  end
-
-  def clear_auth_error(channel)
-    channel.with_lock do
-      channel.reload
-      if channel.options[:last_auth_error].present?
-        channel.options.delete(:last_auth_error)
-        channel.options.delete(:last_auth_error_at)
-        channel.save!
-      end
-    end
-  rescue StandardError => e
-    Rails.logger.error "KC RingCentral Poll: Failed to clear auth error: #{e.message}"
   end
 
   # Generate a filename with proper extension from content type.
