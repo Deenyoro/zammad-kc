@@ -128,6 +128,14 @@ class Kc::TeamsChatChannelsController < ApplicationController
         channel.options[:user_display_name] = user_info['displayName'] || user_info[:displayName]
         channel.options[:user_email]        = user_info['mail'] || user_info['userPrincipalName'] || user_info[:mail]
         channel.options[:user_id]           = user_info['id'] || user_info[:id]
+        # A successful reauthentication makes any recorded auth failure
+        # stale — clear it here so the page the browser lands on after the
+        # OAuth redirect no longer shows the error banner. Waiting for the
+        # next poll would leave the banner up for a full poll interval.
+        channel.options.delete(:last_auth_error)
+        channel.options.delete(:last_auth_error_at)
+        channel.status_in   = 'ok'
+        channel.last_log_in = nil
         channel.updated_by_id = saved_user_id
         channel.save!
       end

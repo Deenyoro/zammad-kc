@@ -222,6 +222,14 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
         channel.options[:extension_id]      = pending[:extension_id]
         channel.options[:phone_number]      = selected_phone if available.include?(selected_phone)
         channel.options[:available_phone_numbers] = available
+        # A successful reauthentication makes any recorded auth failure
+        # stale — clear it here so the page the browser lands on after the
+        # OAuth redirect no longer shows the error banner. Waiting for the
+        # next poll would leave the banner up for a full poll interval.
+        channel.options.delete(:last_auth_error)
+        channel.options.delete(:last_auth_error_at)
+        channel.status_in   = 'ok'
+        channel.last_log_in = nil
         channel.updated_by_id = saved_user_id
         channel.save!
       end
