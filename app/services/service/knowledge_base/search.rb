@@ -1,11 +1,16 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-# Searches the knowledge base for the desktop view: answers and categories of one knowledge base,
-# optionally narrowed to a category subtree, each with a preview of where the term was found.
+# Searches the knowledge base for the desktop view: the answers *or* the categories of one
+# knowledge base, optionally narrowed to a category subtree, each with a preview of where the term
+# was found.
 #
-# Only answers and categories are searched. The knowledge base node itself is deliberately left
-# out — it is not something the result list offers to open. (A scoped search already drops it,
-# because KnowledgeBase::Translation.apply_kb_scope returns none, but an unscoped one would not.)
+# One kind of content per run, because the result list is split by kind and each list pages on its
+# own. The desktop view runs one search per kind and shows one of them, so each tab has a real
+# count of its own and switching to the other kind already has its results.
+#
+# The knowledge base node itself is not searchable at all — it is not something the result list
+# offers to open. (A scoped search already dropped it, because KnowledgeBase::Translation.
+# apply_kb_scope returns none, but an unscoped one would not.)
 #
 # Returns the hits plus the batched per-category data the GraphQL types need to render them, in the
 # same shape as Service::KnowledgeBase::CategoryContent — see Gql::Queries::KnowledgeBase::Search
@@ -15,15 +20,19 @@ class Service::KnowledgeBase::Search < Service::Base
 
   requires_current_user!
 
-  INDEXES = [
-    ::KnowledgeBase::Answer::Translation.name,
-    ::KnowledgeBase::Category::Translation.name,
-  ].freeze
+  # The translation model behind each searchable kind of content. Its class name is also the name
+  #   of the search index that holds it, which is what SearchKnowledgeBaseBackend takes.
+  ENTITY_MODELS = {
+    answer:   ::KnowledgeBase::Answer::Translation,
+    category: ::KnowledgeBase::Category::Translation,
+  }.freeze
 
   # The whole permission-filtered list is materialised in Ruby and the connection pages over it in
   # memory, so the search needs a bound. At the frontend's page size of 30 this is roughly seven
-  # pages — far past where anyone keeps paging — and a truncation is logged rather than silently
-  # reported as a complete total.
+  # pages — far past where anyone keeps paging.
+  #
+  # It bounds one kind of content, because one run searches one index: a term with 200 answer hits
+  # cannot crowd the categories out of their own count.
   MAX_RESULTS = 200
 
   # Private Use Area code points. Elasticsearch's default is <em>…</em>, which cannot be told apart
@@ -43,19 +52,32 @@ class Service::KnowledgeBase::Search < Service::Base
     no_match_size:       200,
   }.freeze
 
-  Output  = Struct.new(:results, :category_titles, :category_translation_missing, :category_visibility, keyword_init: true)
-  Result  = Struct.new(:item, :title_preview, :body_preview, :category_path, keyword_init: true)
+  Output  = Struct.new(:results, :category_translations, :category_visibility, keyword_init: true)
+  # `translation` is the hit's own translation, set for an answer hit and nil for a category one. The
+  #   search page renders `item` and never needs it; the quicksearch group is a list of translations
+  #   (that is the searchable unit, and what Gql::Types::SearchResult::ItemType exposes), so it does.
+  Result  = Struct.new(:item, :translation, :title_preview, :body_preview, :category_path, keyword_init: true)
   Segment = Struct.new(:text, :highlight, keyword_init: true)
 
-  attr_reader :query, :knowledge_base, :scope, :locale
+  attr_reader :query, :knowledge_base, :entity, :scope, :locale, :limit, :enriched
 
-  # `scope` is the category to search within (its whole subtree), `locale` the resolved
-  #   KnowledgeBase::Locale being browsed.
-  def initialize(query:, knowledge_base:, scope: nil, locale: nil)
+  # `entity` is the kind of content to search, one of ENTITY_MODELS' keys. `scope` is the category
+  #   to search within (its whole subtree), `locale` the resolved KnowledgeBase::Locale being
+  #   browsed.
+  #
+  # The last two are the search page's behaviour by default, and what the quicksearch group
+  #   narrows: `enriched` to false, because it renders neither the previews nor the category trail
+  #   and fires on every debounced keystroke — paying for 200 highlighted fragments and a category
+  #   tree per keystroke is the cost that has to go. `limit` stays at MAX_RESULTS there on purpose,
+  #   so its total count keeps meaning the same lower bound as the search page's.
+  def initialize(query:, knowledge_base:, entity:, scope: nil, locale: nil, limit: MAX_RESULTS, enriched: true)
     @query          = query
     @knowledge_base = knowledge_base
+    @entity         = entity
     @scope          = scope
     @locale         = locale
+    @limit          = limit
+    @enriched       = enriched
   end
 
   def execute
@@ -63,23 +85,25 @@ class Service::KnowledgeBase::Search < Service::Base
 
     hits = backend.search(query, user: current_user)
 
-    log_truncation(hits)
     preheat(hits)
 
     results = hits.filter_map { |hit| result_for(hit) }
 
     Output.new(
-      results:                      results,
-      category_titles:              category_titles(results),
-      category_translation_missing: category_translation_missing(results),
-      category_visibility:          category_visibility(results),
+      results:               results,
+      category_translations: category_translations(results),
+      category_visibility:   category_visibility(results),
     )
   end
 
   private
 
   def empty
-    Output.new(results: [], category_titles: {}, category_translation_missing: {}, category_visibility: {})
+    Output.new(results: [], category_translations: {}, category_visibility: {})
+  end
+
+  def translation_model
+    ENTITY_MODELS.fetch(entity)
   end
 
   def backend
@@ -88,14 +112,16 @@ class Service::KnowledgeBase::Search < Service::Base
       locale:            locale,
       scope:             scope,
       flavor:            flavor,
-      index:             INDEXES,
+      index:             translation_model.name,
       # Both are needed: SearchKnowledgeBaseBackend#options_apply_pagination only forwards a limit
       #   to Elasticsearch when an offset is given too, and without one Elasticsearch answers with
       #   its own default of ten hits.
       from:              0,
-      limit:             MAX_RESULTS,
-      highlight_enabled: true,
-      highlight_options: HIGHLIGHT_OPTIONS,
+      limit:             limit,
+      # The nil is compacted away by SearchKnowledgeBaseBackend#initialize, and #options_apply_
+      #   highlight skips the whole block once highlighting is off.
+      highlight_enabled: enriched,
+      highlight_options: enriched ? HIGHLIGHT_OPTIONS : nil,
     )
   end
 
@@ -112,48 +138,49 @@ class Service::KnowledgeBase::Search < Service::Base
     ::KnowledgeBase.access_for_user(current_user) == :public ? :public : :agent
   end
 
-  # Permission filtering happens after the cap, so a search that was truncated can still come back
-  #   shorter than MAX_RESULTS — this reports the cases it can see rather than none at all.
-  def log_truncation(hits)
-    return if hits.size < MAX_RESULTS
-
-    Rails.logger.info { "Knowledge base search for #{query.inspect} hit the result cap of #{MAX_RESULTS}; totalCount is a lower bound." }
+  # Everything the result page needs, in a fixed number of queries rather than a few per hit. Only
+  #   the searched kind of content is loaded — a run never holds both.
+  def preheat(hits)
+    @hit_translations = preheat_scope(hits.pluck(:id)).index_by(&:id)
   end
 
-  # Everything the result page needs, in a fixed number of queries rather than a few per hit. The
-  #   answer's own translations are included because AnswerType resolves title, content and
-  #   translationMissing from that collection (not from the translation the hit came from).
-  def preheat(hits)
-    grouped = hits.group_by { |hit| hit[:type] }.transform_values { |group| group.pluck(:id) }
+  def preheat_scope(ids)
+    relation = translation_model.where(id: ids)
 
-    @answer_translations = ::KnowledgeBase::Answer::Translation
-      .where(id: grouped[::KnowledgeBase::Answer::Translation.name])
-      .includes(:content, answer: [{ translations: :kb_locale }, { category: :knowledge_base }])
-      .index_by(&:id)
+    case entity
+    when :answer
+      relation.includes(answer_translation_associations)
+    when :category
+      relation.includes(category: %i[parent knowledge_base])
+    end
+  end
 
-    @category_translations = ::KnowledgeBase::Category::Translation
-      .where(id: grouped[::KnowledgeBase::Category::Translation.name])
-      .includes(category: %i[parent knowledge_base])
-      .index_by(&:id)
+  # The result page renders the body excerpt and the category path, and AnswerType resolves its
+  #   `translation` from the answer's own translations — so all three are batched for it. The
+  #   quicksearch group renders a title and a visibility icon, which needs the answer (the
+  #   visibility is derived from its dates, and Answer::TranslationPolicy delegates to its
+  #   category's) and nothing below it. Two hundred answer bodies and every sibling translation, on
+  #   every debounced keystroke, is what this leaves out.
+  def answer_translation_associations
+    return { answer: :category } if !enriched
+
+    [:content, { answer: [{ translations: :kb_locale }, { category: :knowledge_base }] }]
   end
 
   # nil for a hit whose record is gone: the search index can lag behind a deletion.
   def result_for(hit)
-    case hit[:type]
-    when ::KnowledgeBase::Answer::Translation.name
-      translation = @answer_translations[hit[:id]]
-      translation && answer_result(hit, translation)
-    when ::KnowledgeBase::Category::Translation.name
-      translation = @category_translations[hit[:id]]
-      translation && category_result(hit, translation)
-    end
+    translation = @hit_translations[hit[:id]]
+    return if translation.nil?
+
+    entity == :answer ? answer_result(hit, translation) : category_result(hit, translation)
   end
 
   def answer_result(hit, translation)
     Result.new(
       item:          translation.answer,
-      title_preview: preview(hit, 'title', translation.title),
-      body_preview:  preview(hit, 'content.body', translation.content&.body_excerpt),
+      translation:   translation,
+      title_preview: preview(hit, 'title') { translation.title },
+      body_preview:  preview(hit, 'content.body') { translation.content&.body_excerpt },
       category_path: path_for(translation.answer.category_id),
     )
   end
@@ -163,7 +190,7 @@ class Service::KnowledgeBase::Search < Service::Base
   def category_result(hit, translation)
     Result.new(
       item:          translation.category,
-      title_preview: preview(hit, 'title', translation.title),
+      title_preview: preview(hit, 'title') { translation.title },
       body_preview:  [],
       category_path: path_for(translation.category.parent_id),
     )
@@ -172,6 +199,8 @@ class Service::KnowledgeBase::Search < Service::Base
   # Root first, walked in the in-memory tree — one query for the knowledge base's categories
   #   instead of a recursive parent query per distinct category on the page.
   def path_for(category_id)
+    return [] if !enriched
+
     trail_of(categories_by_id[category_id])
   end
 
@@ -185,44 +214,29 @@ class Service::KnowledgeBase::Search < Service::Base
     @hit_categories ||= results.map(&:item).grep(::KnowledgeBase::Category).uniq(&:id)
   end
 
-  def translations_by_category(results)
-    @translations_by_category ||= ::KnowledgeBase::Category::Translation
-      .where(category_id: localized_categories(results).map(&:id))
-      .group_by(&:category_id)
-  end
+  # Preferred translation of every rendered category, keyed by category id: the browsed locale,
+  #   then the primary locale, then any - resolved in one query for all of them.
+  def category_translations(results)
+    return {} if !enriched
 
-  def category_titles(results)
-    localized_categories(results)
-      .to_h { |category| [category.id, preferred_title(translations_by_category(results)[category.id] || [])] }
-  end
+    locale_id = locale&.id || primary_kb_locale_id
+    return {} if locale_id.nil?
 
-  # Whether a rendered category lacks its own translation in the browsed locale, so its title falls
-  #   back. With no locale requested nothing counts as missing.
-  def category_translation_missing(results)
-    localized_categories(results).to_h do |category|
-      translations = translations_by_category(results)[category.id] || []
-
-      [category.id, locale.present? && translations.none? { |elem| elem.kb_locale_id == locale.id }]
-    end
+    ::KnowledgeBase::Category
+      .preferred_translations_for(localized_categories(results).map { |category| [category.id, locale_id] })
+      .transform_keys(&:first)
   end
 
   # Highest content visibility of the subtree of each category hit, in the browsed locale. Batched
   #   for the same reason as the titles above: CategoryType#visibility falls back to
   #   KnowledgeBase::Category#content_visibility, which walks the subtree with a recursive CTE once
   #   per publication state, per category. Only the hits need it — a path segment renders its title
-  #   alone (Gql::Types::KnowledgeBase::Search::PathSegmentType).
+  #   alone (Gql::Types::KnowledgeBase::Search::PathSegmentType). Empty for an answer search, which
+  #   has no category hits.
   def category_visibility(results)
+    return {} if !enriched
+
     hit_categories(results).to_h { |category| [category.id, content_visibility(category.id)] }
-  end
-
-  # Requested locale, then the primary locale, then any translation - mirrors
-  #   KnowledgeBase::Category#translation_preferred.
-  def preferred_title(translations)
-    translation = (locale && translations.find { |elem| elem.kb_locale_id == locale.id }) ||
-                  translations.find { |elem| elem.kb_locale_id == primary_kb_locale_id } ||
-                  translations.first
-
-    translation&.title
   end
 
   def primary_kb_locale_id
@@ -237,10 +251,19 @@ class Service::KnowledgeBase::Search < Service::Base
   #   legacy consumers, which render fragments as markup), so a fragment reads `Law &amp; order`.
   #   The segments are plain text the client escapes itself, so undo that here — the fallback comes
   #   straight from the database and is not escaped.
-  def preview(hit, field, fallback)
+  # The fallback is a block rather than an argument because it costs: the body excerpt loads the
+  #   translation's content row and runs the whole HTML body through html2text. As an argument Ruby
+  #   evaluated it before this method could decide it was not wanted - per hit, for a preview the
+  #   unenriched mode discards and the enriched one only needs when Elasticsearch produced no
+  #   fragment.
+  def preview(hit, field)
+    return [] if !enriched
+
     fragment = hit.dig(:highlight, field)&.first
 
     return segments(unescape(fragment)) if fragment.present?
+
+    fallback = yield
     return [] if fallback.blank?
 
     [Segment.new(text: fallback, highlight: false)]

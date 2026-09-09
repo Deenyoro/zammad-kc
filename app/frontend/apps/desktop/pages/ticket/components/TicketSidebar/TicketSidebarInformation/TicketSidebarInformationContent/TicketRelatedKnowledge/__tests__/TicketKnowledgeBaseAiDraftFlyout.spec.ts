@@ -42,13 +42,20 @@ const relatedAnswer = (
     title,
     visibility,
     content: { bodyExcerpt: 'Steps to solve the issue.' },
+    // The category as this suggestion's own locale names it, which is where the panel reads it
+    //   from - the answer itself only carries the id the link is built from.
+    categoryTreeTranslation: [
+      {
+        id: convertToGraphQLId('KnowledgeBase::Category::Translation', 1),
+        title: 'Account',
+      },
+    ],
     answer: {
       id: convertToGraphQLId('KnowledgeBase::Answer', id),
       archivedAt: null,
       publishedAt: '2024-01-01T00:00:00Z',
       category: {
         id: convertToGraphQLId('KnowledgeBase::Category', 1),
-        title: 'Account',
       },
     },
     kbLocale: { systemLocale: { locale: 'en-us', name: 'English' } },
@@ -103,7 +110,9 @@ describe('TicketKnowledgeBaseAiDraftFlyout', () => {
     vi.clearAllMocks()
     // The relevance score is the only thing the flyout gates, and it goes by permission.
     mockPermissions(['ticket.agent', 'knowledge_base.editor', 'admin.ai_knowledge_base'])
-    mockApplicationConfig({})
+    // kb_active because an answer link only reaches the knowledge base in Zammad while one is
+    //   browsable - see getKnowledgeBaseAnswerLink.
+    mockApplicationConfig({ kb_active: true })
   })
 
   it('shows the header title', async () => {

@@ -6,7 +6,7 @@ import { computed, toRef } from 'vue'
 import CommonLabel from '#shared/components/CommonLabel/CommonLabel.vue'
 
 import CommonHighlightedText from '#desktop/components/CommonHighlightedText/CommonHighlightedText.vue'
-import KnowledgeBaseAnswerIcon from '#desktop/components/KnowledgeBaseAnswerIcon/KnowledgeBaseAnswerIcon.vue'
+import KnowledgeBaseAnswerIcon from '#desktop/components/KnowledgeBase/KnowledgeBaseAnswerIcon/KnowledgeBaseAnswerIcon.vue'
 import { useKnowledgeBaseStore } from '#desktop/entities/knowledge-base/stores/knowledgeBase.ts'
 import { knowledgeBaseBrowseRoute } from '#desktop/entities/knowledge-base/utils/routeLocation.ts'
 
@@ -47,13 +47,12 @@ const link = computed(() => {
 })
 
 // A title always matched somewhere or the hit would not exist, but the preview may still be
-//   empty (e.g. a body-only match answered by the SQL fallback) — then show the plain title.
+//   empty (e.g. a body-only match answered by the SQL fallback) — then show the plain title of
+//   the translation the search resolved, answer and category alike.
 const titleSegments = computed(() =>
   props.result.titlePreview.length
     ? props.result.titlePreview
-    : // Read off the narrowed hit: the category's title is aliased in the query, since it and an
-      //   answer's differ in nullability and so cannot share one response name.
-      [{ text: answer.value?.title ?? category.value?.categoryTitle ?? '', highlight: false }],
+    : [{ text: props.result.item.translation?.title ?? '', highlight: false }],
 )
 </script>
 

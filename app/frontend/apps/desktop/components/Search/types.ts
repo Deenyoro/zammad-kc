@@ -45,8 +45,8 @@ export type SearchPlugin = {
    */
   filtersDisabled?: boolean
   filterPermissions?: string[]
-  detailSearchHeaders: string[] | ((config: ConfigList) => string[])
-  detailSearchComponent: Component
+  detailSearchHeaders?: string[] | ((config: ConfigList) => string[])
+  detailSearchComponent?: Component
   // Either a static list or — for config-derived overrides such as the
   // accounted-time unit label — a function of the application config,
   // resolved reactively by the consumer (mirrors `detailSearchHeaders`).
