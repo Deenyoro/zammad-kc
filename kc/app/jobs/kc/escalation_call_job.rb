@@ -16,7 +16,13 @@ class Kc::EscalationCallJob < ApplicationJob
   ALERT_BATCH_SIZE = 25
 
   def perform
-    return if Setting.get('kc_escalation_call_enabled') != true
+    if Setting.get('kc_escalation_call_enabled') != true
+      # Forget the watch start when switched off, so switching it back on
+      # later starts a fresh watch instead of paging for everything that
+      # escalated while it was off.
+      Setting.set('kc_escalation_call_since', '') if Setting.get('kc_escalation_call_since').to_s.present?
+      return
+    end
 
     channel = Channel.where(area: 'Freepbx::Account', active: true).order(:id).first
     if channel.nil?
@@ -34,15 +40,17 @@ class Kc::EscalationCallJob < ApplicationJob
     # not have its PBX state cleared out from under it.
     tickets  = escalated_tickets
     reported = tickets.pluck(:id).map { |id| "zammad:escalation:#{id}" }
+    state    = load_state
+    called   = state['called'] ||= {}
 
-    tickets.limit(ALERT_BATCH_SIZE).each do |ticket|
+    # Only tickets still waiting for their call take a slot in the batch, so
+    # a backlog of already-called tickets cannot starve newer ones.
+    tickets.reject { |t| called.key?(t.id.to_s) }.first(ALERT_BATCH_SIZE).each do |ticket|
       key = "zammad:escalation:#{ticket.id}"
 
       # Ring once, when the escalation first happens. We keep reporting
       # until the PBX confirms it placed the call, because the delay is
       # applied there and the first report usually arrives before it is due.
-      next if already_called?(ticket)
-
       begin
         result = api.alert(
           key:     key,
@@ -51,13 +59,17 @@ class Kc::EscalationCallJob < ApplicationJob
           policy:  'escalation',
           source:  'zammad',
         )
-        mark_called(ticket) if result.is_a?(Hash) && (result['called'] || result[:called])
+        if result.is_a?(Hash) && (result['called'] || result[:called])
+          called[ticket.id.to_s] = Time.current.utc.iso8601
+          Rails.logger.info "KC Escalation Calls: placed a call for ticket #{ticket.number}"
+        end
       rescue StandardError => e
         Rails.logger.error "KC Escalation Calls: Failed to report ticket #{ticket.id}: #{e.message}"
       end
     end
 
-    clear_resolved(api, reported)
+    clear_resolved(api, reported, state)
+    save_state(state)
   end
 
   # Class method called by Scheduler
@@ -98,15 +110,26 @@ class Kc::EscalationCallJob < ApplicationJob
     Time.current
   end
 
-  # One call per escalation. If the ticket later stops being escalated and
-  # escalates again, escalation_at changes and it rings again.
-  def already_called?(ticket)
-    Rails.cache.read("kc_escalation_call:called:#{ticket.id}") == ticket.escalation_at.to_i
+  # Which tickets we have already rung for, and which alert keys the PBX is
+  # holding, kept in a Setting rather than the cache: a cache flush or pod
+  # restart must not ring everyone a second time for the same escalation.
+  #
+  # A ticket rings once per escalation. It leaves the called list when it is
+  # no longer escalated (closed, or its escalation cleared); if it escalates
+  # again later it is a new escalation and rings again.
+  def load_state
+    raw = Setting.get('kc_escalation_call_state')
+    raw = JSON.parse(raw) if raw.is_a?(String) && raw.present?
+    raw.is_a?(Hash) ? raw.deep_stringify_keys : {}
+  rescue StandardError => e
+    Rails.logger.error "KC Escalation Calls: Failed to read state: #{e.message}"
+    {}
   end
 
-  def mark_called(ticket)
-    Rails.cache.write("kc_escalation_call:called:#{ticket.id}", ticket.escalation_at.to_i, expires_in: 30.days)
-    Rails.logger.info "KC Escalation Calls: placed a call for ticket #{ticket.number}"
+  def save_state(state)
+    Setting.set('kc_escalation_call_state', state.to_json)
+  rescue StandardError => e
+    Rails.logger.error "KC Escalation Calls: Failed to save state: #{e.message}"
   end
 
   def alert_message(ticket)
@@ -120,17 +143,17 @@ class Kc::EscalationCallJob < ApplicationJob
 
   # Releases PBX bookkeeping for tickets that are no longer escalated, so a
   # future escalation on the same ticket is not swallowed by the cooldown.
-  def clear_resolved(api, reported)
-    tracked = Rails.cache.read(cache_key) || []
+  def clear_resolved(api, reported, state)
+    tracked = Array(state['reported'])
     (tracked - reported).each do |key|
       api.resolve_alert(key)
     rescue StandardError => e
       Rails.logger.warn "KC Escalation Calls: Failed to clear #{key}: #{e.message}"
     end
-    Rails.cache.write(cache_key, reported, expires_in: 1.day)
-  end
+    state['reported'] = reported
 
-  def cache_key
-    'kc_escalation_call:reported'
+    # Tickets that stopped being escalated may ring again on a fresh escalation.
+    live = reported.map { |k| k.delete_prefix('zammad:escalation:') }
+    (state['called'] ||= {}).keep_if { |id, _| live.include?(id) }
   end
 end

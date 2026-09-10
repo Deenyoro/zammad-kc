@@ -12,10 +12,17 @@
 class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   include Kc::FreepbxChannelStatus
 
-  # FreePBX writes a CDR row when the call ends, but a transfer can settle
-  # slightly later; re-reading a small overlap is harmless because dedup is
-  # keyed on the call's unique id.
+  # Fallback window when a connection has never polled. It is only ever used
+  # together with the connection's created_at guard below, so a freshly added
+  # PBX does not backfill an hour of old test calls as tickets and texts.
   LOOKBACK_MINUTES = 60
+
+  # Auto-reply texts that RingCentral refused (token mid-refresh, outage) are
+  # retried on later runs rather than dropped. Bounded so a dead SMS channel
+  # cannot grow the channel record without limit.
+  AUTOREPLY_MAX_ATTEMPTS = 5
+  AUTOREPLY_MAX_PENDING  = 100
+  AUTOREPLY_MAX_AGE      = 6.hours
 
   def perform
     return if !feature_enabled?
@@ -49,6 +56,8 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     api  = api_class.for_channel(channel)
     opts = channel.options.with_indifferent_access
 
+    retry_pending_autoreplies(channel)
+
     begin
       calls = api.calls(
         since:         opts[:last_missed_call_poll_at],
@@ -76,7 +85,7 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     calls.each do |call|
       call = call.with_indifferent_access
       begin
-        process_call(channel, call)
+        process_call(channel, call) if !before_connection?(channel, call)
       rescue StandardError => e
         Rails.logger.error "KC FreePBX Missed Calls: Failed to process call #{call[:uniqueid]}: #{e.message}"
         break
@@ -95,8 +104,21 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     Rails.logger.error "KC FreePBX Missed Calls: Failed to update watermark for channel #{channel.id}: #{e.message}"
   end
 
+  # Calls that ended before this PBX connection existed are history, not
+  # missed calls to act on. The watermark still advances past them.
+  def before_connection?(channel, call)
+    stamp = call[:calldate_utc].presence || call[:calldate].presence
+    return false if stamp.blank? || channel.created_at.blank?
+
+    Time.zone.parse(stamp.to_s) < channel.created_at
+  rescue ArgumentError, TypeError
+    false
+  end
+
   def process_call(channel, call)
-    unique_id = call[:uniqueid].to_s
+    # One call = one linkedid, however many extensions rang. Fall back to the
+    # leg id for connectors that do not report one.
+    unique_id = (call[:linkedid].presence || call[:uniqueid]).to_s
     return if unique_id.blank?
 
     caller = normalize(call[:src].presence || call[:cnum])
@@ -105,7 +127,16 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     # Ignore internal extension-to-extension calls; only real callers matter.
     return if caller.to_s.delete('+').length < 7
 
-    dialed    = normalize(call[:did].presence || call[:dst])
+    dialed = normalize(call[:did].presence || call[:dst])
+
+    # Our own numbers calling in are not customers: the PBX's alert calls
+    # carry the RingCentral caller id, and a forwarded call can arrive with
+    # our own DID as the source. Ticketing and texting ourselves helps nobody.
+    if own_number?(caller, dialed)
+      Rails.logger.info "KC FreePBX Missed Calls: Ignoring call #{unique_id} from our own number #{caller}"
+      return
+    end
+
     dedup_key = "freepbx_missed_call:#{unique_id}"
     return if already_processed?(channel, dedup_key, unique_id)
 
@@ -127,8 +158,66 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
 
     message = Setting.get('kc_freepbx_missed_call_autoreply_message').to_s.presence ||
               'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.'
-    Kc::OutboundSms.deliver(to: caller, text: message, from: reply_from,
-                            label: 'KC FreePBX Missed Calls')
+    sent = Kc::OutboundSms.deliver(to: caller, text: message, from: reply_from,
+                                   label: 'KC FreePBX Missed Calls')
+    queue_autoreply(channel, unique_id, caller, message, reply_from) if sent.nil?
+  end
+
+  # Numbers we own: every RingCentral number in the system plus the DID the
+  # call came in on (the PBX's own trunk number).
+  def own_number?(caller, dialed)
+    ours = Array(Kc::OutboundSms.available_numbers).map { |n| normalize(n.is_a?(Hash) ? (n[:number] || n['number']) : n) }
+    ours << dialed if dialed.present?
+    ours.compact.include?(caller)
+  rescue StandardError => e
+    Rails.logger.warn "KC FreePBX Missed Calls: own-number check failed: #{e.message}"
+    false
+  end
+
+  def queue_autoreply(channel, unique_id, to, text, from)
+    channel.with_lock do
+      channel.reload
+      pending = Array(channel.options[:pending_autoreplies]).map(&:with_indifferent_access)
+      return if pending.any? { |p| p[:call_id] == unique_id }
+
+      pending << { call_id: unique_id, to: to, text: text, from: from,
+                   queued_at: Time.current.utc.iso8601, attempts: 1 }
+      channel.options[:pending_autoreplies] = pending.last(AUTOREPLY_MAX_PENDING)
+      channel.save!
+    end
+    Rails.logger.warn "KC FreePBX Missed Calls: text to #{to} for call #{unique_id} failed, queued for retry"
+  rescue StandardError => e
+    Rails.logger.error "KC FreePBX Missed Calls: Failed to queue retry for #{to}: #{e.message}"
+  end
+
+  def retry_pending_autoreplies(channel)
+    pending = Array(channel.options.with_indifferent_access[:pending_autoreplies])
+    return if pending.blank?
+
+    keep = []
+    pending.each do |item|
+      item = item.with_indifferent_access
+      queued_at = Time.zone.parse(item[:queued_at].to_s) rescue nil
+      if item[:attempts].to_i >= AUTOREPLY_MAX_ATTEMPTS || queued_at.nil? || queued_at < AUTOREPLY_MAX_AGE.ago
+        Rails.logger.error "KC FreePBX Missed Calls: giving up on text to #{item[:to]} for call #{item[:call_id]}"
+        next
+      end
+
+      sent = Kc::OutboundSms.deliver(to: item[:to], text: item[:text], from: item[:from].presence,
+                                     label: 'KC FreePBX Missed Calls (retry)')
+      next if sent
+
+      item[:attempts] = item[:attempts].to_i + 1
+      keep << item
+    end
+
+    channel.with_lock do
+      channel.reload
+      channel.options[:pending_autoreplies] = keep
+      channel.save!
+    end
+  rescue StandardError => e
+    Rails.logger.error "KC FreePBX Missed Calls: retry pass failed for channel #{channel.id}: #{e.message}"
   end
 
   def already_processed?(channel, dedup_key, unique_id)

@@ -251,6 +251,9 @@ class Kc::ApiHealthCheckService
     opts = channel.options
     account_name = opts[:name] || opts[:user_display_name] || opts[:label] ||
                    opts.dig(:inbound, :options, :user) || "#{channel.area} ##{channel.id}"
+    # Two connections can share a label ("FreePBX"); the id keeps their alert
+    # tickets, and the dedup on this title, apart.
+    account_name = "#{account_name} ##{channel.id}" if channel.area == 'Freepbx::Account' && !account_name.to_s.include?("##{channel.id}")
     "API Health Check Failed - #{service_name} - #{account_name}"
   end
 
