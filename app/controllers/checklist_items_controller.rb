@@ -8,32 +8,10 @@ class ChecklistItemsController < ApplicationController
   end
 
   def create
-    if new_item_params[:ticket_id].present?
-      ticket = Ticket.find(new_item_params[:ticket_id])
-
-      ticket.with_lock do
-        checklist = ticket.checklist || Checklist.create!(ticket:)
-        new_item_params[:checklist_id] = checklist.id
-      end
-
-      new_item_params.delete(:ticket_id)
-    end
-
     model_create_render(Checklist::Item, new_item_params)
   end
 
   def create_bulk
-    if create_bulk_params[:ticket_id].present?
-      ticket = Ticket.find(create_bulk_params[:ticket_id])
-
-      ticket.with_lock do
-        checklist = ticket.checklist || Checklist.create!(ticket:)
-        create_bulk_params[:checklist_id] = checklist.id
-      end
-
-      create_bulk_params.delete(:ticket_id)
-    end
-
     checklist = Checklist.find(create_bulk_params[:checklist_id])
 
     created_items = create_bulk_params[:items].map do |item|
@@ -55,14 +33,14 @@ class ChecklistItemsController < ApplicationController
 
   def new_item_params
     @new_item_params ||= begin
-      safe_params = params.permit(:text, :checklist_id, :ticket_id)
+      safe_params = params.permit(:text, :checked, :checklist_id, :ticket_id)
       replace_ticket_param_with_checklist(safe_params)
     end
   end
 
   def create_bulk_params
     @create_bulk_params ||= begin
-      safe_params = params.permit(:checklist_id, :ticket_id, items: %i[text])
+      safe_params = params.permit(:checklist_id, :ticket_id, items: %i[text checked])
       replace_ticket_param_with_checklist(safe_params)
     end
   end
