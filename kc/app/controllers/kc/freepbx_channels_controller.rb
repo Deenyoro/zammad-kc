@@ -24,7 +24,9 @@ class Kc::FreepbxChannelsController < ApplicationController
       channel_ids.push(channel.id)
     end
 
-    Setting.where("name LIKE 'kc_freepbx_%'").each do |setting|
+    # Every setting the admin page edits lives in this area, including the
+    # escalation-call toggle, whose name does not start with kc_freepbx_.
+    Setting.where(area: 'Kc::Freepbx').or(Setting.where("name LIKE 'kc_freepbx_%'")).each do |setting|
       assets = setting.assets(assets)
     end
 
@@ -42,6 +44,11 @@ class Kc::FreepbxChannelsController < ApplicationController
     base_url = normalize_base_url(params[:base_url])
     if base_url.blank? || params[:token].blank?
       render json: { error: 'Server URL and token are required.' }, status: :unprocessable_content
+      return
+    end
+
+    if base_url_taken?(base_url)
+      render json: { error: 'A FreePBX connection for that server URL already exists.' }, status: :unprocessable_content
       return
     end
 
@@ -69,10 +76,24 @@ class Kc::FreepbxChannelsController < ApplicationController
   def update
     channel = Channel.find_by!(id: params[:id], area: CHANNEL_AREA)
 
+    new_url = params[:base_url].present? ? normalize_base_url(params[:base_url]) : nil
+    if new_url.present? && new_url != channel.options[:base_url].to_s && base_url_taken?(new_url, except: channel.id)
+      render json: { error: 'A FreePBX connection for that server URL already exists.' }, status: :unprocessable_content
+      return
+    end
+
     channel.with_lock do
       channel.reload
       channel.group_id = params[:group_id].to_i if params[:group_id].present?
-      channel.options[:base_url] = normalize_base_url(params[:base_url]) if params[:base_url].present?
+      if new_url.present? && new_url != channel.options[:base_url].to_s
+        # A different PBX has different CDR ids and a different clock. Start
+        # its history from now instead of replaying the old server's marks
+        # against it.
+        channel.options[:base_url] = new_url
+        channel.options.delete(:last_missed_call_poll_at)
+        channel.options.delete(:processed_call_ids)
+        channel.options.delete(:pending_autoreplies)
+      end
       channel.options[:token]    = params[:token].to_s                   if params[:token].present?
       channel.options[:label]    = params[:label].to_s                   if params[:label].present?
       channel.updated_by_id = current_user.id
@@ -149,6 +170,12 @@ class Kc::FreepbxChannelsController < ApplicationController
   rescue StandardError => e
     Rails.logger.error "KC FreePBX: Failed to list outbound numbers: #{e.message}"
     []
+  end
+
+  def base_url_taken?(url, except: nil)
+    scope = Channel.where(area: CHANNEL_AREA)
+    scope = scope.where.not(id: except) if except
+    scope.any? { |c| c.options.with_indifferent_access[:base_url].to_s.casecmp?(url) }
   end
 
   def normalize_base_url(value)
