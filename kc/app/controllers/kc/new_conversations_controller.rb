@@ -23,22 +23,40 @@ class Kc::NewConversationsController < ApplicationController
   # send via a skip_send flag in article preferences.
   #
   # Params:
-  #   phone_number [String] recipient phone number (required)
-  #   body         [String] message text (required)
-  #   group_id     [Integer] destination group (optional, falls back to channel default)
-  #   customer_id  [Integer] existing Zammad user ID (optional)
-  #   skip_send    [Boolean] if true, create ticket without sending SMS (optional)
+  #   phone_number  [String] recipient phone number (required unless phone_numbers given;
+  #                 may hold several numbers separated by commas/semicolons/whitespace)
+  #   phone_numbers [Array<String>] recipients for a group text (2..MAX_GROUP_RECIPIENTS)
+  #   body          [String] message text (required)
+  #   group_id      [Integer] destination group (optional, falls back to channel default)
+  #   customer_id   [Integer] existing Zammad user ID (optional; the ticket customer)
+  #   skip_send     [Boolean] if true, create ticket without sending SMS (optional)
+  #
+  # With several recipients RingCentral delivers one group MMS thread; the
+  # ticket is keyed on the whole participant set so replies from any member
+  # land on it, and agent replies go back to every member.
+  MAX_GROUP_RECIPIENTS = 10
+
   def sms
-    phone_number = params[:phone_number].to_s.strip
     body         = params[:body].to_s.strip
     group_id     = params[:group_id]
     customer_id  = params[:customer_id]
     skip_send    = ActiveModel::Type::Boolean.new.cast(params[:skip_send])
 
-    if phone_number.blank? || body.blank?
+    rc_class   = 'Kc::RingcentralApi'.safe_constantize
+    raw_numbers = Array(params[:phone_numbers]).map(&:to_s) + params[:phone_number].to_s.split(%r{[,;\n]+})
+    recipients = raw_numbers.map(&:strip).compact_blank.map do |num|
+      rc_class ? rc_class.normalize_phone(num) : normalize_phone_fallback(num)
+    end.compact_blank.uniq
+
+    if recipients.empty? || body.blank?
       render json: { error: 'phone_number and body are required' }, status: :unprocessable_content
       return
     end
+    if recipients.size > MAX_GROUP_RECIPIENTS
+      render json: { error: "A group text can have at most #{MAX_GROUP_RECIPIENTS} recipients" }, status: :unprocessable_content
+      return
+    end
+    normalized_phone = recipients.first
 
     # Find the active RingCentral SMS channel (use selected, default setting, or first)
     channel = resolve_sms_channel(params[:channel_id])
@@ -47,24 +65,21 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
-    rc_class = 'Kc::RingcentralApi'.safe_constantize
-    normalized_phone = if rc_class
-                         rc_class.normalize_phone(phone_number)
-                       else
-                         normalize_phone_fallback(phone_number)
-                       end
-
     from_phone = channel.options&.dig(:phone_number)
     if from_phone.blank?
       render json: { error: 'Channel has no phone number configured' }, status: :unprocessable_content
       return
     end
+    if recipients.include?(normalize_phone_fallback(from_phone))
+      render json: { error: 'The sending number cannot be one of the recipients' }, status: :unprocessable_content
+      return
+    end
 
-    # Build conversation key the same way the driver does
+    # Build conversation key the same way the driver does (full participant set)
     conversation_key = if rc_class
-                         rc_class.conversation_key(from_phone, normalized_phone)
+                         rc_class.conversation_key(from_phone, *recipients)
                        else
-                         [normalize_phone_fallback(from_phone), normalized_phone].compact.sort.join(':')
+                         ([normalize_phone_fallback(from_phone)] + recipients).compact.uniq.sort.join(':')
                        end
 
     # Resolve or create customer
@@ -89,7 +104,8 @@ class Kc::NewConversationsController < ApplicationController
 
     # Build ticket title
     title_template = Setting.get('kc_ringcentral_sms_ticket_title_template').to_s.presence || 'SMS from {phone}'
-    title = title_template.gsub('{phone}', normalized_phone.to_s).truncate(100, omission: '...')
+    title_phone    = recipients.size > 1 ? "#{normalized_phone} +#{recipients.size - 1}" : normalized_phone.to_s
+    title = title_template.gsub('{phone}', title_phone).truncate(100, omission: '...')
 
     transaction_class = 'Transaction'.safe_constantize
     if transaction_class.nil?
@@ -110,6 +126,7 @@ class Kc::NewConversationsController < ApplicationController
         preferences:   {
           ringcentral_sms: {
             conversation_key: conversation_key,
+            participants:     recipients,
             from_phone:       normalized_phone,
             to_phone:         normalize_phone_fallback(from_phone),
             channel_id:       channel.id,
@@ -131,6 +148,8 @@ class Kc::NewConversationsController < ApplicationController
       article_prefs = {
         ringcentral_sms: {
           to_phone:   normalized_phone,
+          to_phones:  recipients,
+          from_phone: normalize_phone_fallback(from_phone),
           channel_id: channel.id,
         },
       }
@@ -141,7 +160,7 @@ class Kc::NewConversationsController < ApplicationController
         type_id:       article_type&.id,
         sender_id:     sender&.id,
         from:          from_phone,
-        to:            normalized_phone,
+        to:            recipients.join(', '),
         subject:       nil,
         body:          body,
         content_type:  'text/plain',
