@@ -32,6 +32,16 @@
       </tr>
       <tr>
         <td>
+          <span><%- @T('Context Messages') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Earlier chat messages attached as an internal note when the integration opens a new ticket. 0 = off.') %></p>
+        </td>
+        <td>
+          <input type="number" name="context_messages" class="form-control form-control--small" value="<%= @settings.context_messages %>" min="0" max="50" style="width: 80px;">
+          <span class="text-muted"><%- @T('messages') %></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
           <span><%- @T('Active Chat Lookback') %></span>
           <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Chats with recent tickets are polled every ~30 seconds.') %></p>
         </td>
