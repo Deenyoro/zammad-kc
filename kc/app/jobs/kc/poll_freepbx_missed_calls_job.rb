@@ -11,6 +11,7 @@
 # number in the system (Kc::OutboundSms).
 class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   include Kc::FreepbxChannelStatus
+  include Kc::CallHistoryFiling
 
   # Fallback window when a connection has never polled. It is only ever used
   # together with the connection's created_at guard below, so a freshly added
@@ -24,11 +25,17 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   AUTOREPLY_MAX_PENDING  = 100
   AUTOREPLY_MAX_AGE      = 6.hours
 
-  def perform
-    return if !feature_enabled?
+  # Call history (every inbound call as a closed ticket) runs well behind
+  # the missed-call path so the RingCentral history job, which files calls
+  # that came through RingCentral, has had its turn first. Only calls that
+  # RingCentral never saw (dialled straight to the PBX number) are filed
+  # from here.
+  HISTORY_LAG = 20.minutes
 
+  def perform
     Channel.where(area: 'Freepbx::Account', active: true).find_each do |channel|
-      poll_channel(channel)
+      poll_channel(channel) if feature_enabled?
+      poll_history(channel) if Setting.get('kc_freepbx_call_history_ticket') == true
     rescue StandardError => e
       Rails.logger.error "KC FreePBX Missed Calls: Failed for channel #{channel.id}: #{e.message}"
     end
@@ -104,6 +111,113 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     Rails.logger.error "KC FreePBX Missed Calls: Failed to update watermark for channel #{channel.id}: #{e.message}"
   end
 
+  # ---- call history ------------------------------------------------------
+
+  def poll_history(channel)
+    api_class = 'Kc::FreepbxApi'.safe_constantize
+    return if api_class.nil?
+
+    api  = api_class.for_channel(channel)
+    opts = channel.options.with_indifferent_access
+    # No watermark yet: start now. Older calls that came through RingCentral
+    # are RingCentral's to file, and their tickets may still be getting
+    # corrected; filing them from here too would duplicate them.
+    since_stamp = opts[:last_call_history_poll_at].presence
+    since = (Time.zone.parse(since_stamp.to_s) rescue nil)
+    if since.nil?
+      since = Time.current
+      channel.with_lock do
+        channel.reload
+        channel.options[:last_call_history_poll_at] = since.utc.iso8601
+        channel.save!
+      end
+    end
+
+    legs = api.calls(since_minutes: ((Time.current - since) / 60).ceil + 5, direction: 'inbound', limit: 5000)
+               .map(&:with_indifferent_access)
+    return if legs.blank?
+
+    held  = nil
+    calls = legs.group_by { |l| l[:linkedid].presence || l[:uniqueid] }
+    calls.each do |linkedid, call_legs|
+      first = call_legs.min_by { |l| l[:calldate_utc].to_s }
+      start = Time.zone.parse(first[:calldate_utc].to_s) rescue nil
+      next if start.nil? || start < since || start < channel.created_at
+
+      if start > HISTORY_LAG.ago
+        held = [held, start].compact.min
+        next
+      end
+
+      begin
+        file_history_call(channel, linkedid.to_s, call_legs, first, start, since)
+      rescue StandardError => e
+        Rails.logger.error "KC FreePBX Call History: Failed to file call #{linkedid}: #{e.message}"
+      end
+    end
+
+    watermark = HISTORY_LAG.ago
+    watermark = [watermark, held].min if held
+    channel.with_lock do
+      channel.reload
+      channel.options[:last_call_history_poll_at] = watermark.utc.iso8601
+      channel.save!
+    end
+  rescue StandardError => e
+    Rails.logger.error "KC FreePBX Call History: Failed for channel #{channel.id}: #{e.message}"
+  end
+
+  def file_history_call(channel, linkedid, call_legs, first, start, since)
+    caller = normalize(first[:src].presence || first[:cnum])
+    return if caller.blank? || caller.to_s.delete('+').length < 7
+
+    dialed = normalize(first[:did].presence || first[:dst])
+    own_numbers([dialed].compact)
+    return if own_number?(caller)
+
+    # Missed direct-dial calls already have an OPEN ticket from the
+    # missed-call path; calls that came through RingCentral are filed by the
+    # RingCentral history job, which reads the PBX for who answered.
+    return if Ticket::Article.exists?(message_id: "freepbx_missed_call:#{linkedid}")
+    return if filed_via_ringcentral?(caller, start)
+
+    answered = call_legs.find { |l| l[:disposition].to_s == 'ANSWERED' && l[:billsec].to_i.positive? && l[:dstchannel].to_s =~ %r{PJSIP/(\d+)-} }
+    ext      = answered && answered[:dstchannel].to_s[%r{PJSIP/(\d+)-}, 1]
+    duration = call_legs.map { |l| l[:duration].to_i }.max || 0
+    outcome  = if ext
+                 "Answered on FreePBX by #{describe_extension(ext, pbx_extension_names[ext].presence)}"
+               elsif call_legs.any? { |l| l[:went_to_voicemail] }
+                 'Voicemail (FreePBX)'
+               else
+                 'Missed (FreePBX)'
+               end
+
+    file_call_record(
+      dedup_key:  "freepbx_call:#{linkedid}",
+      channel:    channel,
+      external:   caller,
+      inbound:    true,
+      start_time: start,
+      duration:   duration,
+      outcome:    outcome,
+      line:       "#{caller} → #{dialed} (direct to FreePBX)",
+      prefs_key:  :freepbx_call,
+      prefs:      { linkedid: linkedid, outcome: outcome, answered_by: ext, duration: duration,
+                    start_time: start.utc.iso8601, from_phone: caller, to_phone: dialed },
+    )
+  end
+
+  # A RingCentral history ticket for the same caller within three minutes
+  # of this call means RingCentral forwarded it to us; it is that ticket's
+  # call, not a new one.
+  def filed_via_ringcentral?(caller, start)
+    Ticket.joins(:articles)
+          .where('ticket_articles.message_id LIKE ?', 'rc_call:%')
+          .where(tickets: { created_at: (start - 3.minutes)..(start + 3.minutes) })
+          .where('tickets.title LIKE ?', "%#{caller}")
+          .exists?
+  end
+
   # Calls that ended before this PBX connection existed are history, not
   # missed calls to act on. The watermark still advances past them.
   def before_connection?(channel, call)
@@ -132,7 +246,7 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     # Our own numbers calling in are not customers: the PBX's alert calls
     # carry the RingCentral caller id, and a forwarded call can arrive with
     # our own DID as the source. Ticketing and texting ourselves helps nobody.
-    if own_number?(caller, dialed)
+    if own_number_or_did?(caller, dialed)
       Rails.logger.info "KC FreePBX Missed Calls: Ignoring call #{unique_id} from our own number #{caller}"
       return
     end
@@ -165,10 +279,9 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
 
   # Numbers we own: every RingCentral number in the system plus the DID the
   # call came in on (the PBX's own trunk number).
-  def own_number?(caller, dialed)
-    ours = Array(Kc::OutboundSms.available_numbers).map { |n| normalize(n.is_a?(Hash) ? (n[:number] || n['number']) : n) }
-    ours << dialed if dialed.present?
-    ours.compact.include?(caller)
+  def own_number_or_did?(caller, dialed)
+    own_numbers([dialed].compact)
+    own_number?(caller)
   rescue StandardError => e
     Rails.logger.warn "KC FreePBX Missed Calls: own-number check failed: #{e.message}"
     false
