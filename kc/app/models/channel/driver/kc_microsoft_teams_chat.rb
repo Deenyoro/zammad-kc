@@ -275,7 +275,78 @@ class Channel::Driver::KcMicrosoftTeamsChat
       ticket.update_columns(created_at: original_time)
     end
 
+    add_context_note(ticket, channel, message_data)
     ticket
+  end
+
+  # ------------------------------------------------------------------
+  # Conversation context on new tickets
+  # ------------------------------------------------------------------
+
+  def context_message_count
+    Setting.get('kc_teams_chat_context_messages').to_i.clamp(0, 50)
+  rescue StandardError
+    5
+  end
+
+  # One internal note with the last N chat messages from before the message
+  # that opened the ticket. Never raises.
+  def add_context_note(ticket, channel, message_data)
+    count = context_message_count
+    return if count.zero?
+
+    graph = build_graph_client(channel)
+    return if graph.nil?
+
+    chat_id    = message_data[:chat_id]
+    trigger_id = message_data[:message_id].to_s
+    before_at  = message_data[:created_at].present? ? (Time.zone.parse(message_data[:created_at].to_s) rescue nil) : nil
+
+    result   = graph.list_chat_messages(chat_id, top: [count + 5, 50].min)
+    messages = (result['value'] || result[:value] || []).map { |m| m.with_indifferent_access }.select do |m|
+      next false if m[:messageType].to_s != 'message'
+      next false if m[:id].to_s == trigger_id
+
+      created = Time.zone.parse(m[:createdDateTime].to_s) rescue nil
+      before_at.nil? || created.nil? || created < before_at
+    end
+
+    messages = messages.sort_by { |m| m[:createdDateTime].to_s }.last(count)
+    return if messages.empty?
+
+    connected = channel.options.with_indifferent_access[:user_id].to_s
+    lines = messages.map do |m|
+      time   = (Time.zone.parse(m[:createdDateTime].to_s).strftime('%Y-%m-%d %H:%M') rescue '?')
+      name   = m.dig(:from, :user, :displayName).presence || m.dig(:from, :application, :displayName).presence || 'Unknown'
+      name   = "#{name} (us)" if m.dig(:from, :user, :id).to_s == connected
+      text   = ActionController::Base.helpers.strip_tags(m.dig(:body, :content).to_s.gsub(%r{<br\s*/?>}i, ' '))
+      text   = CGI.unescapeHTML(text.gsub('&nbsp;', ' ')).gsub(/[[:space:]]+/, ' ').strip
+      text   = "#{text} [attachment]" if Array(m[:attachments]).any? || text.include?('hostedContents')
+      "[#{time}] #{name}: #{text.presence || '-'}"
+    end
+
+    body = "Earlier conversation (last #{messages.size} message#{'s' if messages.size != 1} before this ticket):\n\n#{lines.join("\n")}"
+    article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
+    sender       = Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.find_by(name: 'Agent')
+
+    article = Ticket::Article.new(
+      ticket_id:     ticket.id,
+      type_id:       article_type&.id,
+      sender_id:     sender&.id,
+      from:          'Microsoft Teams',
+      subject:       'Conversation context',
+      body:          body,
+      content_type:  'text/plain',
+      internal:      true,
+      preferences:   { teams_chat: { context_note: true, chat_id: chat_id } },
+      updated_by_id: 1,
+      created_by_id: 1,
+    )
+    article.save!
+    first = Time.zone.parse(messages.first[:createdDateTime].to_s) rescue nil
+    article.update_columns(created_at: (first || ticket.created_at) - 1.second, updated_at: (first || ticket.created_at) - 1.second) # rubocop:disable Rails/SkipsModelValidations
+  rescue => e
+    Rails.logger.warn "KC Teams Chat: could not add context note to ticket #{ticket.id}: #{e.message}"
   end
 
   # Ticket for a chat the agent started from Teams. The customer is the first
@@ -328,6 +399,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
       original_time = message_data[:created_at].present? ? Time.zone.parse(message_data[:created_at].to_s) : nil
       ticket.update_columns(created_at: original_time) if original_time # rubocop:disable Rails/SkipsModelValidations
 
+      add_context_note(ticket, channel, message_data)
       Rails.logger.info "KC Teams Chat: Created ticket #{ticket.id} for agent-initiated chat #{message_data[:chat_id]} with #{customer_data[:from_display_name]}"
       ticket
     end

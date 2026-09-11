@@ -354,6 +354,7 @@ class Channel::Driver::KcRingcentralSms
     )
     ticket.save!
     backdate(ticket, message_data[:created_at])
+    add_context_note(ticket, channel, our_phone, others, before: message_data[:created_at], exclude_id: message_data[:message_id])
     ticket
   end
 
@@ -395,8 +396,97 @@ class Channel::Driver::KcRingcentralSms
     )
     ticket.save!
     backdate(ticket, plan[:created_at])
+    add_context_note(ticket, channel, plan[:our_phone], plan[:others], before: plan[:created_at], exclude_id: plan[:dedup_key].to_s.delete_prefix('rc_sms:'))
     Rails.logger.info "KC RingCentral SMS: Created ticket #{ticket.id} for agent-initiated text to #{customer_phone}"
     ticket
+  end
+
+  # ------------------------------------------------------------------
+  # Conversation context on new tickets
+  # ------------------------------------------------------------------
+
+  CONTEXT_FETCH_PER_PAGE = 50
+
+  def context_message_count
+    Setting.get('kc_ringcentral_sms_context_messages').to_i.clamp(0, 50)
+  rescue StandardError
+    5
+  end
+
+  # One internal note with the last N messages of this conversation (both
+  # directions) from before the message that opened the ticket, so the agent
+  # sees what led up to it. Never raises: a missing note must not block the
+  # ticket.
+  def add_context_note(ticket, channel, our_phone, others, before:, exclude_id: nil)
+    count = context_message_count
+    return if count.zero?
+
+    rc_class = 'Kc::RingcentralApi'.safe_constantize
+    return if rc_class.nil?
+
+    rc        = rc_class.with_channel_tokens(channel)
+    ours      = normalize_phone(our_phone)
+    allowed   = ([ours] + Array(others).map { |n| normalize_phone(n) }).compact.uniq
+    before_at = parse_time(before) || Time.current
+
+    records = %w[Inbound Outbound].flat_map do |direction|
+      result = rc.get_message_store(message_type: 'SMS', direction: direction, date_to: before_at.utc.iso8601, per_page: CONTEXT_FETCH_PER_PAGE)
+      result['records'] || result[:records] || []
+    rescue StandardError => e
+      Rails.logger.warn "KC RingCentral SMS: context fetch (#{direction}) failed: #{e.message}"
+      []
+    end
+
+    messages = records.map { |r| r.with_indifferent_access }.select do |m|
+      next false if exclude_id.present? && m[:id].to_s == exclude_id.to_s
+      next false unless %w[SMS Pager].include?(m[:type].to_s)
+
+      participants = ([m.dig(:from, :phoneNumber)] + Array(m[:to]).map { |t| t[:phoneNumber] }).map { |n| normalize_phone(n) }.compact.uniq
+      # Same conversation: everyone in the message is one of ours/theirs and
+      # at least one other participant is present.
+      (participants - allowed).empty? && (participants & (allowed - [ours])).any?
+    end
+
+    messages = messages.sort_by { |m| m[:creationTime].to_s }.last(count)
+    return if messages.empty?
+
+    lines = messages.map do |m|
+      time   = parse_time(m[:creationTime])&.strftime('%Y-%m-%d %H:%M') || '?'
+      sender = m[:direction].to_s == 'Outbound' ? "#{normalize_phone(m.dig(:from, :phoneNumber))} (us)" : normalize_phone(m.dig(:from, :phoneNumber)).to_s
+      text   = m[:subject].to_s.strip
+      has_media = Array(m[:attachments]).any? { |a| a[:type].to_s != 'Text' }
+      text = [text.presence, (has_media ? '[MMS attachment]' : nil)].compact.join(' ')
+      "[#{time}] #{sender}: #{text.presence || '-'}"
+    end
+
+    body = "Earlier conversation (last #{messages.size} message#{'s' if messages.size != 1} before this ticket):\n\n#{lines.join("\n")}"
+    create_context_article(ticket, body, messages.first[:creationTime])
+  rescue StandardError => e
+    Rails.logger.warn "KC RingCentral SMS: could not add context note to ticket #{ticket.id}: #{e.message}"
+  end
+
+  def create_context_article(ticket, body, first_time)
+    article_type = Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first
+    sender       = Ticket::Article::Sender.find_by(name: 'System') || Ticket::Article::Sender.find_by(name: 'Agent')
+
+    article = Ticket::Article.new(
+      ticket_id:     ticket.id,
+      type_id:       article_type&.id,
+      sender_id:     sender&.id,
+      from:          'RingCentral SMS',
+      subject:       'Conversation context',
+      body:          body,
+      content_type:  'text/plain',
+      internal:      true,
+      preferences:   { ringcentral_sms: { context_note: true } },
+      updated_by_id: 1,
+      created_by_id: 1,
+    )
+    article.save!
+    # Sort before the message that opened the ticket
+    first = parse_time(first_time)
+    backdate(article, (first || ticket.created_at) - 1.second)
+    article
   end
 
   # Most recent ticket for any of the candidate keys. thread_window 0 means
