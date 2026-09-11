@@ -60,6 +60,34 @@ class Kc::OutboundSms
       rc ? rc.normalize_phone(number) : number.to_s
     end
 
+    # RingCentral message ids of texts the *system* sent (missed-call replies,
+    # admin test messages). The outbound poller captures every text sent from
+    # our numbers that Zammad does not already know about, so these have to be
+    # recorded or each auto-reply would surface as an agent note / new ticket.
+    # Kept as a bounded ring on the channel so no migration is needed.
+    SYSTEM_IDS_KEY = :kc_system_sms_ids
+    SYSTEM_IDS_MAX = 500
+
+    def remember_system_message(channel, message_id)
+      return if channel.nil? || message_id.blank?
+
+      channel.with_lock do
+        channel.reload
+        ids = Array(channel.options[SYSTEM_IDS_KEY]).map(&:to_s)
+        ids << message_id.to_s
+        channel.options[SYSTEM_IDS_KEY] = ids.last(SYSTEM_IDS_MAX)
+        channel.save!
+      end
+    rescue StandardError => e
+      Rails.logger.warn "KC SMS: could not record system message #{message_id} on channel #{channel&.id}: #{e.message}"
+    end
+
+    def system_message?(channel, message_id)
+      return false if channel.nil? || message_id.blank?
+
+      Array(channel.options.with_indifferent_access[SYSTEM_IDS_KEY]).map(&:to_s).include?(message_id.to_s)
+    end
+
     # Sends a text. Returns the API result, or nil when it could not be sent.
     # Never raises — callers are background jobs that must keep going.
     def deliver(to:, text:, from: nil, label: 'KC SMS')
@@ -96,6 +124,7 @@ class Kc::OutboundSms
       return nil
     end
 
+    self.class.remember_system_message(channel, result['id'] || result[:id])
     Rails.logger.info "#{label}: texted #{recipient} from #{sender} via channel #{channel.id}"
     result
   rescue StandardError => e

@@ -56,17 +56,19 @@ class Channel::Driver::KcMicrosoftTeamsChat
       return nil
     end
 
-    # Agent messages: find existing ticket only (don't create new ones for outbound context)
+    # Agent messages (sent from the Teams app, not Zammad): file on the chat's
+    # open ticket however long it has been idle — the thread window decides
+    # when a *customer* message starts a new ticket, not where an agent's
+    # own text belongs. When the agent started the conversation there is no
+    # ticket yet, so create one from the chat's members.
     if message_data[:is_agent]
       ticket = nil
       conversation_key = build_conversation_key(channel, message_data)
-      if conversation_key.present?
-        thread_window = thread_window_hours(channel)
-        ticket = find_existing_ticket(conversation_key, thread_window)
-      end
+      ticket = find_existing_ticket(conversation_key, 0) if conversation_key.present?
+      ticket ||= create_ticket_for_agent_message(channel, message_data, transaction_class)
 
       if ticket.nil?
-        Rails.logger.info "KC Teams Chat: Skipping agent message #{message_data[:message_id]} — no matching ticket for conversation_key #{conversation_key}"
+        Rails.logger.info "KC Teams Chat: Skipping agent message #{message_data[:message_id]} — no matching ticket for conversation_key #{conversation_key} and no other chat member known"
         return nil
       end
 
@@ -252,6 +254,60 @@ class Channel::Driver::KcMicrosoftTeamsChat
     end
 
     ticket
+  end
+
+  # Ticket for a chat the agent started from Teams. The customer is the first
+  # chat member who is neither the connected account nor the sender.
+  def create_ticket_for_agent_message(channel, message_data, transaction_class)
+    members   = Array(message_data[:chat_members]).map { |m| m.to_h.with_indifferent_access }
+    connected = channel.options.with_indifferent_access[:user_id].to_s
+    sender    = message_data[:from_user_id].to_s
+    member    = members.find do |m|
+      uid = (m[:userId] || m[:user_id]).to_s
+      uid.present? && uid != connected && uid != sender
+    end
+    return nil if member.nil?
+
+    customer_data = {
+      from_user_id:      member[:userId] || member[:user_id],
+      from_display_name: member[:displayName] || member[:display_name] || 'Teams User',
+      from_email:        member[:email],
+    }.with_indifferent_access
+
+    transaction_class.execute(reset_user_id: true, context: 'teams_chat') do
+      user  = find_or_create_user(customer_data)
+      group = Group.find_by(id: channel.group_id) || Group.first
+      title = build_ticket_title(message_data.merge(from_display_name: customer_data[:from_display_name]), user)
+
+      ticket = Ticket.new(
+        title:         title,
+        group_id:      group.id,
+        customer_id:   user.id,
+        state_id:      Ticket::State.find_by(default_create: true)&.id || Ticket::State.find_by(name: 'new')&.id,
+        priority_id:   Ticket::Priority.find_by(default_create: true)&.id || Ticket::Priority.first&.id,
+        preferences:   {
+          teams_chat: {
+            conversation_key: build_conversation_key(channel, message_data),
+            chat_id:          message_data[:chat_id],
+            tenant_id:        message_data[:tenant_id] || channel.options&.dig(:tenant_id),
+            channel_id:       channel.id,
+            agent_initiated:  true,
+          },
+        },
+        updated_by_id: user.id,
+        created_by_id: user.id,
+      )
+      ticket.save!
+
+      original_time = message_data[:created_at].present? ? Time.zone.parse(message_data[:created_at].to_s) : nil
+      ticket.update_columns(created_at: original_time) if original_time # rubocop:disable Rails/SkipsModelValidations
+
+      Rails.logger.info "KC Teams Chat: Created ticket #{ticket.id} for agent-initiated chat #{message_data[:chat_id]} with #{customer_data[:from_display_name]}"
+      ticket
+    end
+  rescue => e
+    Rails.logger.error "KC Teams Chat: Could not create ticket for agent-initiated chat #{message_data[:chat_id]}: #{e.message}"
+    nil
   end
 
   def create_article(ticket, channel, message_data, user, message_id)

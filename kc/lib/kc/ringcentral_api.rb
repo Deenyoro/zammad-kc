@@ -244,11 +244,14 @@ module Kc
     # Fetches messages from the message store.
     # Options: message_type ('SMS'), direction ('Inbound'/'Outbound'),
     #          date_from (ISO 8601), per_page (default 100)
-    def get_message_store(message_type: 'SMS', direction: nil, date_from: nil, per_page: 100)
+    #          page (1-based; RC returns newest-first, 100 per page max useful)
+    def get_message_store(message_type: 'SMS', direction: nil, date_from: nil, date_to: nil, per_page: 100, page: nil)
       url = "#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/message-store"
       params = { messageType: message_type, perPage: per_page }
       params[:direction]   = direction if direction.present?
       params[:dateFrom]    = date_from if date_from.present?
+      params[:dateTo]      = date_to   if date_to.present?
+      params[:page]        = page      if page.present?
       params[:availability] = 'Alive'
 
       query = params.to_query
@@ -380,7 +383,22 @@ module Kc
     # Generates a deterministic conversation key from a set of phone numbers.
     # Sorted E.164 numbers joined by ':' — consistent regardless of who sent.
     def self.conversation_key(*numbers)
-      numbers.flatten.map { |n| normalize_phone(n) }.compact.sort.join(':')
+      numbers.flatten.map { |n| normalize_phone(n) }.compact.uniq.sort.join(':')
+    end
+
+    # Every key a conversation between our number and the other participants
+    # may be filed under. New tickets store the full participant set; tickets
+    # created before group-SMS support hold a single our:other pair, and
+    # RingCentral lists a group message's recipients in varying order, so a
+    # lookup has to try each pair as well.
+    def self.conversation_key_candidates(our_phone, other_phones)
+      ours   = normalize_phone(our_phone)
+      others = Array(other_phones).flatten.map { |n| normalize_phone(n) }.compact.uniq - [ours]
+      return [] if ours.blank? || others.empty?
+
+      keys = [conversation_key(ours, *others)]
+      others.each { |other| keys << conversation_key(ours, other) }
+      keys.uniq
     end
 
     private

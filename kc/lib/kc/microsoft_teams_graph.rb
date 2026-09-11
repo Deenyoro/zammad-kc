@@ -258,6 +258,22 @@ module Kc
       graph_delete(url)
     end
 
+    # Every subscription Graph holds for this app + signed-in user, across
+    # all pages. Used to reconcile before creating: Graph caps chat-message
+    # subscriptions per user and chat, and orphans (subscriptions we lost
+    # track of) count against that cap.
+    def list_subscriptions
+      url  = "#{GRAPH_BASE_URL}/subscriptions"
+      subs = []
+      loop do
+        result = graph_get(url)
+        subs.concat(result['value'] || [])
+        url = result['@odata.nextLink']
+        break if url.blank?
+      end
+      subs
+    end
+
     # ------------------------------------------------------------------
     # User Info
     # ------------------------------------------------------------------
