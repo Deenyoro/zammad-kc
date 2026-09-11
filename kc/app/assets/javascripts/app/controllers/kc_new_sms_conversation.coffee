@@ -25,6 +25,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     'input .js-recipientSearch': 'onRecipientSearch'
     'click .js-clearRecipient':  'onClearRecipient'
     'change .js-skipSend':       'onSkipSendToggle'
+    'input .js-phoneNumber':     'onPhoneInput'
 
   constructor: ->
     super
@@ -146,12 +147,47 @@ class App.KcNewSmsConversationContent extends App.Controller
       el = $(e.currentTarget)
       rawPhone = el.data('phone')?.toString() || ''
       normalized = @normalizePhone(rawPhone)
-      @el.find('.js-phoneNumber').val(normalized)
-      @el.find('.js-customerId').val(el.data('id'))
-      @el.find('.js-recipientSearch').val(el.data('name'))
-      @el.find('.js-clearRecipient').show()
+      @addRecipient(normalized, el.data('id'), el.data('name'))
       @recipientResults.hide().empty()
     )
+
+  # Split the phone field into normalized, de-duplicated E.164 numbers.
+  # Several numbers (comma / semicolon / newline separated) make a group text.
+  parsePhones: (raw) ->
+    seen = {}
+    result = []
+    for part in (raw || '').split(/[,;\n]+/)
+      part = part.trim()
+      continue unless part
+      normalized = @normalizePhone(part)
+      return null unless normalized
+      continue if seen[normalized]
+      seen[normalized] = true
+      result.push(normalized)
+    result
+
+  # Picking a recipient from the search appends to the list instead of
+  # replacing it, so a group text is built by searching several times.
+  # The first recipient becomes the ticket customer.
+  addRecipient: (phone, customerId, name) ->
+    return unless phone
+    field   = @el.find('.js-phoneNumber')
+    current = @parsePhones(field.val()) || []
+    unless phone in current
+      current.push(phone)
+    field.val(current.join(', '))
+    @el.find('.js-customerId').val(customerId) if current.length is 1
+    @el.find('.js-recipientSearch').val('')
+    @el.find('.js-clearRecipient').show()
+    @updateRecipientHint()
+
+  updateRecipientHint: ->
+    phones = @parsePhones(@el.find('.js-phoneNumber').val()) || []
+    hint = @el.find('.js-groupHint')
+    if phones.length > 1
+      hint.text(App.i18n.translateInline('Group text to %s recipients', phones.length)).show()
+    else
+      hint.hide()
 
   onClearRecipient: (e) ->
     e.preventDefault()
@@ -159,6 +195,10 @@ class App.KcNewSmsConversationContent extends App.Controller
     @el.find('.js-customerId').val('')
     @el.find('.js-recipientSearch').val('').focus()
     @el.find('.js-clearRecipient').hide()
+    @updateRecipientHint()
+
+  onPhoneInput: ->
+    @updateRecipientHint()
 
   onSkipSendToggle: (e) ->
     skipSend = $(e.currentTarget).is(':checked')
@@ -181,13 +221,17 @@ class App.KcNewSmsConversationContent extends App.Controller
       @showError(__('Phone number and message are required.'))
       return
 
-    # Normalize the phone number to E.164 (+1XXXXXXXXXX)
-    phoneNumber = @normalizePhone(rawPhone)
-    if !phoneNumber
+    # Normalize every number to E.164 (+1XXXXXXXXXX); several = group text
+    phoneNumbers = @parsePhones(rawPhone)
+    if !phoneNumbers || phoneNumbers.length is 0
       @showError(__('Please enter a valid phone number.'))
       return
+    if phoneNumbers.length > 10
+      @showError(__('A group text can have at most 10 recipients.'))
+      return
+    phoneNumber = phoneNumbers[0]
     # Update the field so the user sees the corrected format
-    @el.find('.js-phoneNumber').val(phoneNumber)
+    @el.find('.js-phoneNumber').val(phoneNumbers.join(', '))
 
     @hideError()
     @el.find('.js-submit').prop('disabled', true)
@@ -200,8 +244,9 @@ class App.KcNewSmsConversationContent extends App.Controller
       type: 'POST'
       url:  "#{App.Config.get('api_path')}/kc/conversations/sms"
       data: JSON.stringify(
-        phone_number: phoneNumber
-        body:         body
+        phone_number:  phoneNumber
+        phone_numbers: phoneNumbers
+        body:          body
         group_id:     groupId
         customer_id:  customerId
         channel_id:   channelId

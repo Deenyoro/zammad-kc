@@ -110,12 +110,6 @@ const loadGroups = async () => {
 const onSearchInput = () => {
   if (searchTimeout) clearTimeout(searchTimeout)
 
-  // Skip search when a user is already selected — the watch fires when
-  // selectEntry() sets searchQuery to the user's name, but we don't want
-  // to re-search.  Legacy CoffeeScript avoids this because programmatic
-  // .val() doesn't fire DOM input events; Vue watch does.
-  if (selectedUser.value) return
-
   if (searchQuery.value.length < 2) {
     searchResults.value = []
     showResults.value = false
@@ -185,11 +179,38 @@ const searchResultEntries = computed<SearchResultEntry[]>(() => {
   return entries
 })
 
+const MAX_GROUP_RECIPIENTS = 10
+
+// Split the phone field into normalized, de-duplicated E.164 numbers.
+// Several numbers (comma / semicolon / newline separated) make a group text.
+// Returns null when any part is not a usable number.
+const parsePhones = (raw: string): string[] | null => {
+  const result: string[] = []
+  for (const part of raw.split(/[,;\n]+/)) {
+    const trimmed = part.trim()
+    if (!trimmed) continue
+    const normalized = normalizePhone(trimmed)
+    if (!normalized) return null
+    if (!result.includes(normalized)) result.push(normalized)
+  }
+  return result
+}
+
+const recipientCount = computed(() => parsePhones(phoneNumber.value)?.length ?? 0)
+
+// Picking a recipient appends to the list so a group text is built by
+// searching several times. The first recipient becomes the ticket customer.
 const selectEntry = (entry: SearchResultEntry) => {
-  selectedUser.value = { id: entry.userId, name: entry.userName, phone: entry.phone, mobile: null }
-  customerId.value = entry.userId
-  phoneNumber.value = normalizePhone(entry.phone)
-  searchQuery.value = entry.userName
+  const current = parsePhones(phoneNumber.value) ?? []
+  const normalized = normalizePhone(entry.phone)
+  if (normalized && !current.includes(normalized)) current.push(normalized)
+  phoneNumber.value = current.join(', ')
+  if (current.length === 1) {
+    selectedUser.value = { id: entry.userId, name: entry.userName, phone: entry.phone, mobile: null }
+    customerId.value = entry.userId
+  }
+  searchQuery.value = ''
+  searchResults.value = []
   showResults.value = false
 }
 
@@ -215,9 +236,9 @@ const submitLabel = computed(() => {
 const submit = async () => {
   if (!canSubmit.value || submitting.value) return
 
-  // Normalize phone to E.164 before sending (matches legacy behavior)
-  const normalized = normalizePhone(phoneNumber.value.trim())
-  if (!normalized) {
+  // Normalize every number to E.164 before sending; several = group text
+  const recipients = parsePhones(phoneNumber.value)
+  if (!recipients || recipients.length === 0) {
     notify({
       id: 'kc-sms-phone-invalid',
       type: NotificationTypes.Error,
@@ -225,8 +246,17 @@ const submit = async () => {
     })
     return
   }
+  if (recipients.length > MAX_GROUP_RECIPIENTS) {
+    notify({
+      id: 'kc-sms-phone-too-many',
+      type: NotificationTypes.Error,
+      message: __('A group text can have at most 10 recipients.'),
+    })
+    return
+  }
+  const normalized = recipients[0]
   // Update the field so the user sees the corrected format
-  phoneNumber.value = normalized
+  phoneNumber.value = recipients.join(', ')
 
   submitting.value = true
   try {
@@ -234,6 +264,7 @@ const submit = async () => {
       method: 'POST',
       body: JSON.stringify({
         phone_number: normalized,
+        phone_numbers: recipients,
         body: body.value.trim(),
         group_id: groupId.value || undefined,
         customer_id: customerId.value || undefined,
@@ -292,7 +323,7 @@ watch(searchQuery, onSearchInput)
             class="w-full rounded border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-600 dark:bg-neutral-800"
           />
           <button
-            v-if="selectedUser"
+            v-if="selectedUser || phoneNumber"
             type="button"
             class="text-sm text-red-500 hover:text-red-700"
             @click="clearSelection"
@@ -326,10 +357,17 @@ watch(searchQuery, onSearchInput)
         </label>
         <input
           v-model="phoneNumber"
-          type="tel"
-          :placeholder="$t('+1...')"
+          type="text"
+          autocomplete="off"
+          :placeholder="$t('+1234567890, +1987654321')"
           class="w-full rounded border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-600 dark:bg-neutral-800"
         />
+        <p class="mt-1 text-xs text-neutral-500">
+          {{ $t('Separate several numbers with commas to send one group text (up to 10 recipients). Replies from any member land on the same ticket.') }}
+        </p>
+        <p v-if="recipientCount > 1" class="mt-1 text-xs font-medium">
+          {{ $t('Group text to %s recipients', recipientCount) }}
+        </p>
       </div>
 
       <!-- From channel -->
