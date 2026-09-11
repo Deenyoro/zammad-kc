@@ -33,22 +33,22 @@ class Kc::TeamsSubscriptionManager
     sub_class = subscription_class
     return nil if sub_class.nil?
 
-    # The 30 s poll and the 10 min renewal run on different scheduler
-    # threads; serialize on the channel row so they cannot both create a
-    # Graph subscription for the same chat (which delivers every message twice).
-    channel.with_lock do
-      live = sub_class.where(channel: channel, chat_id: chat_id)
-                      .where('expires_at > ?', Time.current)
-                      .order(expires_at: :desc)
-                      .first
-      return live if live
+    live = sub_class.where(channel: channel, chat_id: chat_id)
+                    .where('expires_at > ?', Time.current)
+                    .order(expires_at: :desc)
+                    .first
+    return live if live
 
-      # Every record for this chat is expired (or there is none) — drop them
-      # all; expired rows used to pile up by the hundreds.
-      sub_class.where(channel: channel, chat_id: chat_id).destroy_all
+    # Every record for this chat is expired (or there is none) — drop them
+    # all; expired rows used to pile up by the hundreds.
+    sub_class.where(channel: channel, chat_id: chat_id).delete_all
 
-      create_subscription(chat_id)
-    end
+    # No lock around the Graph round-trips: the 30 s poll and the 10 min
+    # renewal run on different scheduler threads and holding the channel row
+    # while talking to Graph stalled the poll for minutes. If both create for
+    # the same chat, the reconcile in create_subscription / prune_orphans
+    # removes the extra on the next pass.
+    create_subscription(chat_id)
   end
 
   # Renews all subscriptions for this channel that are expiring soon.
@@ -72,15 +72,43 @@ class Kc::TeamsSubscriptionManager
       return
     end
 
-    subs = sub_class.where(channel: channel).expiring_soon(within: RENEW_WINDOW.minutes)
+    subs   = sub_class.where(channel: channel).expiring_soon(within: RENEW_WINDOW.minutes)
+    wanted = chat_ids_with_open_tickets
 
     subs.find_each do |sub|
+      # Only chats with an open ticket need a webhook; the poll's discovery
+      # pass covers everything else. Renewing subscriptions for every chat
+      # ever seen is what exhausted Graph's per-user quota.
+      if wanted.exclude?(sub.chat_id)
+        begin
+          graph.delete_subscription(sub.subscription_id)
+        rescue => e
+          Rails.logger.debug { "KC Teams: delete of retired subscription #{sub.subscription_id} failed: #{e.message}" }
+        end
+        sub.destroy
+        next
+      end
+
       renew_single(graph, sub)
     rescue => e
       Rails.logger.error "KC Teams: Failed to renew subscription #{sub.subscription_id}: #{e.message}"
     end
 
     prune_orphans(graph)
+  end
+
+  # Chats that currently have a ticket that is not closed.
+  def chat_ids_with_open_tickets
+    closed_state_ids = Ticket::State
+                         .joins(:state_type)
+                         .where(ticket_state_types: { name: 'closed' })
+                         .select(:id)
+
+    Ticket.where('preferences LIKE ?', '%teams_chat%')
+          .where.not(state_id: closed_state_ids)
+          .select(:id, :preferences)
+          .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
+          .to_set
   end
 
   # Runs with every renewal pass (10 min). Drops DB rows that expired and
@@ -234,10 +262,8 @@ class Kc::TeamsSubscriptionManager
     if e.message.to_s.include?('404')
       Rails.logger.warn "KC Teams: Subscription #{subscription.subscription_id} gone (404), recreating..."
       chat_id = subscription.chat_id
-      channel.with_lock do
-        subscription.destroy
-        create_subscription(chat_id)
-      end
+      subscription.destroy
+      create_subscription(chat_id)
     else
       raise
     end

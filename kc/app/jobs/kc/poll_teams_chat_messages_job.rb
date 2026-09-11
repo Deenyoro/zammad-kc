@@ -60,7 +60,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     # Discovery is only needed for finding NEW chats without tickets yet.
     active_chat_ids = active_chat_ids_for(channel)
     active_chat_ids.each do |chat_id|
-      poll_chat(channel, graph, chat_id, opts[:tenant_id])
+      poll_chat(channel, graph, chat_id, opts[:tenant_id], subscribe: true)
     rescue => e
       Rails.logger.error "KC Teams Poll: Failed for active chat #{chat_id}: #{e.message}"
     end
@@ -99,8 +99,12 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
           next if chat_id.blank?
           next if already_polled_ids.include?(chat_id)
 
-          # Pass chat info from discovery to avoid extra API call
-          poll_chat(channel, graph, chat_id, opts[:tenant_id], chat_info: chat)
+          # Pass chat info from discovery to avoid extra API call. No webhook
+          # for chats without a ticket: a new message here is caught by this
+          # discovery pass, and the chat gets its subscription once a ticket
+          # exists. Subscribing every chat ever seen (meetings included) is
+          # what exhausted Graph's per-user subscription quota.
+          poll_chat(channel, graph, chat_id, opts[:tenant_id], chat_info: chat, subscribe: false)
         rescue => e
           chat_id_safe = (chat['id'] || chat[:id]) rescue 'unknown'
           Rails.logger.error "KC Teams Poll: Failed for discovered chat #{chat_id_safe}: #{e.message}"
@@ -123,9 +127,9 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     Rails.logger.error "KC Teams Poll: Discovery failed for channel #{channel.id}: #{e.message}"
   end
 
-  def poll_chat(channel, graph, chat_id, tenant_id, chat_info: nil)
+  def poll_chat(channel, graph, chat_id, tenant_id, chat_info: nil, subscribe: true)
     # Automatically create webhook subscription for this chat (if not already exists)
-    if @subscription_manager
+    if subscribe && @subscription_manager
       begin
         @subscription_manager.ensure_subscription(chat_id)
       rescue => e
