@@ -143,6 +143,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     end
     chat_type = chat_info['chatType'] || chat_info[:chatType]
     chat_topic = chat_info['topic'] || chat_info[:topic]
+    chat_members = chat_info['members'] || chat_info[:members] || []
 
     result = graph.list_chat_messages(chat_id, top: 20)
     messages = result['value'] || result[:value] || []
@@ -230,6 +231,7 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         is_agent:          is_agent,
         chat_type:         chat_type,
         chat_topic:        chat_topic,
+        chat_members:      chat_members,
         attachments:       message['attachments'] || message[:attachments] || [],
         hosted_contents:   message['hostedContents'] || message[:hostedContents] || [],
       }

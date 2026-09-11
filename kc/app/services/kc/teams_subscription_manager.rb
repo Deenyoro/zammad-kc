@@ -37,14 +37,15 @@ class Kc::TeamsSubscriptionManager
     # threads; serialize on the channel row so they cannot both create a
     # Graph subscription for the same chat (which delivers every message twice).
     channel.with_lock do
-      existing = sub_class.find_by(channel: channel, chat_id: chat_id)
+      live = sub_class.where(channel: channel, chat_id: chat_id)
+                      .where('expires_at > ?', Time.current)
+                      .order(expires_at: :desc)
+                      .first
+      return live if live
 
-      if existing && existing.expires_at.present? && existing.expires_at > Time.current
-        return existing
-      end
-
-      # Remove expired record if present
-      existing&.destroy
+      # Every record for this chat is expired (or there is none) — drop them
+      # all; expired rows used to pile up by the hundreds.
+      sub_class.where(channel: channel, chat_id: chat_id).destroy_all
 
       create_subscription(chat_id)
     end
@@ -78,6 +79,38 @@ class Kc::TeamsSubscriptionManager
     rescue => e
       Rails.logger.error "KC Teams: Failed to renew subscription #{sub.subscription_id}: #{e.message}"
     end
+
+    prune_orphans(graph)
+  end
+
+  # Runs with every renewal pass (10 min). Drops DB rows that expired and
+  # Graph subscriptions pointing at our webhook that no live DB row tracks —
+  # those orphans are what exhausts Graph's per-chat subscription cap and, once
+  # they exceed the cap, keep every recreate for that chat failing with 403.
+  def prune_orphans(graph)
+    sub_class = subscription_class
+    return if sub_class.nil? || !graph.respond_to?(:list_subscriptions)
+
+    expired = sub_class.where(channel: channel).where('expires_at <= ?', Time.current).delete_all
+    Rails.logger.info "KC Teams: Purged #{expired} expired subscription rows for channel #{channel.id}" if expired.positive?
+
+    tracked = sub_class.where(channel: channel).where('expires_at > ?', Time.current).pluck(:subscription_id).to_set
+    removed = 0
+    graph.list_subscriptions.each do |sub|
+      next unless sub['notificationUrl'].to_s == webhook_url
+      next unless sub['resource'].to_s.start_with?('/chats/')
+      next if tracked.include?(sub['id'].to_s)
+
+      begin
+        graph.delete_subscription(sub['id'])
+        removed += 1
+      rescue => e
+        Rails.logger.warn "KC Teams: Could not remove orphan subscription #{sub['id']}: #{e.message}"
+      end
+    end
+    Rails.logger.info "KC Teams: Removed #{removed} orphaned Graph subscriptions for channel #{channel.id}" if removed.positive?
+  rescue => e
+    Rails.logger.warn "KC Teams: Orphan prune failed for channel #{channel.id}: #{e.message}"
   end
 
   # Deletes all subscriptions for this channel (e.g. on channel removal).
@@ -136,12 +169,21 @@ class Kc::TeamsSubscriptionManager
     client_state     = SecureRandom.hex(32)
     notification_url = webhook_url
 
-    result = graph.create_subscription(
-      chat_id,
-      notification_url,
-      client_state,
-      expiration_minutes: EXPIRATION_MINUTES,
-    )
+    # Graph allows only a handful of chatMessage subscriptions per user and
+    # chat, and every one we lost track of (renewal 404 after a missed cycle,
+    # a crash between create and save) still counts. Clear ours for this chat
+    # before creating; if Graph still refuses, clear again and retry once.
+    remove_graph_subscriptions_for(graph, chat_id)
+
+    result = begin
+      graph.create_subscription(chat_id, notification_url, client_state, expiration_minutes: EXPIRATION_MINUTES)
+    rescue => e
+      raise unless e.message.to_s =~ /limit|403/i
+
+      Rails.logger.warn "KC Teams: Graph refused subscription for chat #{chat_id} (#{e.message.truncate(120)}), clearing and retrying"
+      remove_graph_subscriptions_for(graph, chat_id, force_list: true)
+      graph.create_subscription(chat_id, notification_url, client_state, expiration_minutes: EXPIRATION_MINUTES)
+    end
 
     sub_class = subscription_class
     return nil if sub_class.nil?
@@ -153,6 +195,31 @@ class Kc::TeamsSubscriptionManager
       client_state:    client_state,
       expires_at:      parse_expiration(result),
     )
+  end
+
+  # Deletes every Graph subscription for this chat's messages that points at
+  # our webhook. The list is fetched once per manager instance (one poll
+  # cycle) unless force_list is set.
+  def remove_graph_subscriptions_for(graph, chat_id, force_list: false)
+    return unless graph.respond_to?(:list_subscriptions)
+
+    @graph_subscriptions = nil if force_list
+    @graph_subscriptions ||= graph.list_subscriptions
+    resource = "/chats/#{chat_id}/messages"
+    ours     = @graph_subscriptions.select do |sub|
+      sub['resource'].to_s == resource && sub['notificationUrl'].to_s == webhook_url
+    end
+    return if ours.empty?
+
+    ours.each do |sub|
+      graph.delete_subscription(sub['id'])
+      Rails.logger.info "KC Teams: Removed stale Graph subscription #{sub['id']} for chat #{chat_id}"
+    rescue => e
+      Rails.logger.warn "KC Teams: Could not remove Graph subscription #{sub['id']}: #{e.message}"
+    end
+    @graph_subscriptions -= ours
+  rescue => e
+    Rails.logger.warn "KC Teams: Could not list Graph subscriptions: #{e.message}"
   end
 
   def renew_single(graph, subscription)

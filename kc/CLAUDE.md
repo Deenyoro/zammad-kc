@@ -158,7 +158,7 @@ The `kc/` directory is deleted from the final image.
 ### Current KC Features
 
 - **Microsoft Teams Chat** — Bidirectional messaging (Graph API, OAuth2, webhooks + backup polling, directory sync). Admin at System > KC - Teams Chat.
-- **RingCentral SMS/MMS** — Bidirectional SMS (OAuth2, webhooks + backup polling, missed call tracking). Admin at System > KC - RingCentral SMS.
+- **RingCentral SMS/MMS** — Bidirectional SMS (OAuth2, webhooks + backup polling, missed call tracking). Admin at System > KC - RingCentral SMS. Texts sent from the RingCentral app are captured as internal notes (with MMS attachments); agent-initiated conversations get a ticket. `Kc::BackfillRingcentralSmsJob.new.perform(days:, dry_run:)` re-files a gap from the message store.
 - **Per-Agent Time Tracking** — Enhanced time accounting with agent attribution, sidebar widget, admin reporting with Excel export.
 - **Scheduled Replies** — Queue articles for future delivery with datetime picker, banner for pending replies.
 - **Waiting for Reply State** — Custom ticket state that auto-transitions to "open" on customer reply.
@@ -189,6 +189,7 @@ Service::Ticket::Article::Create     ← Kc::ArticlePreprocessBcc
 Channel::Driver::BaseEmailOutbound   ← Kc::EmailOutboundBcc
 Channel::EmailBuild.singleton_class  ← Kc::StripEmailTextColor
 Channel::Filter::FollowUpMerged.singleton_class ← Kc::FollowUpClosedParent
+Service::Ticket::Article::List       ← Kc::ChronologicalArticleList
 ```
 
 Plus: `Ticket.transaction_ignore_changes_attributes_list += [:time_unit]`
