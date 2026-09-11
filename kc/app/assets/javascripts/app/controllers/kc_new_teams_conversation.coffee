@@ -24,6 +24,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
     'submit .js-teamsForm':      'onSubmit'
     'input .js-contactSearch':   'onContactSearch'
     'click .js-clearContact':    'onClearContact'
+    'change .js-skipSend':       'onSkipSendToggle'
 
   constructor: ->
     super
@@ -146,6 +147,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
     body        = @el.find('.js-body').val()?.trim()
     groupId     = @el.find('.js-group').val()
     channelId   = @el.find('.js-fromAccount').val()
+    skipSend    = @el.find('.js-skipSend').is(':checked')
 
     if !teamsUserId || !displayName
       @showError(__('Please select a Teams contact first.'))
@@ -170,6 +172,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
         body:          body
         group_id:      groupId
         channel_id:    channelId
+        skip_send:     skipSend
       )
       contentType: 'application/json'
       success: (data) =>
@@ -186,6 +189,12 @@ class App.KcNewTeamsConversationContent extends App.Controller
           msg = __('Failed to send Teams message')
         @showError(msg)
     )
+
+  onSkipSendToggle: (e) ->
+    if $(e.currentTarget).is(':checked')
+      @el.find('.js-submit').text(App.i18n.translateInline('Create Ticket'))
+    else
+      @el.find('.js-submit').text(App.i18n.translateInline('Send Teams Message'))
 
   showError: (msg) ->
     @el.find('.js-error').text(msg).show()
