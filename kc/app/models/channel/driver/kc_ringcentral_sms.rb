@@ -121,16 +121,8 @@ class Channel::Driver::KcRingcentralSms
                else
                  create_outbound_ticket(channel, plan, agent)
                end
-      previous_updated_at = ticket.updated_at
-
       article = create_capture_article(ticket, channel, message_data, plan, agent)
       download_attachments(article, channel, message_data) if message_data[:attachments].present?
-
-      # Filing history must not surface the ticket as freshly updated in every
-      # overview (nor stretch the thread window it is matched by).
-      if mode == :backfill && plan[:action] == :attach
-        ticket.update_columns(updated_at: previous_updated_at) # rubocop:disable Rails/SkipsModelValidations
-      end
 
       { ticket: ticket, article: article }
     end
