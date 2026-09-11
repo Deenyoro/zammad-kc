@@ -46,6 +46,16 @@
       </div>
 
       <div class="form-group">
+        <label class="inline-label checkbox-replacement">
+          <input type="checkbox" class="js-skipSend" name="skip_send" value="1">
+          <%- @Icon('checkbox', 'icon-unchecked') %>
+          <%- @Icon('checkbox-checked', 'icon-checked') %>
+          <span class="label-text"><%- @T("Don't send initial message (create ticket only)") %></span>
+        </label>
+        <p class="help-text"><%- @T('The ticket will be created with Teams routing so replies go to the chat, but the initial message will not be sent.') %></p>
+      </div>
+
+      <div class="form-group">
         <button type="submit" class="btn btn--primary js-submit"><%- @T('Send Teams Message') %></button>
         <span class="js-loading" style="display:none;"><span class="loading icon"></span> <%- @T('Sending...') %></span>
       </div>
