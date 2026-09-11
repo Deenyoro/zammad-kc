@@ -21,8 +21,8 @@
 #   - Deduplicates by RC message ID (Zammad-sent messages already have articles)
 #     and skips texts the system itself sent (Kc::OutboundSms records them)
 #   - Attaches to the most recent open ticket for the participants, however
-#     old it is; when there is none the text started the conversation, so a
-#     ticket is created for it (mirrors the "New SMS" initiator)
+#     old it is. Never opens a ticket: only incoming texts do that, and the
+#     customer's reply will carry our earlier texts in its context note.
 #   - Creates an internal note labeled "Sent via RingCentral", with MMS
 #     attachments, backdated to the RC send time
 #
@@ -101,7 +101,7 @@ class Channel::Driver::KcRingcentralSms
     message_data = message_data.with_indifferent_access
     plan = outbound_capture_plan(channel, message_data, mode: mode)
     return plan if dry_run
-    return nil unless %i[attach create].include?(plan[:action])
+    return nil unless plan[:action] == :attach
 
     transaction_class = 'Transaction'.safe_constantize
     return nil if transaction_class.nil?
@@ -116,11 +116,7 @@ class Channel::Driver::KcRingcentralSms
     transaction_class.execute(execute_options) do
       UserInfo.current_user_id = agent.id
 
-      ticket = if plan[:action] == :attach
-                 Ticket.find(plan[:ticket_id])
-               else
-                 create_outbound_ticket(channel, plan, agent)
-               end
+      ticket = Ticket.find(plan[:ticket_id])
       article = create_capture_article(ticket, channel, message_data, plan, agent)
       download_attachments(article, channel, message_data) if message_data[:attachments].present?
 
@@ -174,10 +170,13 @@ class Channel::Driver::KcRingcentralSms
       created_at:       message_data[:created_at],
       mode:             mode,
     }
+    # Only an INCOMING text opens a ticket. An outgoing text with no ticket to
+    # land on is left alone; it will show up in the conversation-context note
+    # of the ticket the customer's eventual reply opens.
     if ticket
       base.merge(action: :attach, ticket_id: ticket.id)
     else
-      base.merge(action: :create)
+      base.merge(action: :skip_no_ticket)
     end
   end
 
@@ -355,49 +354,6 @@ class Channel::Driver::KcRingcentralSms
     ticket.save!
     backdate(ticket, message_data[:created_at])
     add_context_note(ticket, channel, our_phone, others, before: message_data[:created_at], exclude_id: message_data[:message_id])
-    ticket
-  end
-
-  # Ticket for a text the agent started from the RC app. The first other
-  # participant is the customer; :from_phone stays the customer's number and
-  # :to_phone ours, exactly as an inbound-created ticket, so replies from
-  # Zammad go out from the right number.
-  def create_outbound_ticket(channel, plan, agent)
-    customer_phone = plan[:others].first
-    customer       = find_or_create_user(customer_phone)
-    group          = Group.find_by(id: channel.group_id) || Group.first
-    sent_at        = parse_time(plan[:created_at])
-
-    state = if plan[:mode] == :backfill && sent_at && sent_at < thread_window_hours(channel).hours.ago
-              Ticket::State.find_by(name: 'closed')
-            end
-    state ||= Ticket::State.find_by(default_create: true) || Ticket::State.find_by(name: 'new')
-
-    # Same title as a customer-started thread: the admin template and the
-    # triggers that key on it ("SMS from") apply to both.
-    ticket = Ticket.new(
-      title:         build_ticket_title(customer_phone),
-      group_id:      group.id,
-      customer_id:   customer.id,
-      state_id:      state&.id,
-      priority_id:   Ticket::Priority.find_by(default_create: true)&.id || Ticket::Priority.first&.id,
-      preferences:   {
-        ringcentral_sms: {
-          conversation_key: plan[:conversation_key],
-          participants:     plan[:others],
-          from_phone:       customer_phone,
-          to_phone:         plan[:our_phone],
-          channel_id:       channel.id,
-          agent_initiated:  true,
-        },
-      },
-      updated_by_id: agent.id,
-      created_by_id: agent.id,
-    )
-    ticket.save!
-    backdate(ticket, plan[:created_at])
-    add_context_note(ticket, channel, plan[:our_phone], plan[:others], before: plan[:created_at], exclude_id: plan[:dedup_key].to_s.delete_prefix('rc_sms:'))
-    Rails.logger.info "KC RingCentral SMS: Created ticket #{ticket.id} for agent-initiated text to #{customer_phone}"
     ticket
   end
 
