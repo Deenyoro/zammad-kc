@@ -73,12 +73,12 @@ class Kc::TeamsSubscriptionManager
     end
 
     subs   = sub_class.where(channel: channel).expiring_soon(within: RENEW_WINDOW.minutes)
-    wanted = chat_ids_with_open_tickets
+    wanted = subscribable_chat_ids
 
     subs.find_each do |sub|
-      # Only chats with an open ticket need a webhook; the poll's discovery
-      # pass covers everything else. Renewing subscriptions for every chat
-      # ever seen is what exhausted Graph's per-user quota.
+      # Only chats with a live conversation need a webhook; the poll's
+      # discovery pass covers everything else. Renewing subscriptions for
+      # every chat ever seen is what exhausted Graph's per-user quota.
       if wanted.exclude?(sub.chat_id)
         begin
           graph.delete_subscription(sub.subscription_id)
@@ -97,19 +97,24 @@ class Kc::TeamsSubscriptionManager
     prune_orphans(graph)
   end
 
-  # Chats that currently have a ticket that is not closed.
-  def chat_ids_with_open_tickets
+  # Webhooks are kept for chats with an open ticket or one touched in the
+  # last RECENT_TICKET_DAYS — recurring contacts stay instant, while chats
+  # nobody has talked in for weeks fall back to the discovery poll.
+  RECENT_TICKET_DAYS = 14
+
+  def subscribable_chat_ids
     closed_state_ids = Ticket::State
                          .joins(:state_type)
                          .where(ticket_state_types: { name: 'closed' })
                          .select(:id)
 
-    Ticket.where('preferences LIKE ?', '%teams_chat%')
-          .where.not(state_id: closed_state_ids)
-          .select(:id, :preferences)
-          .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
-          .to_set
+    scope = Ticket.where('preferences LIKE ?', '%teams_chat%')
+    scope = scope.where.not(state_id: closed_state_ids).or(scope.where('updated_at > ?', RECENT_TICKET_DAYS.days.ago))
+    scope.select(:id, :preferences)
+         .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
+         .to_set
   end
+  public :subscribable_chat_ids
 
   # Runs with every renewal pass (10 min). Drops DB rows that expired and
   # Graph subscriptions pointing at our webhook that no live DB row tracks —

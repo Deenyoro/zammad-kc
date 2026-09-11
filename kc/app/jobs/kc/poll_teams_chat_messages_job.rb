@@ -55,6 +55,11 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     # Initialize subscription manager for auto-creating webhooks
     manager_class = 'Kc::TeamsSubscriptionManager'.safe_constantize
     @subscription_manager = manager_class&.new(channel)
+    @subscribable_chat_ids = if @subscription_manager.respond_to?(:subscribable_chat_ids)
+                               @subscription_manager.subscribable_chat_ids
+                             else
+                               Set.new
+                             end
 
     # Always poll chats that have open tickets — no lookback window.
     # Discovery is only needed for finding NEW chats without tickets yet.
@@ -99,12 +104,12 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
           next if chat_id.blank?
           next if already_polled_ids.include?(chat_id)
 
-          # Pass chat info from discovery to avoid extra API call. No webhook
-          # for chats without a ticket: a new message here is caught by this
-          # discovery pass, and the chat gets its subscription once a ticket
-          # exists. Subscribing every chat ever seen (meetings included) is
-          # what exhausted Graph's per-user subscription quota.
-          poll_chat(channel, graph, chat_id, opts[:tenant_id], chat_info: chat, subscribe: false)
+          # Pass chat info from discovery to avoid extra API call. A webhook
+          # only for chats with a recent ticket: a first message in any other
+          # chat is caught by this discovery pass, and the chat gets its
+          # subscription once a ticket exists. Subscribing every chat ever
+          # seen (meetings included) is what exhausted Graph's quota.
+          poll_chat(channel, graph, chat_id, opts[:tenant_id], chat_info: chat, subscribe: @subscribable_chat_ids.include?(chat_id))
         rescue => e
           chat_id_safe = (chat['id'] || chat[:id]) rescue 'unknown'
           Rails.logger.error "KC Teams Poll: Failed for discovered chat #{chat_id_safe}: #{e.message}"
