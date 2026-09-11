@@ -35,8 +35,12 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     sms_prefs     = ticket.preferences&.dig(:ringcentral_sms) || {}
     article_prefs = article.preferences&.dig(:ringcentral_sms) || {}
 
-    # The "to" phone is the customer's phone (the from_phone on inbound messages)
-    to_phone   = article_prefs[:to_phone] || sms_prefs[:from_phone]
+    # Recipients: every participant of the conversation (group texts), else
+    # the customer's phone (the from_phone on inbound messages).
+    to_phones  = Array(article_prefs[:to_phones]).compact_blank.presence ||
+                 Array(sms_prefs[:participants]).compact_blank.presence ||
+                 [article_prefs[:to_phone] || sms_prefs[:from_phone]].compact_blank
+    to_phone   = to_phones.first
     channel_id = article_prefs[:channel_id] || sms_prefs[:channel_id] || find_channel_id(ticket)
 
     if to_phone.blank? || channel_id.blank?
@@ -89,7 +93,7 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     # Step 1: Send text as plain SMS (always, even if attachments exist)
     sms_result = nil
     if body_text.present?
-      sms_result = rc.send_sms(from: from_phone, to: to_phone, text: body_text)
+      sms_result = rc.send_sms(from: from_phone, to: to_phones, text: body_text)
     end
 
     # Step 2: Send attachments as separate MMS messages (no text body)
@@ -103,7 +107,7 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
             content_type: store.preferences&.dig('Content-Type') || 'application/octet-stream',
             data:         store.content,
           }]
-          mms_result = rc.send_mms(from: from_phone, to: to_phone, text: '', attachments: att_data)
+          mms_result = rc.send_mms(from: from_phone, to: to_phones, text: '', attachments: att_data)
           mms_id = mms_result && (mms_result['id'] || mms_result[:id])
           mms_message_ids << mms_id.to_s if mms_id.present?
         rescue => e
@@ -125,9 +129,10 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     article.preferences[:ringcentral_sms][:sent_at]          = Time.current.iso8601
     article.preferences[:ringcentral_sms][:from_phone]       = from_phone
     article.preferences[:ringcentral_sms][:to_phone]         = to_phone
+    article.preferences[:ringcentral_sms][:to_phones]        = to_phones if to_phones.size > 1
     article.save!
 
-    Rails.logger.info "KC RingCentral SMS: Sent article #{article_id} to #{to_phone}"
+    Rails.logger.info "KC RingCentral SMS: Sent article #{article_id} to #{to_phones.join(', ')}"
   rescue => e
     Rails.logger.error "KC RingCentral SMS Job: Failed to send article #{article_id}: #{e.message}"
 

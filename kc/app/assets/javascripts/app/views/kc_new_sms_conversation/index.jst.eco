@@ -18,8 +18,10 @@
 
       <div class="form-group">
         <label for="kc-sms-phone"><%- @T('Phone Number') %> <span class="text-danger">*</span></label>
-        <input id="kc-sms-phone" type="tel" class="form-control js-phoneNumber" name="phone_number" placeholder="+1234567890" required>
+        <input id="kc-sms-phone" type="text" class="form-control js-phoneNumber" name="phone_number" placeholder="+1234567890, +1987654321" autocomplete="off" required>
         <input type="hidden" class="js-customerId" name="customer_id" value="">
+        <p class="help-text"><%- @T('Separate several numbers with commas to send one group text (up to 10 recipients). Replies from any member land on the same ticket.') %></p>
+        <p class="help-text js-groupHint" style="display:none; font-weight:bold;"></p>
       </div>
 
       <div class="form-group">
