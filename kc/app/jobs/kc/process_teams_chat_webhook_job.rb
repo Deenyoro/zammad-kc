@@ -67,10 +67,12 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
     # Fetch chat details to determine if this is a group chat
     chat_type = nil
     chat_topic = nil
+    chat_members = []
     begin
       chat_info = graph.get_chat(chat_id)
       chat_type = chat_info['chatType'] || chat_info[:chatType]
       chat_topic = chat_info['topic'] || chat_info[:topic]
+      chat_members = chat_info['members'] || chat_info[:members] || []
     rescue => e
       Rails.logger.debug { "KC Teams Job: Could not fetch chat details: #{e.message}" }
     end
@@ -87,6 +89,7 @@ class Kc::ProcessTeamsChatWebhookJob < ApplicationJob
       tenant_id:         opts[:tenant_id],
       chat_type:         chat_type,
       chat_topic:        chat_topic,
+      chat_members:      chat_members,
       attachments:       message['attachments'] || message[:attachments] || [],
       hosted_contents:   message['hostedContents'] || message[:hostedContents] || [],
     }
