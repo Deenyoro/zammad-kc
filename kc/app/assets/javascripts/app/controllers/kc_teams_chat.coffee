@@ -64,6 +64,7 @@ class KcTeamsChat extends App.ControllerSubContent
       settings:
         ticket_title_template:      @setting('kc_teams_chat_ticket_title_template', 'Teams Message from {user_name}')
         thread_window_hours:        @setting('kc_teams_chat_thread_window_hours', 24)
+        context_messages:           @setting('kc_teams_chat_context_messages', 5)
         active_lookback_hours:      @setting('kc_teams_chat_active_lookback_hours', 2)
         discovery_interval_minutes: @setting('kc_teams_chat_discovery_interval_minutes', 2)
         deactivate_stale:           @setting('kc_teams_directory_deactivate_stale', false)
@@ -194,6 +195,7 @@ class KcTeamsChat extends App.ControllerSubContent
     settings =
       kc_teams_chat_ticket_title_template:      form.find('[name=ticket_title_template]').val() || 'Teams Message from {user_name}'
       kc_teams_chat_thread_window_hours:        parseInt(form.find('[name=thread_window_hours]').val()) || 24
+      kc_teams_chat_context_messages:           Math.max(0, parseInt(form.find('[name=context_messages]').val()) || 0)
       kc_teams_chat_active_lookback_hours:      parseInt(form.find('[name=active_lookback_hours]').val()) || 2
       kc_teams_chat_discovery_interval_minutes: parseInt(form.find('[name=discovery_interval_minutes]').val()) || 2
       kc_teams_directory_deactivate_stale:      form.find('[name=deactivate_stale]').is(':checked')

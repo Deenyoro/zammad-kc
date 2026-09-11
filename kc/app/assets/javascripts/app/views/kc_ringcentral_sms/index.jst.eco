@@ -32,6 +32,16 @@
       </tr>
       <tr>
         <td>
+          <span><%- @T('Context Messages') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Earlier messages of the conversation attached as an internal note when the integration opens a new ticket. 0 = off.') %></p>
+        </td>
+        <td>
+          <input type="number" name="context_messages" class="form-control form-control--small" value="<%= @settings.context_messages %>" min="0" max="50" style="width: 80px;">
+          <span class="text-muted"><%- @T('messages') %></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
           <span><%- @T('Poll Interval') %></span>
           <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Fallback polling frequency for missed webhooks.') %></p>
         </td>
