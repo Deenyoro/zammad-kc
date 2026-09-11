@@ -345,12 +345,13 @@ module Kc
     #          per_page (default 100), type ('Voice'), page (1-based)
     # NOTE: records are returned newest-first; use the page parameter to
     # paginate — advancing dateFrom past the newest record does NOT work.
-    def get_call_log(direction: nil, result: nil, date_from: nil, per_page: 100, type: nil, page: nil)
+    def get_call_log(direction: nil, result: nil, date_from: nil, date_to: nil, per_page: 100, type: nil, page: nil, view: 'Simple')
       url = "#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/call-log"
-      params = { perPage: per_page, view: 'Simple' }
+      params = { perPage: per_page, view: view }
       params[:direction] = direction if direction.present?
       params[:result]    = result    if result.present?
       params[:dateFrom]  = date_from if date_from.present?
+      params[:dateTo]    = date_to   if date_to.present?
       params[:type]      = type      if type.present?
       params[:page]      = page      if page.present?
 
