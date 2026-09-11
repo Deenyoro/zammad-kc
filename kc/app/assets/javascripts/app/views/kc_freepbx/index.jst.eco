@@ -27,6 +27,17 @@
     </tr>
     <tr>
       <td>
+        <span><%- @T('Log Every Call as a Closed Ticket') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('File inbound calls that reached FreePBX directly (not through RingCentral) as closed phone tickets for reporting. Calls forwarded from RingCentral are logged by the RingCentral integration, including which extension answered.') %></p>
+      </td>
+      <td>
+        <label class="inline-label">
+          <input type="checkbox" name="call_history_ticket" value="true" <% if @settings.call_history_ticket: %>checked<% end %>>
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <span><%- @T('Missed Call Ticket Title') %></span>
         <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Use {phone} for the caller phone number.') %></p>
       </td>
