@@ -68,7 +68,16 @@ class Kc::BackfillRingcentralSmsJob < ApplicationJob
                               "#{message_data[:created_at]} to #{plan[:others].join(',')}" \
                               "#{plan[:ticket_id] ? " -> ticket #{plan[:ticket_id]}" : ''} " \
                               "#{message_data[:text].to_s.strip[0, 40].inspect} att=#{message_data[:attachments].size}"
-            driver.process_outbound(channel.options, message_data, channel, mode: :backfill) unless dry_run
+            next if dry_run
+
+            # Filing history must not surface the ticket as freshly updated in
+            # every overview, nor stretch the thread window it is matched by.
+            # Restore after the transaction: its commit hooks touch the ticket.
+            previous_updated_at = plan[:action] == :attach ? Ticket.where(id: plan[:ticket_id]).pick(:updated_at) : nil
+            driver.process_outbound(channel.options, message_data, channel, mode: :backfill)
+            if previous_updated_at
+              Ticket.where(id: plan[:ticket_id]).update_all(updated_at: previous_updated_at) # rubocop:disable Rails/SkipsModelValidations
+            end
           end
         else
           next if message_data[:from_phone].blank?
