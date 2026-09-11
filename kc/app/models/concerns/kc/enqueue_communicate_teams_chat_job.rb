@@ -34,6 +34,9 @@ module Kc
       sender = Ticket::Article::Sender.find_by(id: sender_id)
       return if sender.nil? || sender.name != 'Agent'
 
+      # Skip delivery when flagged (ticket created for the record only)
+      return if preferences&.dig(:teams_chat, :skip_send)
+
       # safe_constantize guards against missing job class after upstream changes
       job_class = 'Kc::CommunicateTeamsChatJob'.safe_constantize
       if job_class.nil?

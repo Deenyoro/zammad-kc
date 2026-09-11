@@ -189,12 +189,14 @@ class Kc::NewConversationsController < ApplicationController
   #   email         [String] recipient's email (optional)
   #   body          [String] message text (required)
   #   group_id      [Integer] destination group (optional)
+  #   skip_send     [Boolean] if true, create the ticket without sending the message (optional)
   def teams
     teams_user_id = params[:teams_user_id].to_s.strip
     display_name  = params[:display_name].to_s.strip
     email         = params[:email].to_s.strip.presence
     body          = params[:body].to_s.strip
     group_id      = params[:group_id]
+    skip_send     = ActiveModel::Type::Boolean.new.cast(params[:skip_send])
 
     if teams_user_id.blank? || display_name.blank? || body.blank?
       render json: { error: 'teams_user_id, display_name, and body are required' }, status: :unprocessable_content
@@ -270,6 +272,12 @@ class Kc::NewConversationsController < ApplicationController
                      Ticket::Article::Type.first
       sender = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
 
+      # The article is always a teams_chat_message so the ticket routes
+      # replies to Teams; with skip_send the delivery concern leaves it
+      # unsent (ticket created for the record only).
+      article_prefs = { teams_chat: { chat_id: chat_id, channel_id: channel.id } }
+      article_prefs[:teams_chat][:skip_send] = true if skip_send
+
       Ticket::Article.create!(
         ticket_id:     ticket.id,
         type_id:       article_type&.id,
@@ -280,12 +288,7 @@ class Kc::NewConversationsController < ApplicationController
         body:          body,
         content_type:  'text/plain',
         internal:      false,
-        preferences:   {
-          teams_chat: {
-            chat_id:    chat_id,
-            channel_id: channel.id,
-          },
-        },
+        preferences:   article_prefs,
         updated_by_id: current_user.id,
         created_by_id: current_user.id,
       )

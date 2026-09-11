@@ -53,6 +53,7 @@ const { notify } = useNotifications()
 const body = ref('')
 const channelId = ref('')
 const groupId = ref('')
+const skipSend = ref(false)
 
 // Search state
 const searchQuery = ref('')
@@ -171,6 +172,7 @@ const submit = async () => {
         body: body.value.trim(),
         group_id: groupId.value || undefined,
         channel_id: Number(channelId.value),
+        skip_send: skipSend.value,
       }),
     })
 
@@ -326,6 +328,19 @@ watch(searchQuery, onSearchInput)
         />
       </div>
 
+      <!-- Skip send toggle -->
+      <div class="flex items-center gap-2">
+        <input
+          id="kc-teams-skip-send"
+          v-model="skipSend"
+          type="checkbox"
+          class="rounded"
+        />
+        <label for="kc-teams-skip-send" class="text-sm">
+          {{ $t("Don't send initial message (create ticket only)") }}
+        </label>
+      </div>
+
       <!-- Submit -->
       <div>
         <button
@@ -334,7 +349,7 @@ watch(searchQuery, onSearchInput)
           class="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
           @click="submit"
         >
-          {{ submitting ? $t('Creating...') : $t('Send Message') }}
+          {{ submitting ? $t('Creating...') : (skipSend ? $t('Create Ticket') : $t('Send Message')) }}
         </button>
       </div>
     </div>
