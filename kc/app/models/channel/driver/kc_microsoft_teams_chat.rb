@@ -62,6 +62,16 @@ class Channel::Driver::KcMicrosoftTeamsChat
     # own text belongs. When the agent started the conversation there is no
     # ticket yet, so create one from the chat's members.
     if message_data[:is_agent]
+      # The poller re-reads each chat's last 20 messages every cycle, so an
+      # agent message from weeks ago that was never filed would otherwise be
+      # filed now — bumping a long-idle ticket (and its Discord trigger) with
+      # history nobody asked for. Live capture is for recent messages only;
+      # Kc::BackfillRingcentralSmsJob-style explicit backfills own the past.
+      if stale_agent_message?(message_data)
+        Rails.logger.debug { "KC Teams Chat: Skipping agent message #{message_data[:message_id]} — older than #{AGENT_CAPTURE_MAX_AGE_HOURS}h" }
+        return nil
+      end
+
       ticket = nil
       conversation_key = build_conversation_key(channel, message_data)
       ticket = find_existing_ticket(conversation_key, 0) if conversation_key.present?
@@ -140,6 +150,18 @@ class Channel::Driver::KcMicrosoftTeamsChat
   end
 
   private
+
+  # Agent messages older than this are not captured by the live poll/webhook.
+  AGENT_CAPTURE_MAX_AGE_HOURS = 24
+
+  def stale_agent_message?(message_data)
+    raw = message_data[:created_at]
+    return false if raw.blank? # unknown age: keep upstream behaviour (capture)
+
+    Time.zone.parse(raw.to_s) < AGENT_CAPTURE_MAX_AGE_HOURS.hours.ago
+  rescue ArgumentError, TypeError
+    false
+  end
 
   # True when the Graph message id belongs to an image the Teams communicate
   # job sent for one of this ticket's agent articles.
@@ -259,6 +281,10 @@ class Channel::Driver::KcMicrosoftTeamsChat
   # Ticket for a chat the agent started from Teams. The customer is the first
   # chat member who is neither the connected account nor the sender.
   def create_ticket_for_agent_message(channel, message_data, transaction_class)
+    # Meeting chats are calendar artefacts, not support conversations, and a
+    # group chat has no single customer: only 1:1 chats get a ticket this way.
+    return nil if message_data[:chat_type].to_s != 'oneOnOne' || message_data[:chat_id].to_s.start_with?('19:meeting_')
+
     members   = Array(message_data[:chat_members]).map { |m| m.to_h.with_indifferent_access }
     connected = channel.options.with_indifferent_access[:user_id].to_s
     sender    = message_data[:from_user_id].to_s
