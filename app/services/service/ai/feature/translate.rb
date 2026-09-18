@@ -4,24 +4,31 @@
 # belongs to - the caller passes it as `object`, so the translation is stored per object and
 # target locale.
 class Service::AI::Feature::Translate < Service::AI::Feature
+
   def self.identifier
-    'translate'
+    Service::ContentTranslation::StoredTranslation::IDENTIFIER
   end
 
   def self.lookup_attributes(context_data, locale)
-    {
-      identifier:,
-      locale:,
-      related_object: context_data[:object],
-    }
+    Service::ContentTranslation::StoredTranslation.lookup_attributes(context_data[:object], locale)
   end
 
-  # A content digest instead of a timestamp, because an object can be touched without its content
-  # changing. Deliberately no producing service in the version: a translation of the same content
-  # is reused whichever service made it, so switching the configured service costs nothing. Which
-  # service made it is stored with the result instead.
   def self.lookup_version(context_data, _locale)
-    Digest::SHA256.hexdigest("#{context_data[:html]}\n#{context_data[:body]}")
+    Service::ContentTranslation::StoredTranslation.version(context_data[:body], context_data[:html], context_data[:backend])
+  end
+
+  # The same digest as an SQL expression, for looking up the translations of many objects in one
+  # query. Kept next to the Ruby version so the two cannot drift apart - the parts have to be
+  # concatenated in the order Service::ContentTranslation::StoredTranslation.version uses.
+  #
+  # @param backend [String, NilClass] `backend_name` of the service asking
+  # @param html_sql [String] a boolean SQL expression telling whether the content is HTML
+  # @param body_sql [String] the SQL expression of the content
+  # @return [String]
+  def self.lookup_version_sql(backend, html_sql, body_sql)
+    backend_sql = ActiveRecord::Base.connection.quote(backend)
+
+    "encode(sha256(convert_to(concat(#{backend_sql}, E'\\n', CASE WHEN #{html_sql} THEN 'true' ELSE 'false' END, E'\\n', #{body_sql}), 'UTF8')), 'hex')"
   end
 
   def persistable?
@@ -50,13 +57,28 @@ class Service::AI::Feature::Translate < Service::AI::Feature
     body
   end
 
-  # A stored translation is reused across services, so the caller has to be able to tell which one
-  # actually made it - and that is not the content, it is how the content came about.
-  def result_metadata
-    { 'backend' => context_data[:backend] }
+  private
+
+  # Through the store rather than through the feature base: a backend without an AI feature writes
+  # the same rows the same way.
+  def save_result(result, ai_analytics_run:)
+    Service::ContentTranslation::StoredTranslation.save(
+      **store_key,
+      translation:   result,
+      metadata:      provider.metadata,
+      analytics_run: ai_analytics_run,
+    )
   end
 
-  private
+  def store_key
+    {
+      object:  context_data[:object],
+      locale:,
+      content: context_data[:body],
+      html:    context_data[:html],
+      backend: context_data[:backend],
+    }
+  end
 
   def html?
     context_data[:html].present?
