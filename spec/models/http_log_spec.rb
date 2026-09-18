@@ -86,6 +86,21 @@ AAAFoAAAAAAAAAkAAAAAEAAACQAAAAAQADk=" })
       end
     end
 
+    # DeepL authenticates with a scheme of its own rather than with Bearer or Basic.
+    context 'when the input includes a DeepL authorization header' do
+      it 'masks the key' do
+        header = 'Authorization: DeepL-Auth-Key 1234abcd-ef56-7890-abcd-ef1234567890:fx'
+
+        expect(described_class.mask_sensitive_data(header)).to eq('Authorization: DeepL-Auth-Key [FILTERED]')
+      end
+
+      it 'keeps what follows the header' do
+        header = "Authorization: DeepL-Auth-Key secret-key\nContent-Type: application/json"
+
+        expect(described_class.mask_sensitive_data(header)).to eq("Authorization: DeepL-Auth-Key [FILTERED]\nContent-Type: application/json")
+      end
+    end
+
     context 'when the input includes sensitive query parameters' do
       it 'masks only the sensitive query parameter values' do
         url = 'https://example.com/api?api_key=abc123&other=param'
@@ -117,6 +132,11 @@ AAAFoAAAAAAAAAkAAAAAEAAACQAAAAAQADk=" })
       http_log.facility = 'unknown'
       expect(http_log).not_to be_valid
       expect(http_log.errors[:facility]).to include('is not included in the list')
+    end
+
+    it 'is valid with the translation facility' do
+      http_log.facility = 'content_translation'
+      expect(http_log).to be_valid
     end
   end
 
@@ -204,6 +224,7 @@ AAAFoAAAAAAAAAkAAAAAEAAACQAAAAAQADk=" })
       expect(described_class.facility_to_permission('GitHub')).to eq('admin.integration')
       expect(described_class.facility_to_permission('webhook')).to eq('admin.webhook')
       expect(described_class.facility_to_permission('cti')).to eq('admin.integration')
+      expect(described_class.facility_to_permission('content_translation')).to eq('admin.integration')
       expect(described_class.facility_to_permission('AI::Provider')).to eq('admin.ai_feedback_logs')
       expect(described_class.facility_to_permission('MicrosoftGraph')).to eq('admin.channel_microsoft_graph')
       expect(described_class.facility_to_permission('WhatsApp::Business')).to eq('admin.channel_whatsapp')
@@ -223,7 +244,7 @@ AAAFoAAAAAAAAAkAAAAAEAAACQAAAAAQADk=" })
     it 'returns a hash grouped by permissions with facilities' do
       expect(described_class.facilities_by_permission).to include(
         'admin.ai_feedback_logs'        => include('AI::Provider'),
-        'admin.integration'             => include('GitHub'),
+        'admin.integration'             => include('GitHub', 'content_translation'),
         'admin.security'                => include('SAML'),
         'admin.webhook'                 => include('webhook'),
         'admin.channel_microsoft_graph' => include('MicrosoftGraph'),

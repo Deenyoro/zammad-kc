@@ -36,18 +36,23 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
 
   let(:variables) { { articleId: gql.id(article), targetLocale: target_locale } }
 
-  def store_translation(content, backend: 'ai')
-    AI::StoredResult.create!(
-      content:,
-      metadata:         { 'backend' => backend },
-      version:          Service::AI::Feature::Translate.lookup_version({ html: true, body: article.body }, locale),
-      ai_analytics_run: create(:ai_analytics_run, related_object: article),
-      **Service::AI::Feature::Translate.lookup_attributes({ object: article }, locale)
+  def store_translation(translation)
+    Service::ContentTranslation::StoredTranslation.save(
+      object:        article,
+      locale:,
+      content:       article.body,
+      html:          true,
+      backend:       'ai',
+      translation:,
+      analytics_run: create(:ai_analytics_run, related_object: article),
     )
   end
 
   context 'when logged in as an agent', authenticated_as: :agent do
-    before { setup_ai_provider }
+    before do
+      setup_ai_provider
+      setup_content_translation
+    end
 
     context 'with a stored translation' do
       before { store_translation('<p>Hallo Welt.</p>') }
@@ -84,13 +89,21 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
       end
     end
 
-    context 'with a translation stored by another service' do
-      before { store_translation('<p>Hallo Welt.</p>', backend: 'deepl') }
+    context 'with a stored translation referencing an inline image' do
+      let(:cid)     { "#{SecureRandom.uuid}@zammad.example.com" }
+      let(:article) { create(:ticket_article, ticket:, body: "<p>Hello</p><img src=\"cid:#{cid}\">", content_type: 'text/html') }
 
-      it 'reuses it and names the service that produced it' do
+      before do
+        create(:store, object: 'Ticket::Article', o_id: article.id, data: 'fake', filename: 'inline.jpg',
+                       preferences: { 'Content-Type' => 'image/jpeg', 'Content-ID' => "<#{cid}>", 'Content-Disposition' => 'inline' })
+        store_translation("<p>Hallo</p><img src=\"cid:#{cid}\">")
+      end
+
+      it 'answers with the image URL resolved, as in the display body of the article' do
         gql.execute(query, variables:)
 
-        expect(gql.result.data[:translation]).to include('backend' => 'deepl')
+        expect(gql.result.data[:translation]['content'])
+          .to eq("<p>Hallo</p><img src=\"/api/v1/ticket_attachment/#{ticket.id}/#{article.id}/#{article.attachments.first.id}?view=inline\">")
       end
     end
 
@@ -130,6 +143,61 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
         gql.execute(query, variables:)
 
         expect(gql.result.error_message).to eq('AI provider is not configured.')
+      end
+    end
+
+    context 'with a translation service that answers in place' do
+      let(:url) { 'https://translate.example.com' }
+
+      before do
+        stub_request(:get, "#{url}/languages")
+          .to_return(status: 200, body: [{ code: 'en' }, { code: 'de' }].to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:post, "#{url}/translate")
+          .to_return(status: 200, body: { translatedText: '<p>Hallo Welt.</p>' }.to_json, headers: { 'Content-Type' => 'application/json' })
+
+        setup_content_translation(provider: 'libre_translate', url:)
+      end
+
+      it 'answers with the translation' do
+        gql.execute(query, variables:)
+
+        expect(gql.result.data[:translation])
+          .to include('content' => '<p>Hallo Welt.</p>', 'backend' => 'libre_translate', 'translated' => true)
+      end
+
+      it 'answers without an analytics run, there being no LLM behind it' do
+        gql.execute(query, variables:)
+
+        expect(gql.result.data[:analytics][:run]).to be_nil
+      end
+    end
+
+    # LibreTranslate answers in place rather than through the subscription, so the mutation is where
+    # a failed translation becomes visible to the client.
+    context 'with a target locale the translation service does not support' do
+      let(:url) { 'https://translate.example.com' }
+
+      before do
+        # Saving the config runs the connection test, so the instance has to answer beforehand -
+        # the listing and the translation it probes with.
+        stub_request(:get, "#{url}/languages")
+          .to_return(status: 200, body: [{ code: 'en' }, { code: 'fr' }].to_json, headers: { 'Content-Type' => 'application/json' })
+        stub_request(:post, "#{url}/translate")
+          .to_return(status: 200, body: { translatedText: 'Zammad' }.to_json, headers: { 'Content-Type' => 'application/json' })
+
+        setup_content_translation(provider: 'libre_translate', url:)
+      end
+
+      it 'fails with the outcome instead of answering with the article' do
+        gql.execute(query, variables:)
+
+        expect(gql.result.error_type).to eq(Service::ContentTranslation::Backend::Base::UnsupportedLanguageError)
+      end
+
+      it 'names the locale in the error' do
+        gql.execute(query, variables:)
+
+        expect(gql.result.error_message).to include(target_locale)
       end
     end
   end
