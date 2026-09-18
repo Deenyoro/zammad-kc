@@ -39,6 +39,26 @@ The CoffeeScript frontend uses REST controllers.
 - Never edit translation files (`i18n/*.po`) directly —
   translations are managed via translations.zammad.org.
 
+### Code Comments
+
+Comment only what the code cannot say itself: a non-obvious _why_, a
+workaround with its reason, a spec/protocol quirk, or a deliberate
+deviation from a pattern. Otherwise add no comment — clear naming and
+small methods are preferred over explanation.
+
+- One or two short lines, in the style of the surrounding file.
+- Never restate what the next line does, summarise a block, label
+  sections (`# --- setup ---`), or narrate a change (`# new`, `# was …`,
+  `# fixed`).
+- Keep out reasoning that belongs in the commit message, the issue or
+  the MR description.
+- Never reference an issue from an internal repository (`coordination-*`) —
+  this repository is publicly mirrored. Reference a public `zammad/zammad`
+  issue, or state the reason without a link.
+- Never mark a fix for a security vulnerability as such — this repository
+  is publicly mirrored, and the comment points at the vulnerable code in
+  installations that are not updated yet.
+
 ### UI Principles
 
 - Icon-only buttons need `v-tooltip` supplying the accessible name.
@@ -67,6 +87,32 @@ pnpm lint                                   # Run all linters
 pnpm generate-graphql-api                   # Regenerate GraphQL types after schema changes
 pnpm generate-setting-types                 # Regenerate Config types after setting changes
 ```
+
+### Development stack
+
+A browser-clickable instance for this checkout. Start it via `bin/dev` rather
+than `forego` directly, and wait for it to answer before using it.
+
+```bash
+RAILS_ENV=development bundle exec rake db:create zammad:bootstrap:reset  # once per checkout
+bin/dev                                                                  # does not exit; run it in the background
+```
+
+It serves on `localhost:3000`, with the websocket server on `6042` and Vite on
+`3036`. Export `ZAMMAD_RAILS_PORT`, `ZAMMAD_WEBSOCKET_PORT` and
+`VITE_RUBY_PORT` before `bin/dev` to move them — the whole stack has to agree
+on them, so export, do not set them per process.
+
+`zammad:bootstrap:reset` migrates, seeds and runs the auto wizard, which creates
+`admin@example.com` / `test`. Plain `zammad:db:init` skips the wizard and leaves
+the browser on the getting-started screen. Never run `zammad:bootstrap:init` or
+`zammad:setup:db_config`: they overwrite `config/database.yml` and prompt on
+stdin, which hangs a non-interactive session.
+
+The test suite uses its own ports (`3001` and `6043`) and its own database, so
+it can run while the stack is up. Several checkouts, however, share the
+development database and Redis — only one stack per machine unless
+`DATABASE_URL` and `REDIS_URL` say otherwise.
 
 ## Development Lifecycle
 
