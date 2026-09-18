@@ -959,6 +959,25 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
     ZammadChat.prototype.initialQueueDelay = 10000;
 
     ZammadChat.prototype.translations = {
+      'bn': {
+        '<strong>Chat</strong> with us!': 'আমাদের সাথে <strong>চ্যাট</strong> করুন!',
+        'All colleagues are busy.': 'সব সহকর্মী ব্যস্ত আছেন।',
+        'Chat closed by %s': '%s দ্বারা চ্যাট বন্ধ করা হয়েছে',
+        'Compose your message…': 'আপনার বার্তা লিখুন…',
+        'Connecting': 'সংযুক্ত হচ্ছে',
+        'Connection lost': 'সংযোগ বিচ্ছিন্ন হয়েছে',
+        'Connection re-established': 'সংযোগ পুনঃস্থাপিত হয়েছে',
+        'Offline': 'অফলাইন',
+        'Online': 'অনলাইন',
+        'Scroll down to see new messages': 'নতুন বার্তা দেখতে নিচে স্ক্রল করুন',
+        'Send': 'পাঠান',
+        'Since you didn\'t respond in the last %s minutes your conversation was closed.': 'আপনি গত %s মিনিটে সাড়া না দেওয়ায় আপনার কথোপকথন বন্ধ করে দেওয়া হয়েছে।',
+        'Since you didn\'t respond in the last %s minutes your conversation with <strong>%s</strong> was closed.': 'আপনি গত %s মিনিটে সাড়া না দেওয়ায় <strong>%s</strong>-এর সাথে আপনার কথোপকথন বন্ধ করে দেওয়া হয়েছে।',
+        'Start new conversation': 'নতুন কথোপকথন শুরু করুন',
+        'Today': 'আজ',
+        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': 'আমরা দুঃখিত, একটি স্লট পেতে প্রত্যাশার চেয়ে বেশি সময় লাগছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন অথবা আমাদের একটি ইমেল পাঠান। ধন্যবাদ!',
+        'You are on waiting list position <strong>%s</strong>.': 'আপনি অপেক্ষমাণ তালিকায় <strong>%s</strong> নম্বর অবস্থানে আছেন।'
+      },
       'ca': {
         '<strong>Chat</strong> with us!': '<strong>Xateja</strong> amb nosaltres!',
         'All colleagues are busy.': 'Tot el personal està ocupat.',
@@ -1167,6 +1186,25 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
         'Today': 'Oggi',
         'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': 'Siamo spiacenti, ci vuole più tempo del previsto per ottenere uno spazio libero. Riprova più tardi o inviaci un\'e-mail. Grazie!',
         'You are on waiting list position <strong>%s</strong>.': 'Sei alla posizione <strong>%s</strong> della lista di attesa.'
+      },
+      'ja': {
+        '<strong>Chat</strong> with us!': '<strong>チャット</strong>でお問い合わせください！',
+        'All colleagues are busy.': 'すべての担当者が対応中です。',
+        'Chat closed by %s': '%sによってチャットが終了しました',
+        'Compose your message…': 'メッセージを入力…',
+        'Connecting': '接続中',
+        'Connection lost': '接続が切断されました',
+        'Connection re-established': '接続が再確立されました',
+        'Offline': 'オフライン',
+        'Online': 'オンライン',
+        'Scroll down to see new messages': '下にスクロールして、新規メッセージを見て下さい',
+        'Send': '送信',
+        'Since you didn\'t respond in the last %s minutes your conversation was closed.': '%s分間応答がなかったため、会話を終了しました。',
+        'Since you didn\'t respond in the last %s minutes your conversation with <strong>%s</strong> was closed.': '%s分間応答がなかったため、<strong>%s</strong>との会話を終了しました。',
+        'Start new conversation': '新しい会話を開始する',
+        'Today': '今日',
+        'We are sorry, it is taking longer than expected to get a slot. Please try again later or send us an email. Thank you!': '申し訳ございませんが、空き枠の確保に予想以上の時間がかかっています。後でもう一度お試しいただくか、メールでお問い合わせください。ありがとうございます！',
+        'You are on waiting list position <strong>%s</strong>.': 'あなたは待ち行列の<strong>%s</strong>番目です。'
       },
       'ko': {
         '<strong>Chat</strong> with us!': '우리와 <strong>채팅</strong> !',
