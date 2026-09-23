@@ -1,3 +1,60 @@
+# Zammad (KC fork) image, built on GitLab and mirrored to GHCR.
+#
+# Ported from .github/workflows/build-and-push.yml. Builds on a push to develop
+# (producing develop and develop-<sha> like before), on a v* tag, or manually.
+#
+# Patch policy: CI VERIFIES, it never rewrites the repo. If upstream moved the
+# code out from under kc/patches/*.patch, the build fails and asks a human to
+# run kc/script/heal-patches.sh, review the result and commit it. Builds stay
+# reproducible and the pipeline needs no write access to the source.
+
 include:
-  - '.gitlab/ci/__includes__/*.yml'
-  - '.gitlab/ci/*.yml'
+  - project: dean/ci-templates
+    ref: main
+    file: /docker.yml
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/
+    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "api"
+
+verify-patches:
+  stage: test
+  tags: [linux]
+  image: alpine:3.20
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    - apk add --no-cache bash git patch >/dev/null
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    # heal-patches.sh re-anchors drifted patches in the working tree. With no
+    # HEAL_PUSH_BRANCH it changes nothing outside this job, so a dirty
+    # kc/patches afterwards means the committed patches no longer apply.
+    - bash kc/script/heal-patches.sh
+    - |
+      if ! git diff --quiet -- kc/patches; then
+        echo
+        echo "Patches drifted from upstream and were re-anchored for this build only."
+        git --no-pager diff --stat -- kc/patches
+        echo
+        echo "Fix it locally, review the result and commit it:"
+        echo "    bash kc/script/heal-patches.sh && git add kc/patches && git commit"
+        exit 1
+      fi
+    - echo "All patches apply exactly."
+
+build:
+  extends: .docker-build
+  needs: [verify-patches]
+  variables:
+    IMAGE: zammad-kc
+    CONTEXT: .
+    # The Dockerfile refuses to build without a real commit sha.
+    BUILD_ARGS: --build-arg COMMIT_SHA=$CI_COMMIT_SHA
+    # Rails assets, node modules and gems need more room than the defaults.
+    KUBERNETES_CPU_LIMIT: "16"
+    KUBERNETES_MEMORY_LIMIT: 32Gi
+    KUBERNETES_EPHEMERAL_STORAGE_LIMIT: 120Gi
+  timeout: 2h
