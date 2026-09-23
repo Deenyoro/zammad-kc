@@ -499,6 +499,49 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
     end
   end
 
+  context 'when using the browser back button on the ticket create screen' do
+    it 'returns to the previous screen without spawning another draft' do
+      visit '#dashboard'
+
+      visit '#ticket/create'
+
+      within(:active_content) do
+        find('[name=title]').fill_in with: 'Title'
+      end
+
+      wait.until { find(:task_active)['data-key'].present? }
+
+      page.go_back
+
+      expect(page).to have_current_path(%r{\#dashboard\z}, url: true)
+      expect(page).to have_css('.tasks .task', count: 1)
+    end
+
+    # A direct load, e. g. a bookmark, leaves no previous route behind. It cannot be visited
+    # as such here, because the redirect then happens while the page is still loading and the
+    # browser replaces the entry on its own; only a boot that finishes later keeps it. The
+    # route history it leaves behind is therefore set up explicitly.
+    it 'returns to the previous page without spawning another draft on a direct entry' do
+      visit '#dashboard'
+
+      wait.until { page.evaluate_script("App.Config.get('History').length").positive? }
+
+      page.execute_script("App.Config.set('History', [])")
+      page.execute_script("window.location.hash = '#ticket/create'")
+
+      within(:active_content) do
+        find('[name=title]').fill_in with: 'Title'
+      end
+
+      wait.until { find(:task_active)['data-key'].present? }
+
+      page.go_back
+
+      expect(page).to have_current_path(%r{\#dashboard\z}, url: true)
+      expect(page).to have_css('.tasks .task', count: 1)
+    end
+  end
+
   describe 'customer selection to check the field search' do
     before do
       create(:customer, active: true)
@@ -1640,6 +1683,92 @@ RSpec.describe 'Ticket Create', time_zone: 'Europe/London', type: :system do
       find('.richtext-content').send_keys 'test'
       click '.js-submit'
       wait.until { Ticket.last.group_id == group_2.id }
+    end
+  end
+
+  describe 'Core workflow ignores default value if select attribute options are mutated #6370', authenticated_as: :authenticate, db_strategy: :reset do
+    let(:field_name) { SecureRandom.hex(10) }
+    let(:screens) do
+      {
+        create_middle: { '-all-' => { shown: false, required: false } },
+        edit:          { '-all-' => { shown: true, required: false } },
+      }
+    end
+
+    def authenticate
+      create(field_factory, object_name: 'Ticket', name: field_name, display: field_name, screens: screens, default: default_value)
+      ObjectManager::Attribute.migration_execute
+
+      create(:core_workflow,
+             object:  'Ticket',
+             perform: {
+               "ticket.#{field_name}": {
+                 operator:      %w[show remove_option],
+                 show:          'true',
+                 remove_option: removed_options,
+               },
+             })
+
+      true
+    end
+
+    before do
+      visit 'ticket/create'
+      wait_for_core_workflow
+    end
+
+    context 'with a select attribute' do
+      let(:field_factory) { :object_manager_attribute_select }
+      let(:default_value) { 'key_2' }
+
+      shared_examples 'preselecting the default value' do |removed_option|
+        it 'preselects the default value of the shown field' do
+          expect(page).to have_css("select[name='#{field_name}']", visible: :visible)
+          expect(page).to have_no_css("select[name='#{field_name}'] option[value='#{removed_option}']")
+          expect(find("select[name='#{field_name}']").value).to eq('key_2')
+        end
+      end
+
+      context 'when a regular option is removed' do
+        let(:removed_options) { ['key_3'] }
+
+        include_examples 'preselecting the default value', 'key_3'
+      end
+
+      context 'when the empty option is removed' do
+        let(:removed_options) { [''] }
+
+        include_examples 'preselecting the default value', ''
+      end
+    end
+
+    context 'with a multi tree select attribute' do
+      let(:field_factory) { :object_manager_attribute_multi_tree_select }
+      let(:default_value) { ['Incident', 'Service request'] }
+
+      shared_examples 'preselecting the default values' do |removed_option|
+        it 'preselects the default values of the shown field' do
+          expect(page).to have_css("div[data-attribute-name='#{field_name}'] input[name='#{field_name}_completion']", visible: :visible)
+          expect(page).to have_no_css("div[data-attribute-name='#{field_name}'] .js-optionsList li[data-value='#{removed_option}']", visible: :all) if removed_option
+          expect(page).to have_css("div[data-attribute-name='#{field_name}'] span.token-label", text: 'Incident')
+          expect(page).to have_css("div[data-attribute-name='#{field_name}'] span.token-label", text: 'Service request')
+          expect(find("select[name='#{field_name}']", visible: :all).value).to contain_exactly('Incident', 'Service request')
+        end
+      end
+
+      context 'when a regular option is removed' do
+        let(:removed_options) { ['Change request'] }
+
+        include_examples 'preselecting the default values', 'Change request'
+      end
+
+      # tree selects always keep the null option in their list, so only the
+      # re-rendering triggered by the option change can be observed here.
+      context 'when the empty option is removed' do
+        let(:removed_options) { [''] }
+
+        include_examples 'preselecting the default values'
+      end
     end
   end
 end
