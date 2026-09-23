@@ -32,6 +32,13 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   # from here.
   HISTORY_LAG = 20.minutes
 
+  # A missed call has finished ringing, and so has its CDR row, well inside
+  # this margin. A clean poll may move the watermark up to PBX time minus it
+  # even when it found nothing; otherwise the watermark sits at the last
+  # missed call forever, every poll re-reads everything since, and once the
+  # connector's 1000-call cap is reached newer calls are never seen at all.
+  SETTLE_MARGIN = 15.minutes
+
   def perform
     Channel.where(area: 'Freepbx::Account', active: true).find_each do |channel|
       poll_channel(channel) if feature_enabled?
@@ -80,35 +87,54 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
       return
     end
 
-    return if calls.blank?
-
-    Rails.logger.info "KC FreePBX Missed Calls: Found #{calls.size} missed call(s) for channel #{channel.id}"
+    if calls.present?
+      Rails.logger.info "KC FreePBX Missed Calls: Found #{calls.size} missed call(s) for channel #{channel.id}"
+    end
 
     # Advance only up to the last row we actually handled. A row that blows up
     # stops the watermark where it is, so the next run re-reads it instead of
     # silently dropping a missed call; dedup keeps the rows before it from
     # being handled twice.
     watermark = nil
+    failed    = false
     calls.each do |call|
       call = call.with_indifferent_access
       begin
         process_call(channel, call) if !before_connection?(channel, call)
       rescue StandardError => e
         Rails.logger.error "KC FreePBX Missed Calls: Failed to process call #{call[:uniqueid]}: #{e.message}"
+        failed = true
         break
       end
       watermark = call[:calldate] if call[:calldate].present?
     end
 
+    watermark = [watermark, settled_mark(api)].compact.max if !failed
     return if watermark.blank?
 
     channel.with_lock do
       channel.reload
+      current = channel.options[:last_missed_call_poll_at].to_s
+      next if current.present? && watermark <= current
+
       channel.options[:last_missed_call_poll_at] = watermark
       channel.save!
     end
   rescue StandardError => e
     Rails.logger.error "KC FreePBX Missed Calls: Failed to update watermark for channel #{channel.id}: #{e.message}"
+  end
+
+  # PBX-local "now minus SETTLE_MARGIN", in the connector's calldate format so
+  # it compares and filters exactly like a CDR watermark. The connector's
+  # clock carries its own UTC offset, so no timezone is assumed here.
+  def settled_mark(api)
+    stamp = api.health.to_h.with_indifferent_access[:time]
+    return nil if stamp.blank?
+
+    (Time.iso8601(stamp.to_s) - SETTLE_MARGIN).strftime('%Y-%m-%d %H:%M:%S')
+  rescue StandardError => e
+    Rails.logger.warn "KC FreePBX Missed Calls: PBX clock unavailable, watermark not advanced: #{e.message}"
+    nil
   end
 
   # ---- call history ------------------------------------------------------
@@ -135,7 +161,6 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
 
     legs = api.calls(since_minutes: ((Time.current - since) / 60).ceil + 5, direction: 'inbound', limit: 5000)
                .map(&:with_indifferent_access)
-    return if legs.blank?
 
     held  = nil
     calls = legs.group_by { |l| l[:linkedid].presence || l[:uniqueid] }
