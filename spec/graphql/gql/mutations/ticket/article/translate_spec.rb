@@ -11,8 +11,12 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
 
   let(:query) do
     <<~MUTATION
-      mutation ticketArticleTranslate($articleId: ID!, $targetLocale: String!, $force: Boolean) {
-        ticketArticleTranslate(articleId: $articleId, targetLocale: $targetLocale, force: $force) {
+      mutation ticketArticleTranslate($articleId: ID!, $targetLocale: String!, $force: Boolean, $regenerationOfId: ID) {
+        ticketArticleTranslate(articleId: $articleId, targetLocale: $targetLocale, force: $force, regenerationOfId: $regenerationOfId) {
+          article {
+            id
+            translation(targetLocale: $targetLocale) { content backend translated }
+          }
           translation {
             content
             backend
@@ -57,23 +61,24 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
     context 'with a stored translation' do
       before { store_translation('<p>Hallo Welt.</p>') }
 
-      it 'returns it without a background job' do
+      it 'returns it without a background job or a second stored-result lookup' do
+        allow(Service::ContentTranslation::TicketArticle).to receive(:stored_translations).and_call_original
         expect { gql.execute(query, variables:) }.not_to have_enqueued_job(ContentTranslationJob)
 
         expect(gql.result.data[:translation])
           .to include('content' => '<p>Hallo Welt.</p>', 'backend' => 'ai', 'translated' => true)
+        expect(gql.result.data[:article][:translation]).to eq(gql.result.data[:translation])
+        expect(Service::ContentTranslation::TicketArticle).not_to have_received(:stored_translations)
+        expect(gql.result.data[:analytics][:run]).to include('id' => be_present, 'relatedObject' => { 'id' => gql.id(ticket) })
+        expect(AI::Analytics::Usage.where(user: agent)).to be_empty
       end
 
-      it 'returns the analytics run for the feedback widget' do
+      it 'keeps a stored manual translation available when automatic translation skips the article' do
+        article.update!(detected_language: 'de')
         gql.execute(query, variables:)
 
-        expect(gql.result.data[:analytics][:run]).to include('id' => be_present)
-      end
-
-      it 'exposes the run as related to the ticket of the article' do
-        gql.execute(query, variables:)
-
-        expect(gql.result.data[:analytics][:run]).to include('relatedObject' => { 'id' => gql.id(ticket) })
+        expect(gql.result.data[:translation]['translated']).to be(false)
+        expect(gql.result.data[:article][:translation]['content']).to eq('<p>Hallo Welt.</p>')
       end
 
       it 'returns the feedback the current user gave' do
@@ -82,10 +87,6 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
         gql.execute(query, variables:)
 
         expect(gql.result.data[:analytics][:usage]).to include('userHasProvidedFeedback' => true)
-      end
-
-      it 'records no usage before the agent gave feedback' do
-        expect { gql.execute(query, variables:) }.not_to change(AI::Analytics::Usage, :count)
       end
     end
 
@@ -136,6 +137,41 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
       end
     end
 
+    context 'when the agent asks to regenerate a stored translation' do
+      let(:run) { AI::Analytics::Run.last }
+
+      before { store_translation('<p>Hallo Welt.</p>') }
+
+      it 'returns no translation yet and regenerates it in the background' do
+        expect { gql.execute(query, variables: variables.merge(regenerationOfId: gql.id(run))) }
+          .to have_enqueued_job(ContentTranslationJob)
+          .with(article, target_locale, service: 'Service::ContentTranslation::TicketArticle', regeneration_of: run)
+
+        expect(gql.result.data[:translation]).to be_nil
+      end
+    end
+
+    context 'when the agent asks to regenerate a run of an inaccessible ticket' do
+      let(:run) { create(:ai_analytics_run, related_object: create(:ticket_article)) }
+
+      it 'fails with an error' do
+        gql.execute(query, variables: variables.merge(regenerationOfId: gql.id(run)))
+
+        expect(gql.result.error_type).to eq(Exceptions::Forbidden)
+      end
+    end
+
+    context 'when the agent asks to regenerate a run of another accessible article' do
+      let(:run) { create(:ai_analytics_run, related_object: create(:ticket_article, ticket:)) }
+
+      it 'fails with an error without regenerating' do
+        expect { gql.execute(query, variables: variables.merge(regenerationOfId: gql.id(run))) }
+          .not_to have_enqueued_job(ContentTranslationJob)
+
+        expect(gql.result.error_type).to eq(Exceptions::Forbidden)
+      end
+    end
+
     context 'when the AI provider is not configured' do
       before { unset_ai_provider }
 
@@ -158,17 +194,12 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
         setup_content_translation(provider: 'libre_translate', url:)
       end
 
-      it 'answers with the translation' do
+      it 'answers with the translation and an analytics run' do
         gql.execute(query, variables:)
 
         expect(gql.result.data[:translation])
           .to include('content' => '<p>Hallo Welt.</p>', 'backend' => 'libre_translate', 'translated' => true)
-      end
-
-      it 'answers without an analytics run, there being no LLM behind it' do
-        gql.execute(query, variables:)
-
-        expect(gql.result.data[:analytics][:run]).to be_nil
+        expect(gql.result.data[:analytics][:run]).to include('id' => be_present)
       end
     end
 
@@ -192,11 +223,6 @@ RSpec.describe Gql::Mutations::Ticket::Article::Translate, :aggregate_failures, 
         gql.execute(query, variables:)
 
         expect(gql.result.error_type).to eq(Service::ContentTranslation::Backend::Base::UnsupportedLanguageError)
-      end
-
-      it 'names the locale in the error' do
-        gql.execute(query, variables:)
-
         expect(gql.result.error_message).to include(target_locale)
       end
     end
