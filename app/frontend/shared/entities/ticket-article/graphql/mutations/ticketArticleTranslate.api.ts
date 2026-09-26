@@ -1,25 +1,36 @@
 import * as Types from '#shared/graphql/types.ts';
 
 import gql from 'graphql-tag';
+import { TicketArticleTranslationFragmentDoc } from '../fragments/ticketArticleTranslation.api';
 import * as VueApolloComposable from '@vue/apollo-composable';
 import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
 
 export const TicketArticleTranslateDocument = gql`
-    mutation ticketArticleTranslate($articleId: ID!, $targetLocale: String!, $force: Boolean) {
+    mutation ticketArticleTranslate($articleId: ID!, $targetLocale: String!, $force: Boolean, $regenerationOfId: ID) {
   ticketArticleTranslate(
     articleId: $articleId
     targetLocale: $targetLocale
     force: $force
+    regenerationOfId: $regenerationOfId
   ) {
+    article {
+      ...ticketArticleTranslation
+    }
     translation {
-      content
-      backend
       translated
+    }
+    analytics {
+      run {
+        id
+      }
+      usage {
+        userHasProvidedFeedback
+      }
     }
   }
 }
-    `;
+    ${TicketArticleTranslationFragmentDoc}`;
 export function useTicketArticleTranslateMutation(options: VueApolloComposable.UseMutationOptions<Types.TicketArticleTranslateMutation, Types.TicketArticleTranslateMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<Types.TicketArticleTranslateMutation, Types.TicketArticleTranslateMutationVariables>> = {}) {
   return VueApolloComposable.useMutation<Types.TicketArticleTranslateMutation, Types.TicketArticleTranslateMutationVariables>(TicketArticleTranslateDocument, options);
 }

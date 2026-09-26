@@ -1,6 +1,7 @@
 import * as Types from '#shared/graphql/types.ts';
 
 import gql from 'graphql-tag';
+import { TicketArticleTranslationFragmentDoc } from '../fragments/ticketArticleTranslation.api';
 import * as VueApolloComposable from '@vue/apollo-composable';
 import * as VueCompositionApi from 'vue';
 export type ReactiveFunction<TParam> = () => TParam;
@@ -12,20 +13,26 @@ export const TicketArticleTranslationUpdatesDocument = gql`
     targetLocale: $targetLocale
   ) {
     article {
-      id
+      ...ticketArticleTranslation
     }
     translation {
-      content
-      backend
       translated
     }
     error {
       message
       exception
     }
+    analytics {
+      run {
+        id
+      }
+      usage {
+        userHasProvidedFeedback
+      }
+    }
   }
 }
-    `;
+    ${TicketArticleTranslationFragmentDoc}`;
 export function useTicketArticleTranslationUpdatesSubscription(variables: Types.TicketArticleTranslationUpdatesSubscriptionVariables | VueCompositionApi.Ref<Types.TicketArticleTranslationUpdatesSubscriptionVariables> | ReactiveFunction<Types.TicketArticleTranslationUpdatesSubscriptionVariables>, options: VueApolloComposable.UseSubscriptionOptions<Types.TicketArticleTranslationUpdatesSubscription, Types.TicketArticleTranslationUpdatesSubscriptionVariables> | VueCompositionApi.Ref<VueApolloComposable.UseSubscriptionOptions<Types.TicketArticleTranslationUpdatesSubscription, Types.TicketArticleTranslationUpdatesSubscriptionVariables>> | ReactiveFunction<VueApolloComposable.UseSubscriptionOptions<Types.TicketArticleTranslationUpdatesSubscription, Types.TicketArticleTranslationUpdatesSubscriptionVariables>> = {}) {
   return VueApolloComposable.useSubscription<Types.TicketArticleTranslationUpdatesSubscription, Types.TicketArticleTranslationUpdatesSubscriptionVariables>(TicketArticleTranslationUpdatesDocument, variables, options);
 }

@@ -1,9 +1,28 @@
-mutation ticketArticleTranslate($articleId: ID!, $targetLocale: String!, $force: Boolean) {
-  ticketArticleTranslate(articleId: $articleId, targetLocale: $targetLocale, force: $force) {
+mutation ticketArticleTranslate(
+  $articleId: ID!
+  $targetLocale: String!
+  $force: Boolean
+  $regenerationOfId: ID
+) {
+  ticketArticleTranslate(
+    articleId: $articleId
+    targetLocale: $targetLocale
+    force: $force
+    regenerationOfId: $regenerationOfId
+  ) {
+    article {
+      ...ticketArticleTranslation
+    }
     translation {
-      content
-      backend
       translated
+    }
+    analytics {
+      run {
+        id
+      }
+      usage {
+        userHasProvidedFeedback
+      }
     }
   }
 }
