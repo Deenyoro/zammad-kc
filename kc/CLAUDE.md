@@ -168,6 +168,7 @@ The `kc/` directory is deleted from the final image.
 - **New Conversation Initiators** — Agent-facing UI for starting SMS and Teams conversations from scratch.
 - **Note/Email Reply Conversion** — Toggle between note and email reply article types preserving message body.
 - **Multi-Tab Support** — Disables Zammad's default single-tab enforcement.
+- **HEIC Conversion** — iPhone HEIC/HEIF images are converted to JPEG when stored (detected by file signature, so mislabelled `.jpeg` files are caught), making them render in the browser and in integrations. `Kc::ConvertHeicAttachmentsJob.new.perform(dry_run:, days:, store_ids:)` converts attachments stored earlier.
 
 ### Current Concern Prepends (kc_loader.rb)
 
@@ -193,6 +194,7 @@ Channel::Driver::BaseEmailOutbound   ← Kc::EmailOutboundBcc
 Channel::EmailBuild.singleton_class  ← Kc::StripEmailTextColor
 Channel::Filter::FollowUpMerged.singleton_class ← Kc::FollowUpClosedParent
 Service::Ticket::Article::List       ← Kc::ChronologicalArticleList
+Store                                ← Kc::StoreHeicConversion
 ```
 
 Plus: `Ticket.transaction_ignore_changes_attributes_list += [:time_unit]`
