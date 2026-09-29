@@ -13,6 +13,12 @@
 #   - Everything else (answered inbound, all outbound, voicemail) is
 #     history: closed on arrival, no triggers, no notifications.
 #
+# Text-thread notes (kc_ringcentral_sms_call_thread_notes): every call this
+# job sees is also written as an internal note on the open SMS ticket for
+# the other party, if there is one (Kc::CallHistoryFiling). The job
+# therefore runs whenever either feature is on; with history off it only
+# writes notes.
+#
 # What RingCentral's log actually looks like, and why the job is shaped
 # the way it is:
 #   - A call to the main company number reaches this extension through
@@ -31,7 +37,8 @@
 #     "Answered on FreePBX by ext 201 (Dean)" instead.
 #
 # Safety:
-#   - Gated on the kc_ringcentral_call_history_ticket setting
+#   - Gated on the kc_ringcentral_call_history_ticket and
+#     kc_ringcentral_sms_call_thread_notes settings
 #   - Per-channel and per-record rescue so one failure doesn't stop the rest
 #   - Dedup by RC session ID via Ticket::Article message_id
 #     ('rc_call:<sessionId>'; also skips 'rc_missed_call:<sessionId>')
@@ -50,7 +57,7 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
   HOLD_LIMIT   = 24.hours   # a record stuck "In Progress" cannot pin the watermark forever
 
   def perform
-    return unless Setting.get('kc_ringcentral_call_history_ticket') == true
+    return if !history_enabled? && !thread_notes_enabled?
 
     Channel.where(area: 'RingCentralSms::Account', active: true).find_each do |channel|
       poll_channel(channel)
@@ -101,6 +108,10 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
   end
 
   private
+
+  def history_enabled?
+    Setting.get('kc_ringcentral_call_history_ticket') == true
+  end
 
   def poll_channel(channel)
     rc_class = 'Kc::RingcentralApi'.safe_constantize
@@ -251,18 +262,39 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
       to_phone:    to_number,
     }
 
-    file_call_record(
-      dedup_key:  "rc_call:#{session_id}",
-      channel:    channel,
+    dedup_key = "rc_call:#{session_id}"
+    line      = "#{from_number || call_record.dig(:from, :extensionNumber)} → #{to_number || call_record.dig(:to, :extensionNumber)}"
+
+    filed = :skipped
+    if history_enabled?
+      filed = file_call_record(
+        dedup_key:  dedup_key,
+        channel:    channel,
+        external:   external,
+        inbound:    inbound,
+        start_time: start_time,
+        duration:   duration,
+        outcome:    outcome,
+        line:       line,
+        prefs_key:  :ringcentral_call,
+        prefs:      prefs,
+      )
+    end
+
+    noted = note_call_on_sms_thread(
+      dedup_key:  dedup_key,
       external:   external,
       inbound:    inbound,
       start_time: start_time,
       duration:   duration,
       outcome:    outcome,
-      line:       "#{from_number || call_record.dig(:from, :extensionNumber)} → #{to_number || call_record.dig(:to, :extensionNumber)}",
-      prefs_key:  :ringcentral_call,
-      prefs:      prefs,
+      line:       line,
+      source:     'RingCentral',
+      via:        inbound ? nil : call_record.dig(:from, :name).presence,
     )
+    return :noted if filed == :skipped && noted == :noted
+
+    filed
   end
 
   # [outcome label, answered_on, answered_by]
