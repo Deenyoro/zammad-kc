@@ -9,7 +9,7 @@
 
 <div class="page-content">
   <p class="text-muted" style="max-width: 700px;">
-    <%- @T('RingCentral rings first and handles text messages. Calls it does not answer are forwarded to FreePBX, where your team rings. Zammad reads call activity from FreePBX here and replies by text through RingCentral.') %>
+    <%- @T('RingCentral rings first. Calls it does not answer are forwarded to FreePBX, where your team rings. Zammad reads call activity from FreePBX here and replies by text through RingCentral, or through FreePBX itself once text messaging is switched on below.') %>
   </p>
 
   <h2 style="margin-top: 30px;"><%- @T('Missed Call Handling') %></h2>
@@ -69,7 +69,7 @@
           <% end %>
         </select>
         <% if @numbers.length is 0: %>
-          <p class="text-muted" style="margin: 4px 0 0;"><%- @T('No RingCentral numbers are available yet. Connect a RingCentral SMS account first.') %></p>
+          <p class="text-muted" style="margin: 4px 0 0;"><%- @T('No texting numbers are available yet. Connect a RingCentral SMS account, or switch on FreePBX text messaging below.') %></p>
         <% end %>
       </td>
     </tr>
@@ -96,6 +96,80 @@
   </table>
   <button class="btn btn--primary js-saveMissedCallSettings" style="margin-top: 10px;"><%- @T('Save Missed Call Settings') %></button>
 
+  <h2 style="margin-top: 30px;"><%- @T('Text Messaging (SMS/MMS)') %></h2>
+  <p class="text-muted" style="max-width: 700px;">
+    <%- @T('Texts go through the KC PBX connector, which reads and sends them with the SMS module on the PBX (Sangoma SMS with SIPStation numbers, or the smsconnector module with a third-party carrier). Incoming texts open or continue tickets, agents reply from the ticket, and texts sent from UCP or Sangoma Connect are captured as notes. While this is on, "New SMS Message (FreePBX)" appears in the + menu and the PBX numbers can be used for missed-call replies.') %>
+  </p>
+  <table class="settings-list" style="max-width: 700px;">
+    <tr>
+      <td style="width: 280px;">
+        <span><%- @T('Enable Text Messaging') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Polls the connector every minute; the connector can also push texts to the webhook below.') %></p>
+      </td>
+      <td>
+        <label class="inline-label">
+          <input type="checkbox" name="sms_enabled" value="true" <% if @settings.sms_enabled: %>checked<% end %>>
+        </label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Default SMS Number') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Number preselected when an agent starts a new FreePBX text.') %></p>
+      </td>
+      <td>
+        <select name="sms_default_number" class="form-control" style="width: 300px;">
+          <option value="" <% if !@settings.sms_default_number: %>selected<% end %>><%- @T('First number the PBX reports') %></option>
+          <% for entry in @pbxNumbers: %>
+            <option value="<%= entry.number %>" <% if String(entry.number) is @settings.sms_default_number: %>selected<% end %>><%= entry.number %><% if entry.label: %> (<%= entry.label %>)<% end %><% if entry.extension: %> — ext <%= entry.extension %><% end %></option>
+          <% end %>
+        </select>
+        <% if @pbxNumbers.length is 0: %>
+          <p class="text-muted" style="margin: 4px 0 0;"><%- @T('No texting numbers reported yet. Add a connection and press Test; the connector lists the numbers its SMS module can send from.') %></p>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Ticket Title Template') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Use {phone} for the sender phone number.') %></p>
+      </td>
+      <td>
+        <input type="text" name="sms_ticket_title_template" class="form-control" value="<%= @settings.sms_ticket_title_template %>" style="width: 300px;">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Thread Window') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Hours before a new ticket is created for the same phone number. 0 = one ticket per conversation.') %></p>
+      </td>
+      <td>
+        <input type="number" name="sms_thread_window_hours" class="form-control form-control--small" value="<%= @settings.sms_thread_window_hours %>" min="0" max="8760" style="width: 80px;">
+        <span class="text-muted"><%- @T('hours') %></span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Context Messages') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Earlier messages of the conversation attached as an internal note when the integration opens a new ticket. 0 = off.') %></p>
+      </td>
+      <td>
+        <input type="number" name="sms_context_messages" class="form-control form-control--small" value="<%= @settings.sms_context_messages %>" min="0" max="50" style="width: 80px;">
+        <span class="text-muted"><%- @T('messages') %></span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span><%- @T('Webhook URL') %></span>
+        <p class="text-muted" style="margin: 2px 0 0;"><%- @T('Point the connector at this address for instant delivery. It authenticates with the connection token in the X-KC-Token header.') %></p>
+      </td>
+      <td>
+        <input type="text" class="form-control" value="<%= @smsWebhookUrl %>" readonly onclick="this.select()" style="width: 300px;">
+      </td>
+    </tr>
+  </table>
+  <button class="btn btn--primary js-saveSmsSettings" style="margin-top: 10px;"><%- @T('Save Text Messaging Settings') %></button>
+
   <h2 style="margin-top: 30px;"><%- @T('Connections') %></h2>
   <p class="text-muted" style="max-width: 700px;">
     <%- @T('To be told when a connection breaks, tick it on the API Health Check page. Zammad then checks it every five minutes and opens a ticket if it stops answering, closing the ticket again once it recovers.') %>
@@ -118,6 +192,9 @@
           <%- @Icon('status', if options.last_connection_error then 'error-color inline' else if channel.active then 'supergood-color inline' else 'error-color inline') %>
           <%= options.label || 'FreePBX' %>
           <span class="text-muted"><%= options.base_url %></span>
+          <% if (options.sms_numbers || []).length: %>
+            <span class="text-muted"> · <%- @T('texting from') %> <%= (entry.number for entry in options.sms_numbers).join(', ') %></span>
+          <% end %>
         </div>
         <div class="action-block action-block--flex">
           <div class="btn btn--danger btn--secondary js-deleteConnection"><%- @T('Delete') %></div>

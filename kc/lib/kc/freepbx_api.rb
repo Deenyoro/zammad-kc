@@ -1,17 +1,48 @@
 # KC: Client for the KC PBX connector running on the FreePBX host.
 #
 # The connector exposes the PBX as data and control only — call detail
-# records, extension state, and call origination. Every decision about
-# tickets and text messages stays here in Zammad, so FreePBX and
-# RingCentral are driven the same way from one place.
-#
-# RingCentral remains the system of record for SMS; this client never
-# sends text messages. A FreePBX missed call results in a ticket here and
-# an SMS sent through the RingCentral channel.
+# records, extension state, call origination, and (when the PBX has a
+# texting provider: the Sangoma SMS module with SIPStation DIDs, or the
+# open-source smsconnector module with Twilio, Telnyx, Bandwidth, VoIP.ms
+# and friends) the text messages the PBX's SMS module holds. Every
+# decision about tickets stays here in Zammad, so FreePBX and RingCentral
+# are driven the same way from one place.
 #
 # Usage:
 #   api = Kc::FreepbxApi.for_channel(channel)
 #   api.calls(since_minutes: 60, missed: true, direction: 'inbound')
+#   api.sms_messages(since: '2026-09-29T00:00:00Z', direction: 'inbound')
+#
+# SMS contract the connector implements (all JSON, bearer token auth):
+#
+#   GET  /sms/numbers
+#        → { numbers: [{ number: "+14125550100", label: "Main", extension: "201" }] }
+#        DIDs the PBX can text from. `label` and `extension` are optional.
+#
+#   GET  /sms?since=<ISO8601>&since_minutes=<n>&direction=inbound|outbound&limit=<n>
+#        → { messages: [ <message>, ... ] }   oldest first
+#        <message> = {
+#          id:         "sms:12345",              stable per message
+#          direction:  "inbound" | "outbound",
+#          from:       "+14125550123",
+#          to:         ["+14125550100"],          every recipient
+#          text:       "hello",
+#          created_at: "2026-09-29T14:02:11Z",
+#          extension:  "201",                     optional, who sent an outbound text
+#          media:      [{ id: "m1", url: "/sms/media/m1", content_type: "image/jpeg", filename: "photo.jpg" }]
+#        }
+#
+#   GET  /sms/media/<id>   → the file bytes (used for `media[].url`, absolute
+#        or relative to the connector base URL)
+#
+#   POST /sms/send  { from: "+1...", to: ["+1..."], text: "...",
+#                     media: [{ filename:, content_type:, data_base64: }] }
+#        → { id: "sms:12346" }
+#
+#   Webhook (optional, for instant delivery): the connector POSTs each new
+#   message, in the <message> shape above (or { messages: [...] }), to
+#   <zammad>/api/v1/kc/freepbx_sms_webhook with the header
+#   `X-KC-Token: <this connection's token>`. Polling remains the backup.
 module Kc
   class FreepbxApi
 
@@ -52,6 +83,54 @@ module Kc
     def extensions
       result = get('/extensions')
       Array(result['extensions'] || result[:extensions])
+    end
+
+    # ---- SMS -----------------------------------------------------------
+
+    # Numbers the PBX can text from: [{ number:, label:, extension: }].
+    def sms_numbers
+      result = get('/sms/numbers')
+      Array(result['numbers'] || result[:numbers])
+    end
+
+    # Text messages held by the PBX's SMS module, oldest first.
+    def sms_messages(since: nil, since_minutes: nil, limit: 200, direction: nil)
+      params = { limit: limit }
+      params[:since]         = since         if since.present?
+      params[:since_minutes] = since_minutes if since.blank? && since_minutes.present?
+      params[:direction]     = direction     if direction.present?
+      result = get("/sms?#{params.to_query}")
+      Array(result['messages'] || result[:messages])
+    end
+
+    # Sends a text (and optional media) through the PBX. Returns the
+    # connector's response, which carries the new message id.
+    def sms_send(from:, to:, text:, media: [])
+      body = { from: from, to: Array(to), text: text.to_s }
+      body[:media] = media if media.present?
+      post('/sms/send', body)
+    end
+
+    # Downloads one media item. `location` is the media entry's url, either
+    # absolute or relative to the connector.
+    def sms_media(location)
+      raise Error, 'FreePBX base_url is not configured' if base_url.blank?
+
+      url = location.to_s.match?(%r{\Ahttps?://}i) ? location.to_s : "#{base_url}/#{location.to_s.delete_prefix('/')}"
+      response = UserAgent.get(
+        url,
+        {},
+        {
+          headers:       headers,
+          open_timeout:  10,
+          read_timeout:  60,
+          total_timeout: 120,
+          log:           { facility: 'kc_freepbx' },
+        },
+      )
+      raise Error, "FreePBX media download error (#{response.code})" if !response.success?
+
+      response.body
     end
 
     # Click to call: rings the agent's extension, then dials the number.

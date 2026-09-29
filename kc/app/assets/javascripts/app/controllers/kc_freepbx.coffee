@@ -1,10 +1,11 @@
 # KC: Admin page for the FreePBX phone integration.
 # Registered under KC Extensions > FreePBX.
 #
-# RingCentral rings first and owns texting; calls it does not answer forward
-# to FreePBX where the team rings. This page connects Zammad to the KC PBX
-# connector on the FreePBX host and configures what happens when the team
-# misses a call there.
+# RingCentral rings first; calls it does not answer forward to FreePBX where
+# the team rings. This page connects Zammad to the KC PBX connector on the
+# FreePBX host, configures what happens when the team misses a call there,
+# and, when the PBX has a texting provider, switches on FreePBX text
+# messaging (kc_freepbx_sms_enabled) with its own settings.
 
 class KcFreepbx extends App.ControllerSubContent
   @requiredPermission: 'admin'
@@ -18,6 +19,7 @@ class KcFreepbx extends App.ControllerSubContent
     'click .js-disableConnection':      'disableConnection'
     'click .js-testConnection':         'testConnection'
     'click .js-saveMissedCallSettings': 'saveMissedCallSettings'
+    'click .js-saveSmsSettings':        'saveSmsSettings'
 
   constructor: ->
     super
@@ -34,6 +36,7 @@ class KcFreepbx extends App.ControllerSubContent
         App.Collection.loadAssets(data.assets)
         @channelIds       = data.channel_ids || []
         @availableNumbers = data.available_numbers || []
+        @smsWebhookUrl    = data.sms_webhook_url || ''
         @render()
       error: =>
         @stopLoading()
@@ -56,9 +59,16 @@ class KcFreepbx extends App.ControllerSubContent
       channel = App.Channel.find(id)
       channels.push(channel) if channel
 
+    pbxNumbers = []
+    for channel in channels
+      for entry in ((channel.options || {}).sms_numbers || [])
+        pbxNumbers.push(entry) if entry && entry.number
+
     @html App.view('kc_freepbx/index')(
-      channels: channels
-      numbers:  @availableNumbers
+      channels:      channels
+      numbers:       @availableNumbers
+      pbxNumbers:    pbxNumbers
+      smsWebhookUrl: @smsWebhookUrl
       settings:
         missed_call_ticket:            @setting('kc_freepbx_missed_call_ticket', true)
         missed_call_ticket_title:      @setting('kc_freepbx_missed_call_ticket_title', 'Missed call from {phone}')
@@ -67,6 +77,11 @@ class KcFreepbx extends App.ControllerSubContent
         missed_call_autoreply_from:    String(@setting('kc_freepbx_missed_call_autoreply_from', '') or '')
         escalation_call_enabled:       @setting('kc_escalation_call_enabled', false)
         call_history_ticket:           @setting('kc_freepbx_call_history_ticket', true)
+        sms_enabled:                   @setting('kc_freepbx_sms_enabled', false) is true
+        sms_ticket_title_template:     @setting('kc_freepbx_sms_ticket_title_template', 'SMS from {phone}')
+        sms_thread_window_hours:       @setting('kc_freepbx_sms_thread_window_hours', 24)
+        sms_context_messages:          @setting('kc_freepbx_sms_context_messages', 5)
+        sms_default_number:            String(@setting('kc_freepbx_sms_default_number', '') or '')
     )
 
   addConnection: (e) =>
@@ -94,7 +109,8 @@ class KcFreepbx extends App.ControllerSubContent
         if data.ok
           registered = data.registered ? 0
           total      = data.extension_count ? 0
-          @notify(type: 'success', msg: App.i18n.translateContent('Connected. %s of %s extensions registered.', registered, total))
+          smsCount   = data.sms_numbers ? 0
+          @notify(type: 'success', msg: App.i18n.translateContent('Connected. %s of %s extensions registered, %s texting number(s).', registered, total, smsCount))
           @load()
         else
           @notify(type: 'error', msg: data.error || __('Could not reach the FreePBX connector.'))
@@ -163,6 +179,37 @@ class KcFreepbx extends App.ControllerSubContent
           fail: =>
             failed = true
             @notify(type: 'error', msg: __('Failed to save missed call settings.'))
+        )
+
+
+  saveSmsSettings: (e) =>
+    e.preventDefault()
+    form = $(e.currentTarget).closest('.page-content')
+
+    settings =
+      kc_freepbx_sms_enabled:               form.find('[name=sms_enabled]').is(':checked')
+      kc_freepbx_sms_ticket_title_template: form.find('[name=sms_ticket_title_template]').val() || 'SMS from {phone}'
+      kc_freepbx_sms_thread_window_hours:   parseInt(form.find('[name=sms_thread_window_hours]').val()) || 24
+      kc_freepbx_sms_context_messages:      Math.max(0, parseInt(form.find('[name=sms_context_messages]').val()) || 0)
+      kc_freepbx_sms_default_number:        form.find('[name=sms_default_number]').val() || ''
+
+    pending = Object.keys(settings).length
+    failed  = false
+
+    for name, value of settings
+      do (name, value) =>
+        App.Setting.set(name, value,
+          done: =>
+            pending -= 1
+            # The "+" menu shows New SMS Message (FreePBX) only while texting
+            # is on; refresh it now rather than waiting for the config push.
+            App.Config.set(name, value)
+            if pending is 0 && !failed
+              @notify(type: 'success', msg: __('Text messaging settings saved.'))
+              App.Event.trigger('personal:render')
+          fail: =>
+            failed = true
+            @notify(type: 'error', msg: __('Failed to save text messaging settings.'))
         )
 
 

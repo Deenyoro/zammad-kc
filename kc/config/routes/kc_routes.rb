@@ -52,6 +52,7 @@ Zammad::Application.routes.draw do
 
     # RingCentral SMS webhook (public — no auth, validated by subscription lookup)
     post 'ringcentral_sms_webhook', to: 'kc/ringcentral_sms_webhook#webhook'
+    post 'freepbx_sms_webhook',     to: 'kc/freepbx_sms_webhook#webhook'
 
     # Scheduled articles (agent-facing)
     get    'tickets/:ticket_id/scheduled_articles',     to: 'kc/scheduled_articles#index'
@@ -71,6 +72,8 @@ Zammad::Application.routes.draw do
     post 'conversations/teams',          to: 'kc/new_conversations#teams'
     get  'conversations/sms_users',      to: 'kc/new_conversations#sms_users'
     get  'conversations/sms_channels',   to: 'kc/new_conversations#sms_channels'
+    post 'conversations/freepbx_sms',         to: 'kc/new_conversations#freepbx_sms'
+    get  'conversations/freepbx_sms_numbers', to: 'kc/new_conversations#freepbx_sms_numbers'
     get  'conversations/teams_contacts', to: 'kc/new_conversations#teams_contacts'
     get  'conversations/teams_channels', to: 'kc/new_conversations#teams_channels'
   end

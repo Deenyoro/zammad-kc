@@ -78,6 +78,7 @@ class KcRingcentralSms extends App.ControllerSubContent
         missed_call_autoreply_from:    String(@setting('kc_ringcentral_sms_missed_call_autoreply_from', '') or '')
         missed_call_autoreply_message: @setting('kc_ringcentral_sms_missed_call_autoreply_message', 'We are sorry for missing your call. A ticket has been created and our team will follow up with you shortly.')
         call_history_ticket:          @setting('kc_ringcentral_call_history_ticket', false) is true
+        call_thread_notes:            @setting('kc_ringcentral_sms_call_thread_notes', true) is true
     )
 
   addAccount: (e) =>
@@ -220,12 +221,24 @@ class KcRingcentralSms extends App.ControllerSubContent
     e.preventDefault()
     form = $(e.currentTarget).closest('.page-content')
 
-    App.Setting.set('kc_ringcentral_call_history_ticket', form.find('[name=call_history_ticket]').is(':checked'),
-      done: =>
-        @notify(type: 'success', msg: __('Call history settings saved.'))
-      fail: =>
-        @notify(type: 'error', msg: __('Failed to save call history settings.'))
-    )
+    settings =
+      kc_ringcentral_call_history_ticket:   form.find('[name=call_history_ticket]').is(':checked')
+      kc_ringcentral_sms_call_thread_notes: form.find('[name=call_thread_notes]').is(':checked')
+
+    pending = Object.keys(settings).length
+    failed  = false
+
+    for name, value of settings
+      do (name, value) =>
+        App.Setting.set(name, value,
+          done: =>
+            pending -= 1
+            if pending is 0 && !failed
+              @notify(type: 'success', msg: __('Call history settings saved.'))
+          fail: =>
+            failed = true
+            @notify(type: 'error', msg: __('Failed to save call history settings.'))
+        )
 
 
 # ---------------------------------------------------------------------------
