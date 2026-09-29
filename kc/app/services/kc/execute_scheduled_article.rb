@@ -178,6 +178,15 @@ class Kc::ExecuteScheduledArticle
         article_params[:preferences][:ringcentral_sms][:to_phone]   ||= sms_prefs[:from_phone] || sms_prefs['from_phone']
         article_params[:preferences][:ringcentral_sms][:channel_id] ||= sms_prefs[:channel_id] || sms_prefs['channel_id']
       end
+
+    when 'freepbx_sms_message'
+      sms_prefs = ticket_prefs.dig(:freepbx_sms) || ticket_prefs.dig('freepbx_sms') || {}
+      if sms_prefs.present?
+        article_params[:preferences][:freepbx_sms] ||= {}
+        article_params[:preferences][:freepbx_sms][:to_phone]   ||= sms_prefs[:from_phone] || sms_prefs['from_phone']
+        article_params[:preferences][:freepbx_sms][:from_phone] ||= sms_prefs[:to_phone] || sms_prefs['to_phone']
+        article_params[:preferences][:freepbx_sms][:channel_id] ||= sms_prefs[:channel_id] || sms_prefs['channel_id']
+      end
     end
   rescue => e
     Rails.logger.warn "KC: Failed to enrich channel preferences for scheduled article ##{@scheduled.id}: #{e.message}"
@@ -211,6 +220,17 @@ class Kc::ExecuteScheduledArticle
       if to_phone.blank? || channel_id.blank?
         @scheduled.update!(status: 'failed', error_message: 'RingCentral SMS routing data (to_phone/channel_id) not found on ticket')
         raise "RingCentral SMS routing data missing for scheduled article ##{@scheduled.id}"
+      end
+
+    when 'freepbx_sms_message'
+      sms = prefs[:freepbx_sms] || {}
+      ticket_sms = ticket_prefs.dig(:freepbx_sms) || ticket_prefs.dig('freepbx_sms') || {}
+      to_phone   = sms[:to_phone] || ticket_sms[:from_phone] || ticket_sms['from_phone']
+      channel_id = sms[:channel_id] || ticket_sms[:channel_id] || ticket_sms['channel_id']
+
+      if to_phone.blank? || channel_id.blank?
+        @scheduled.update!(status: 'failed', error_message: 'FreePBX SMS routing data (to_phone/channel_id) not found on ticket')
+        raise "FreePBX SMS routing data missing for scheduled article ##{@scheduled.id}"
       end
     end
   end

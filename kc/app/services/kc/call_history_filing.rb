@@ -282,11 +282,14 @@ module Kc::CallHistoryFiling
     lines.compact.join("\n")
   end
 
+  SMS_PREFS_KEYS = %w[ringcentral_sms freepbx_sms].freeze
+
   # The most recently active SMS ticket for `number` that is not closed:
-  # any ticket the SMS integration can reply from (an SMS conversation, an
-  # agent-started text, a missed-call ticket with SMS reply enabled) whose
-  # customer side is this number. Pending states count as open; anything
-  # closed, merged, removed or in a KC locked-closed state does not.
+  # any ticket a texting integration (RingCentral or FreePBX) can reply
+  # from — an SMS conversation, an agent-started text, a missed-call ticket
+  # with SMS reply enabled — whose customer side is this number. Pending
+  # states count as open; anything closed, merged, removed or in a KC
+  # locked-closed state does not.
   def open_sms_thread_for(number)
     number = normalize_number(number)
     return nil if number.blank?
@@ -297,7 +300,7 @@ module Kc::CallHistoryFiling
                          .pluck(:id)
 
     # preferences is YAML; the number is quoted there, so match it whole.
-    Ticket.where('preferences LIKE ?', '%ringcentral_sms:%')
+    Ticket.where(SMS_PREFS_KEYS.map { 'preferences LIKE ?' }.join(' OR '), *SMS_PREFS_KEYS.map { |k| "%#{k}:%" })
           .where('preferences LIKE ?', "%\"#{ActiveRecord::Base.sanitize_sql_like(number)}\"%")
           .where.not(state_id: closed_state_ids)
           .order(updated_at: :desc)
@@ -306,13 +309,15 @@ module Kc::CallHistoryFiling
   end
 
   def sms_thread_numbers(ticket)
-    prefs = ticket.preferences || {}
-    sms   = (prefs['ringcentral_sms'] || prefs[:ringcentral_sms] || {}).with_indifferent_access
-    return [] if sms.blank?
+    prefs = (ticket.preferences || {}).with_indifferent_access
+    SMS_PREFS_KEYS.flat_map do |key|
+      sms = (prefs[key] || {}).with_indifferent_access
+      next [] if sms.blank?
 
-    ([sms[:from_phone]] + Array(sms[:participants]) + Array(sms[:to_phones]))
-      .filter_map { |n| normalize_number(n) }
-      .reject { |n| own_number?(n) }
+      ([sms[:from_phone]] + Array(sms[:participants]) + Array(sms[:to_phones]))
+        .filter_map { |n| normalize_number(n) }
+        .reject { |n| own_number?(n) }
+    end.uniq
   end
 
   # One call can be seen from both systems: RingCentral forwards to the PBX

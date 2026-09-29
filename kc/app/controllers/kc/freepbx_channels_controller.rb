@@ -36,6 +36,7 @@ class Kc::FreepbxChannelsController < ApplicationController
       assets:            assets,
       channel_ids:       channel_ids,
       available_numbers: outbound_numbers,
+      sms_webhook_url:   "#{Setting.get('http_type')}://#{Setting.get('fqdn')}/api/v1/kc/freepbx_sms_webhook",
     }
   end
 
@@ -91,6 +92,9 @@ class Kc::FreepbxChannelsController < ApplicationController
         # against it.
         channel.options[:base_url] = new_url
         channel.options.delete(:last_missed_call_poll_at)
+        channel.options.delete(:last_call_history_poll_at)
+        channel.options.delete(:last_sms_poll_at)
+        channel.options.delete(:sms_numbers)
         channel.options.delete(:processed_call_ids)
         channel.options.delete(:pending_autoreplies)
       end
@@ -127,6 +131,14 @@ class Kc::FreepbxChannelsController < ApplicationController
     rescue StandardError
       nil
     end
+    # Texting is optional on the connector; a missing /sms/numbers is
+    # reported, not treated as a broken connection.
+    sms_numbers = begin
+      poll_class = 'Kc::PollFreepbxSmsMessagesJob'.safe_constantize
+      poll_class ? poll_class.refresh_sms_numbers(channel, api) : []
+    rescue StandardError
+      []
+    end
 
     clear_freepbx_error(channel)
 
@@ -135,6 +147,7 @@ class Kc::FreepbxChannelsController < ApplicationController
       extension_count: extensions.size,
       registered:      extensions.count { |e| e['registered'] || e[:registered] },
       recent_calls:    recent,
+      sms_numbers:     sms_numbers.size,
     }
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Connection not found.' }, status: :not_found

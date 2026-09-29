@@ -267,6 +267,7 @@ class KcScheduledReplyBanner extends App.Controller
     'email':                    'Email'
     'teams_chat_message':       'Teams Chat'
     'ringcentral_sms_message':  'RingCentral SMS'
+    'freepbx_sms_message':      'FreePBX SMS'
     'note':                     'Note'
     'phone':                    'Phone'
     'web':                      'Web'

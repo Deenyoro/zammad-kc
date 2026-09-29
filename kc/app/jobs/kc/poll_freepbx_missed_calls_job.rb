@@ -501,12 +501,10 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
       return
     end
 
-    # The ticket is answered by texting the caller back, and texting runs on
-    # RingCentral — so the SMS preferences point at the RingCentral channel
-    # that owns the reply number.
-    sms_channel = Kc::OutboundSms.channel_for(reply_from)
-    sms_from    = Kc::OutboundSms.normalize(reply_from).presence ||
-                  (sms_channel && Kc::OutboundSms.normalize(sms_channel.options.with_indifferent_access[:phone_number]))
+    # The ticket is answered by texting the caller back, so its SMS
+    # preferences point at whichever channel owns the reply number: a
+    # RingCentral account, or the PBX itself when FreePBX texting is on.
+    sms_prefs, sms_type_name = Kc::OutboundSms.sms_ticket_preferences(reply_from, caller)
 
     transaction_class.execute(reset_user_id: true, context: 'freepbx_missed_call') do
       user  = find_or_create_user(caller)
@@ -523,7 +521,7 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
                        call[:calldate].to_s
                      end
 
-      sms_article_type = Ticket::Article::Type.find_by(name: 'ringcentral_sms_message')
+      sms_article_type = sms_type_name && Ticket::Article::Type.find_by(name: sms_type_name)
 
       preferences = {
         freepbx_missed_call: {
@@ -535,13 +533,7 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
         },
       }
       # Only advertise SMS reply when there is a number to reply from.
-      if sms_channel && sms_from.present?
-        preferences[:ringcentral_sms] = {
-          from_phone: caller,
-          to_phone:   sms_from,
-          channel_id: sms_channel.id,
-        }
-      end
+      preferences.merge!(sms_prefs) if sms_prefs
 
       ticket = Ticket.create!(
         title:                  title,

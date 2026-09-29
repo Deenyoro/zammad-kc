@@ -159,6 +159,7 @@ The `kc/` directory is deleted from the final image.
 
 - **Microsoft Teams Chat** — Bidirectional messaging (Graph API, OAuth2, webhooks + backup polling, directory sync). Admin at System > KC - Teams Chat.
 - **RingCentral SMS/MMS** — Bidirectional SMS (OAuth2, webhooks + backup polling, missed call tracking). Admin at System > KC - RingCentral SMS. Texts sent from the RingCentral app are captured as internal notes (with MMS attachments); agent-initiated conversations get a ticket. `Kc::BackfillRingcentralSmsJob.new.perform(days:, dry_run:)` re-files a gap from the message store. Calls to or from a number with an open SMS ticket (RingCentral or FreePBX, either direction) are added to that ticket as internal notes without changing its state (`kc_ringcentral_sms_call_thread_notes`).
+- **FreePBX Phone & SMS** — Connection to the KC PBX connector on the FreePBX host (bearer token, no OAuth). Missed-call tickets and auto-reply texts, call history as closed tickets, escalation calls, health check. Text messaging (`kc_freepbx_sms_enabled`, off by default) mirrors RingCentral SMS: inbound texts open/continue tickets (article type `freepbx_sms_message`, conversation keys, thread window, context note), agent replies and MMS go out through the connector, texts sent from UCP/Sangoma Connect are captured as notes, webhook (`/api/v1/kc/freepbx_sms_webhook`, `X-KC-Token`) plus per-minute polling, "New SMS Message (FreePBX)" in the + menu only while enabled, PBX numbers usable as auto-reply senders. Connector contract in `kc/deploy/freepbx-connector-sms.md`. `Kc::BackfillFreepbxSmsJob.new.perform(days:, dry_run:)` re-files a gap. Admin at System > KC - FreePBX.
 - **Per-Agent Time Tracking** — Enhanced time accounting with agent attribution, sidebar widget, admin reporting with Excel export.
 - **Scheduled Replies** — Queue articles for future delivery with datetime picker, banner for pending replies.
 - **Waiting for Reply State** — Custom ticket state that auto-transitions to "open" on customer reply.
@@ -171,9 +172,11 @@ The `kc/` directory is deleted from the final image.
 ### Current Concern Prepends (kc_loader.rb)
 
 ```
+Channel                              ← Kc::ChannelSensitiveFields
 Ticket::TimeAccounting               ← Kc::TimeAccountingAgent
 Ticket::Article                      ← Kc::EnqueueCommunicateTeamsChatJob
 Ticket::Article                      ← Kc::EnqueueCommunicateRingcentralSmsJob
+Ticket::Article                      ← Kc::EnqueueCommunicateFreepbxSmsJob
 Ticket::Article                      ← Kc::FixOriginBySenderOverride
 Ticket::Article                      ← Kc::EmailFromOriginByFix
 Ticket::Article                      ← Kc::ResetsWaitingForReplyState
