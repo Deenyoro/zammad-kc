@@ -18,6 +18,7 @@
 #   - Checks settings before creating tickets or sending SMS
 class Kc::PollRingcentralMissedCallsJob < ApplicationJob
   include Kc::RingcentralAuthRecovery
+  include Kc::CallHistoryFiling
 
   # RingCentral finalizes call-log records with a delay; overlap the window
   # so a call published late is still picked up (session-ID dedup absorbs it).
@@ -162,6 +163,9 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
 
     if create_ticket
       create_missed_call_ticket(channel, dedup_key, normalized_from, normalized_to, start_time)
+      # The call history job leaves missed calls to this job, so the
+      # text-thread note for them is written here.
+      note_missed_call_on_sms_thread(dedup_key, normalized_from, normalized_to, start_time)
     end
 
     if send_reply && normalized_from.present?
@@ -291,6 +295,26 @@ class Kc::PollRingcentralMissedCallsJob < ApplicationJob
 
     Kc::OutboundSms.deliver(to: to_phone, text: message, from: from_phone,
                             label: 'KC RingCentral Missed Calls')
+  end
+
+  def note_missed_call_on_sms_thread(dedup_key, from_phone, to_phone, start_time)
+    start = begin
+              Time.zone.parse(start_time.to_s)
+            rescue ArgumentError, TypeError
+              nil
+            end
+    return if start.nil?
+
+    note_call_on_sms_thread(
+      dedup_key:  dedup_key,
+      external:   from_phone,
+      inbound:    true,
+      start_time: start,
+      duration:   0,
+      outcome:    'Missed',
+      line:       "#{from_phone} → #{to_phone}",
+      source:     'RingCentral',
+    )
   end
 
   def find_or_create_user(phone)

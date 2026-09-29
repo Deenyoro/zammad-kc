@@ -1,7 +1,8 @@
 # KC: Controller for initiating new SMS and Teams conversations from Zammad.
 #
 # Provides endpoints for agents to:
-#   - Start a new SMS conversation (creates ticket + sends SMS)
+#   - Start a new SMS conversation (creates ticket + sends SMS) via
+#     RingCentral (#sms) or FreePBX (#freepbx_sms)
 #   - Start a new Teams chat conversation (creates ticket + sends Teams message)
 #   - Search Zammad users with phone numbers (for SMS recipient selection)
 #   - Search Teams directory contacts (for Teams recipient selection)
@@ -300,6 +301,164 @@ class Kc::NewConversationsController < ApplicationController
     render json: { error: __('Failed to create Teams conversation. Check server logs for details.') }, status: :internal_server_error
   end
 
+  # POST /api/v1/kc/conversations/freepbx_sms
+  #
+  # FreePBX counterpart of #sms: creates a ticket with a freepbx_sms_message
+  # article; Kc::EnqueueCommunicateFreepbxSmsJob sends it through the KC PBX
+  # connector. Same params as #sms, except the sender is a PBX number:
+  #   from_number [String] one of the numbers from #freepbx_sms_numbers
+  #               (optional; falls back to the configured default)
+  def freepbx_sms
+    if Setting.get('kc_freepbx_sms_enabled') != true
+      render json: { error: 'FreePBX text messaging is not enabled' }, status: :unprocessable_content
+      return
+    end
+
+    body        = params[:body].to_s.strip
+    group_id    = params[:group_id]
+    customer_id = params[:customer_id]
+    skip_send   = ActiveModel::Type::Boolean.new.cast(params[:skip_send])
+
+    rc_class    = 'Kc::RingcentralApi'.safe_constantize
+    raw_numbers = Array(params[:phone_numbers]).map(&:to_s) + params[:phone_number].to_s.split(%r{[,;\n]+})
+    recipients  = raw_numbers.map(&:strip).compact_blank.map do |num|
+      rc_class ? rc_class.normalize_phone(num) : normalize_phone_fallback(num)
+    end.compact_blank.uniq
+
+    if recipients.empty? || body.blank?
+      render json: { error: 'phone_number and body are required' }, status: :unprocessable_content
+      return
+    end
+    if recipients.size > MAX_GROUP_RECIPIENTS
+      render json: { error: "A group text can have at most #{MAX_GROUP_RECIPIENTS} recipients" }, status: :unprocessable_content
+      return
+    end
+    normalized_phone = recipients.first
+
+    numbers = freepbx_number_list
+    if numbers.empty?
+      render json: { error: 'No FreePBX texting number is available. Test the FreePBX connection so it reports its SMS numbers.' }, status: :unprocessable_content
+      return
+    end
+
+    wanted = normalize_phone_fallback(params[:from_number].presence || params[:channel_id].presence)
+    entry  = numbers.detect { |n| n[:number] == wanted } ||
+             numbers.detect { |n| n[:number] == normalize_phone_fallback(Setting.get('kc_freepbx_sms_default_number')) } ||
+             numbers.first
+    from_phone = entry[:number]
+    channel    = Channel.find_by(id: entry[:channel_id], area: 'Freepbx::Account', active: true)
+    if channel.nil?
+      render json: { error: 'The FreePBX connection for that number is not active' }, status: :unprocessable_content
+      return
+    end
+    if recipients.include?(from_phone)
+      render json: { error: 'The sending number cannot be one of the recipients' }, status: :unprocessable_content
+      return
+    end
+
+    conversation_key = if rc_class
+                         rc_class.conversation_key(from_phone, *recipients)
+                       else
+                         ([from_phone] + recipients).compact.uniq.sort.join(':')
+                       end
+
+    user = User.find_by(id: customer_id) if customer_id.present?
+    user ||= User.find_by(phone: normalized_phone) || User.find_by(mobile: normalized_phone)
+    user ||= User.create!(
+      firstname:     normalized_phone,
+      lastname:      '',
+      phone:         normalized_phone,
+      active:        true,
+      role_ids:      Role.signup_role_ids,
+      updated_by_id: 1,
+      created_by_id: 1,
+    )
+
+    group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
+
+    title_template = Setting.get('kc_freepbx_sms_ticket_title_template').to_s.presence || 'SMS from {phone}'
+    title_phone    = recipients.size > 1 ? "#{normalized_phone} +#{recipients.size - 1}" : normalized_phone.to_s
+    title = title_template.gsub('{phone}', title_phone).truncate(100, omission: '...')
+
+    transaction_class = 'Transaction'.safe_constantize
+    if transaction_class.nil?
+      render json: { error: 'Internal error: Transaction class not found' }, status: :internal_server_error
+      return
+    end
+
+    ticket = nil
+    transaction_class.execute(reset_user_id: true, context: 'freepbx_sms') do
+      UserInfo.current_user_id = current_user.id
+
+      ticket = Ticket.create!(
+        title:         title,
+        group_id:      group.id,
+        customer_id:   user.id,
+        state_id:      Ticket::State.find_by(default_create: true)&.id || Ticket::State.find_by(name: 'new')&.id,
+        priority_id:   Ticket::Priority.find_by(default_create: true)&.id || Ticket::Priority.first&.id,
+        preferences:   {
+          freepbx_sms: {
+            conversation_key: conversation_key,
+            participants:     recipients,
+            from_phone:       normalized_phone,
+            to_phone:         from_phone,
+            channel_id:       channel.id,
+          },
+        },
+        updated_by_id: current_user.id,
+        created_by_id: current_user.id,
+      )
+
+      article_type = Ticket::Article::Type.find_by(name: 'freepbx_sms_message') ||
+                     Ticket::Article::Type.find_by(name: 'note') ||
+                     Ticket::Article::Type.first
+      sender = Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first
+
+      article_prefs = {
+        freepbx_sms: {
+          to_phone:   normalized_phone,
+          to_phones:  recipients,
+          from_phone: from_phone,
+          channel_id: channel.id,
+        },
+      }
+      article_prefs[:freepbx_sms][:skip_send] = true if skip_send
+
+      Ticket::Article.create!(
+        ticket_id:     ticket.id,
+        type_id:       article_type&.id,
+        sender_id:     sender&.id,
+        from:          from_phone,
+        to:            recipients.join(', '),
+        subject:       nil,
+        body:          body,
+        content_type:  'text/plain',
+        internal:      false,
+        preferences:   article_prefs,
+        updated_by_id: current_user.id,
+        created_by_id: current_user.id,
+      )
+    end
+
+    render json: { id: ticket.id, number: ticket.number }
+  rescue => e
+    Rails.logger.error "KC NewConversations#freepbx_sms failed: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}"
+    render json: { error: __('Failed to create SMS conversation. Check server logs for details.') }, status: :internal_server_error
+  end
+
+  # GET /api/v1/kc/conversations/freepbx_sms_numbers
+  #
+  # Numbers the PBX can text from, plus the admin-configured default.
+  # Empty (with enabled: false) when FreePBX texting is switched off.
+  def freepbx_sms_numbers
+    enabled = Setting.get('kc_freepbx_sms_enabled') == true
+    render json: {
+      enabled:        enabled,
+      numbers:        enabled ? freepbx_number_list : [],
+      default_number: normalize_phone_fallback(Setting.get('kc_freepbx_sms_default_number')).to_s,
+    }
+  end
+
   # GET /api/v1/kc/conversations/sms_channels
   #
   # Returns all active RingCentral SMS channels with phone numbers,
@@ -449,6 +608,17 @@ class Kc::NewConversationsController < ApplicationController
     end
 
     user
+  end
+
+  # [{ number:, label:, channel_id: }] across active FreePBX connections.
+  def freepbx_number_list
+    sms_class = 'Kc::OutboundSms'.safe_constantize
+    return [] if sms_class.nil? || !sms_class.respond_to?(:freepbx_numbers)
+
+    sms_class.freepbx_numbers.map { |n| n.slice(:number, :label, :channel_id) }
+  rescue StandardError => e
+    Rails.logger.error "KC NewConversations: could not list FreePBX numbers: #{e.message}"
+    []
   end
 
   def resolve_sms_channel(channel_id)
