@@ -9,8 +9,16 @@
 #
 # Tickets filed here are records, not work: triggers and agent notifications
 # are disabled around every write so nothing pages Discord or emails agents.
+#
+# Text-thread call notes (kc_ringcentral_sms_call_thread_notes): a call to
+# or from a number that has an open SMS ticket is also written to that
+# ticket as an internal note, so the thread shows every call on the number
+# alongside the texts. The note never changes the ticket's state, and a
+# closed thread gets nothing.
 module Kc::CallHistoryFiling
   DISPATCH_DISABLE = ['Transaction::Trigger', 'Transaction::Notification'].freeze
+
+  THREAD_NOTE_PREFIX = 'kc_call_note:'.freeze
 
   # Numbers that belong to us: every RingCentral number in the system plus
   # anything the caller passes in (forwarding targets seen in call legs,
@@ -188,5 +196,137 @@ module Kc::CallHistoryFiling
 
   def describe_extension(ext, name)
     name.present? ? "ext #{ext} (#{name})" : "ext #{ext}"
+  end
+
+  # ---- text-thread call notes ------------------------------------------
+
+  def thread_notes_enabled?
+    Setting.get('kc_ringcentral_sms_call_thread_notes') == true
+  end
+
+  # Writes (or refreshes) the call as an internal note on the open SMS
+  # ticket for `external`. Returns :noted, :unchanged or nil (no open
+  # thread, feature off, or failure). Never raises: a note is a courtesy,
+  # the call record must not depend on it.
+  #
+  # source  'RingCentral' or 'FreePBX' — which system placed or took the call
+  # via     optional detail, e.g. "ext 201 (Dean)" for a PBX extension
+  def note_call_on_sms_thread(dedup_key:, external:, inbound:, start_time:, duration:, outcome:, line:, source:, via: nil)
+    return nil if !thread_notes_enabled?
+
+    external = normalize_number(external)
+    return nil if external.blank?
+
+    message_id = "#{THREAD_NOTE_PREFIX}#{dedup_key}"
+    note       = Ticket::Article.find_by(message_id: message_id)
+    ticket     = note&.ticket || open_sms_thread_for(external)
+    return nil if ticket.nil?
+
+    record = Ticket::Article.find_by(message_id: dedup_key)&.ticket
+    body   = thread_note_body(inbound:, start_time:, duration:, outcome:, line:, source:, via:, record:)
+
+    transaction_class = 'Transaction'.safe_constantize
+    return nil if transaction_class.nil?
+
+    transaction_class.execute(disable: DISPATCH_DISABLE, reset_user_id: true) do
+      if note
+        next :unchanged if note.body == body
+
+        note.update!(body: body, updated_by_id: 1)
+        next :noted
+      end
+      next :unchanged if noted_by_other_source?(ticket, source, inbound, start_time)
+
+      note = Ticket::Article.create!(
+        ticket_id:     ticket.id,
+        type_id:       Ticket::Article::Type.find_by(name: 'note')&.id || Ticket::Article::Type.first&.id,
+        sender_id:     Ticket::Article::Sender.find_by(name: 'System')&.id || Ticket::Article::Sender.find_by(name: 'Agent')&.id,
+        from:          external,
+        subject:       'Call activity',
+        body:          body,
+        content_type:  'text/plain',
+        message_id:    message_id,
+        internal:      true,
+        preferences:   {
+          kc_call_note: {
+            source:           source,
+            direction:        inbound ? 'inbound' : 'outbound',
+            outcome:          outcome,
+            start_time:       start_time.utc.iso8601,
+            duration:         duration,
+            record_ticket_id: record&.id,
+          },
+        },
+        created_by_id: 1,
+        updated_by_id: 1,
+      )
+      # Sort the note where the call happened in the conversation, not
+      # where the poll caught up with it.
+      note.update_columns(created_at: start_time, updated_at: start_time) # rubocop:disable Rails/SkipsModelValidations
+      Rails.logger.info "KC Call History: noted #{source} call #{dedup_key} on SMS ticket #{ticket.id}"
+      :noted
+    end
+  rescue StandardError => e
+    Rails.logger.warn "KC Call History: could not note call #{dedup_key} on the SMS thread: #{e.message}"
+    nil
+  end
+
+  def thread_note_body(inbound:, start_time:, duration:, outcome:, line:, source:, via:, record:)
+    origin = via.present? ? "#{source} (#{via})" : source
+    lines  = [
+      "#{inbound ? 'Inbound' : 'Outbound'} call via #{origin} — #{outcome}",
+      line,
+      "Time: #{start_time.in_time_zone.strftime('%Y-%m-%d %H:%M')}  Duration: #{format('%d:%02d', duration / 60, duration % 60)}",
+    ]
+    lines << "Call record: #{Setting.get('ticket_hook')}#{record.number}" if record
+    lines.compact.join("\n")
+  end
+
+  # The most recently active SMS ticket for `number` that is not closed:
+  # any ticket the SMS integration can reply from (an SMS conversation, an
+  # agent-started text, a missed-call ticket with SMS reply enabled) whose
+  # customer side is this number. Pending states count as open; anything
+  # closed, merged, removed or in a KC locked-closed state does not.
+  def open_sms_thread_for(number)
+    number = normalize_number(number)
+    return nil if number.blank?
+
+    closed_state_ids = Ticket::State
+                         .joins(:state_type)
+                         .where("ticket_state_types.name IN (?) OR ticket_states.name LIKE 'closed%'", %w[closed merged removed])
+                         .pluck(:id)
+
+    # preferences is YAML; the number is quoted there, so match it whole.
+    Ticket.where('preferences LIKE ?', '%ringcentral_sms:%')
+          .where('preferences LIKE ?', "%\"#{ActiveRecord::Base.sanitize_sql_like(number)}\"%")
+          .where.not(state_id: closed_state_ids)
+          .order(updated_at: :desc)
+          .limit(25)
+          .detect { |ticket| sms_thread_numbers(ticket).include?(number) }
+  end
+
+  def sms_thread_numbers(ticket)
+    prefs = ticket.preferences || {}
+    sms   = (prefs['ringcentral_sms'] || prefs[:ringcentral_sms] || {}).with_indifferent_access
+    return [] if sms.blank?
+
+    ([sms[:from_phone]] + Array(sms[:participants]) + Array(sms[:to_phones]))
+      .filter_map { |n| normalize_number(n) }
+      .reject { |n| own_number?(n) }
+  end
+
+  # One call can be seen from both systems: RingCentral forwards to the PBX
+  # and may trunk its calls. A note from the other system for the same
+  # direction within three minutes is that call, and stays the one note.
+  # Same-source calls are told apart by their own dedup keys.
+  def noted_by_other_source?(ticket, source, inbound, start_time)
+    direction = inbound ? 'inbound' : 'outbound'
+    Ticket::Article
+      .where(ticket_id: ticket.id, created_at: (start_time - 3.minutes)..(start_time + 3.minutes))
+      .where('message_id LIKE ?', "#{THREAD_NOTE_PREFIX}%")
+      .any? do |other|
+        info = ((other.preferences || {}).with_indifferent_access[:kc_call_note] || {}).with_indifferent_access
+        info[:source].to_s != source && info[:direction].to_s == direction
+      end
   end
 end

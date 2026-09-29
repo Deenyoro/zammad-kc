@@ -9,6 +9,12 @@
 # The text is sent through RingCentral, because RingCentral owns SMS for the
 # whole system. Which number it comes from is configurable and may be any
 # number in the system (Kc::OutboundSms).
+#
+# Text-thread notes (kc_ringcentral_sms_call_thread_notes): calls the PBX
+# took or placed are also written as internal notes on the open SMS ticket
+# for the other party, if there is one (Kc::CallHistoryFiling). Outbound
+# calls from an extension are read for that purpose only; they are never
+# filed as tickets.
 class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   include Kc::FreepbxChannelStatus
   include Kc::CallHistoryFiling
@@ -42,7 +48,7 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   def perform
     Channel.where(area: 'Freepbx::Account', active: true).find_each do |channel|
       poll_channel(channel) if feature_enabled?
-      poll_history(channel) if Setting.get('kc_freepbx_call_history_ticket') == true
+      poll_history(channel) if history_enabled? || thread_notes_enabled?
     rescue StandardError => e
       Rails.logger.error "KC FreePBX Missed Calls: Failed for channel #{channel.id}: #{e.message}"
     end
@@ -58,6 +64,10 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   def feature_enabled?
     Setting.get('kc_freepbx_missed_call_ticket') == true ||
       Setting.get('kc_freepbx_missed_call_autoreply') == true
+  end
+
+  def history_enabled?
+    Setting.get('kc_freepbx_call_history_ticket') == true
   end
 
   def poll_channel(channel)
@@ -159,25 +169,36 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
       end
     end
 
-    legs = api.calls(since_minutes: ((Time.current - since) / 60).ceil + 5, direction: 'inbound', limit: 5000)
-               .map(&:with_indifferent_access)
+    minutes = ((Time.current - since) / 60).ceil + 5
+    legs    = api.calls(since_minutes: minutes, direction: 'inbound', limit: 5000)
+                 .map(&:with_indifferent_access)
 
-    held  = nil
-    calls = legs.group_by { |l| l[:linkedid].presence || l[:uniqueid] }
-    calls.each do |linkedid, call_legs|
-      first = call_legs.min_by { |l| l[:calldate_utc].to_s }
-      start = Time.zone.parse(first[:calldate_utc].to_s) rescue nil
-      next if start.nil? || start < since || start < channel.created_at
-
+    held = nil
+    each_settled_call(legs, since, channel) do |linkedid, call_legs, first, start|
       if start > HISTORY_LAG.ago
         held = [held, start].compact.min
         next
       end
 
       begin
-        file_history_call(channel, linkedid.to_s, call_legs, first, start, since)
+        file_history_call(channel, linkedid, call_legs, first, start, since)
       rescue StandardError => e
         Rails.logger.error "KC FreePBX Call History: Failed to file call #{linkedid}: #{e.message}"
+      end
+    end
+
+    if thread_notes_enabled?
+      each_settled_call(outbound_legs(api, minutes), since, channel) do |linkedid, call_legs, first, start|
+        if start > HISTORY_LAG.ago
+          held = [held, start].compact.min
+          next
+        end
+
+        begin
+          note_outbound_call(linkedid, call_legs, first, start)
+        rescue StandardError => e
+          Rails.logger.error "KC FreePBX Call History: Failed to note outbound call #{linkedid}: #{e.message}"
+        end
       end
     end
 
@@ -217,18 +238,87 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
                  'Missed (FreePBX)'
                end
 
-    file_call_record(
+    if history_enabled?
+      file_call_record(
+        dedup_key:  "freepbx_call:#{linkedid}",
+        channel:    channel,
+        external:   caller,
+        inbound:    true,
+        start_time: start,
+        duration:   duration,
+        outcome:    outcome,
+        line:       "#{caller} → #{dialed} (direct to FreePBX)",
+        prefs_key:  :freepbx_call,
+        prefs:      { linkedid: linkedid, outcome: outcome, answered_by: ext, duration: duration,
+                      start_time: start.utc.iso8601, from_phone: caller, to_phone: dialed },
+      )
+    end
+
+    note_call_on_sms_thread(
       dedup_key:  "freepbx_call:#{linkedid}",
-      channel:    channel,
       external:   caller,
       inbound:    true,
       start_time: start,
       duration:   duration,
       outcome:    outcome,
-      line:       "#{caller} → #{dialed} (direct to FreePBX)",
-      prefs_key:  :freepbx_call,
-      prefs:      { linkedid: linkedid, outcome: outcome, answered_by: ext, duration: duration,
-                    start_time: start.utc.iso8601, from_phone: caller, to_phone: dialed },
+      line:       "#{caller} → #{dialed}",
+      source:     'FreePBX',
+    )
+  end
+
+  # Groups CDR legs into calls and yields each one that started inside the
+  # window: [linkedid, legs, first leg, start time].
+  def each_settled_call(legs, since, channel)
+    legs.group_by { |l| l[:linkedid].presence || l[:uniqueid] }.each do |linkedid, call_legs|
+      first = call_legs.min_by { |l| l[:calldate_utc].to_s }
+      start = Time.zone.parse(first[:calldate_utc].to_s) rescue nil
+      next if start.nil? || start < since || start < channel.created_at
+
+      yield linkedid.to_s, call_legs, first, start
+    end
+  end
+
+  # Calls placed from an extension, for the text-thread note only. A
+  # connector that does not filter by direction returns inbound legs here
+  # too; the extension-as-source check in note_outbound_call drops them.
+  def outbound_legs(api, minutes)
+    api.calls(since_minutes: minutes, direction: 'outbound', limit: 5000).map(&:with_indifferent_access)
+  rescue StandardError => e
+    Rails.logger.warn "KC FreePBX Call History: could not read outbound calls: #{e.message}"
+    []
+  end
+
+  def note_outbound_call(linkedid, call_legs, first, start)
+    ext = (first[:src].presence || first[:cnum]).to_s.delete('^0-9')
+    return if ext.blank? || ext.length > 6
+
+    called = normalize(first[:dst])
+    return if called.blank? || called.to_s.delete('+').length < 7 || own_number?(called)
+
+    answered = call_legs.any? { |l| l[:disposition].to_s == 'ANSWERED' && l[:billsec].to_i.positive? }
+    duration = call_legs.map { |l| l[:duration].to_i }.max || 0
+    outcome  = if answered
+                 'Answered'
+               else
+                 case first[:disposition].to_s
+                 when 'BUSY'      then 'Busy'
+                 when 'NO ANSWER' then 'No answer'
+                 when 'FAILED'    then 'Failed'
+                 else first[:disposition].to_s.presence&.capitalize || 'Not answered'
+                 end
+               end
+    placed_by = describe_extension(ext, pbx_extension_names[ext].presence)
+
+    note_call_on_sms_thread(
+      dedup_key:  "freepbx_call:#{linkedid}",
+      external:   called,
+      inbound:    false,
+      start_time: start,
+      duration:   duration,
+      outcome:    outcome,
+      line:       "#{placed_by} → #{called}",
+      source:     'FreePBX',
+      via:        placed_by,
     )
   end
 
@@ -291,7 +381,12 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     # next run.
     mark_processed(channel, unique_id)
 
-    create_missed_call_ticket(channel, dedup_key, caller, dialed, call, reply_from) if create_ticket
+    if create_ticket
+      create_missed_call_ticket(channel, dedup_key, caller, dialed, call, reply_from)
+      # Call history skips calls that have a missed-call ticket, so the
+      # text-thread note for them is written here.
+      note_missed_call_on_sms_thread(dedup_key, caller, dialed, call)
+    end
 
     return if !send_reply
 
@@ -300,6 +395,26 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
     sent = Kc::OutboundSms.deliver(to: caller, text: message, from: reply_from,
                                    label: 'KC FreePBX Missed Calls')
     queue_autoreply(channel, unique_id, caller, message, reply_from) if sent.nil?
+  end
+
+  def note_missed_call_on_sms_thread(dedup_key, caller, dialed, call)
+    start = begin
+              Time.zone.parse((call[:calldate_utc].presence || call[:calldate]).to_s)
+            rescue ArgumentError, TypeError
+              nil
+            end
+    return if start.nil?
+
+    note_call_on_sms_thread(
+      dedup_key:  dedup_key,
+      external:   caller,
+      inbound:    true,
+      start_time: start,
+      duration:   call[:duration].to_i,
+      outcome:    'Missed',
+      line:       "#{caller} → #{dialed}",
+      source:     'FreePBX',
+    )
   end
 
   # Numbers we own: every RingCentral number in the system plus the DID the

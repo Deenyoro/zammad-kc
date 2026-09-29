@@ -142,6 +142,17 @@
           </label>
         </td>
       </tr>
+      <tr>
+        <td>
+          <span><%- @T('Note Calls on Open Text Threads') %></span>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('When a number with an open SMS ticket is called from, or calls, RingCentral or FreePBX, add an internal note to that ticket. The ticket state is not changed; closed tickets are left alone.') %></p>
+        </td>
+        <td>
+          <label class="inline-label">
+            <input type="checkbox" name="call_thread_notes" value="true" <% if @settings.call_thread_notes: %>checked<% end %>>
+          </label>
+        </td>
+      </tr>
     </table>
     <button class="btn btn--primary js-saveCallHistorySettings" style="margin-top: 10px;"><%- @T('Save Call History Settings') %></button>
   </div>
