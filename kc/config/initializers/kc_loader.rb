@@ -80,6 +80,7 @@ Rails.application.config.to_prepare do
   kc_prepend.call('TicketArticleCommunicateEmailJob', 'Kc::EmailJobBcc')
   kc_prepend.call('Channel::Driver::BaseEmailOutbound', 'Kc::EmailOutboundBcc')
   kc_prepend.call('Service::Ticket::Article::List', 'Kc::ChronologicalArticleList')
+  kc_prepend.call('Store', 'Kc::StoreHeicConversion')
 
   # Channel::EmailBuild is a module with singleton methods (def self.xxx),
   # so the concern must be prepended onto its singleton_class.
