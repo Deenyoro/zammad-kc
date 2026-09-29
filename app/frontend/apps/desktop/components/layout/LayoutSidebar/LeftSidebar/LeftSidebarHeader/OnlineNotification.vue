@@ -1,8 +1,8 @@
 <!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
-import { usePermission, useWebNotification, whenever } from '@vueuse/core'
-import { computed, onMounted, ref } from 'vue'
+import { whenever } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useActivityMessage } from '#shared/composables/activity-message/useActivityMessage.ts'
@@ -19,6 +19,10 @@ import CommonPopover from '#desktop/components/CommonPopover/CommonPopover.vue'
 import { usePopover } from '#desktop/components/CommonPopover/usePopover.ts'
 import NotificationButton from '#desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationButton.vue'
 import NotificationPopover from '#desktop/components/layout/LayoutSidebar/LeftSidebar/LeftSidebarHeader/OnlineNotification/NotificationPopover.vue'
+import {
+  useBrowserNotification,
+  useBrowserNotificationTab,
+} from '#desktop/composables/useBrowserNotification.ts'
 
 const webNotificationList = new Map<ID, Notification>()
 
@@ -28,11 +32,11 @@ const { popover, popoverTarget, toggle, open, close } = usePopover()
 
 const { play, isEnabled } = useOnlineNotificationSound()
 
-const notificationPermission = usePermission('notifications')
-
 const { notificationsCountSubscription } = useOnlineNotificationCount()
 
-const { show, isSupported, permissionGranted, ensurePermissions } = useWebNotification()
+const { permissionGranted, show } = useBrowserNotification()
+
+const { isNotifyingTab } = useBrowserNotificationTab()
 
 const {
   notificationList,
@@ -138,9 +142,12 @@ notificationsCountSubscription.watchOnResult(async (result) => {
 
   const { data } = await refetch()
 
+  // The permission is requested centrally after login; without it, the
+  //   browser notification is skipped and only the badge and sound remain.
+  //   The same goes for a tab that is not the one showing them.
   if (
     permissionGranted.value &&
-    isSupported.value &&
+    isNotifyingTab.value &&
     data?.onlineNotifications &&
     result.onlineNotificationsCount.unseenCount > previousUnseenCount
   ) {
@@ -159,13 +166,18 @@ notificationsCountSubscription.watchOnResult(async (result) => {
       silent: true,
     })
 
-    if (!webNotification) return
-
-    webNotificationList.set(notification.id, webNotification)
-    webNotification.onclick = () => handleOpenWebNotification(notification, link)
+    if (webNotification) {
+      webNotificationList.set(notification.id, webNotification)
+      webNotification.onclick = () => handleOpenWebNotification(notification, link)
+    }
   }
 
   previousUnseenCount = result.onlineNotificationsCount.unseenCount
+})
+
+// The tab that took over is in front and shows the badge itself.
+watch(isNotifyingTab, (notifying) => {
+  if (!notifying) closeWebNotifications()
 })
 
 whenever(
@@ -178,10 +190,6 @@ whenever(
 const truncatedUnseenCount = computed(() =>
   unseenCount.value && unseenCount.value > 99 ? '99+' : unseenCount.value,
 )
-
-onMounted(() => {
-  if (isEnabled.value && !notificationPermission.value) ensurePermissions()
-})
 
 defineOptions({
   inheritAttrs: false,
