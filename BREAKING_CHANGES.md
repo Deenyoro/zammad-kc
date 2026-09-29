@@ -2,6 +2,18 @@
 
 ## Upcoming releases
 
+### `String#utf8_encode` and `Object#to_utf8` will be removed
+
+**Who is affected?** Developers of third-party packages, patches or add-ons that still call
+`String#utf8_encode` or `Object#to_utf8`.
+
+Both core extensions, deprecated since Zammad 7.3, will be removed in Zammad 8.0. Code still calling
+them will then raise `NoMethodError`.
+
+⚠️ Switch such code to `TextEncoding.utf8_encode` before updating to Zammad 8.0.
+
+**Related issue:** [#6371](https://github.com/zammad/zammad/issues/6371)
+
 ### Debian 11 will no longer be supported
 
 **Who is affected?** Admins of instances installed from the Zammad package repository on Debian 11
@@ -28,19 +40,6 @@ will be returned in a dedicated `inline_attachments` key instead.
 ⚠️ Update such integrations to read inline images from the new `inline_attachments` key.
 
 **Related issue:** [#6254](https://github.com/zammad/zammad/issues/6254)
-
-### Import mode will also enable maintenance mode
-
-**Who is affected?** Admins of instances that are left in import mode while users are expected to work
-in them.
-
-Import mode was never intended for productive environments. In a future release, an instance running in
-import mode will automatically run in maintenance mode as well, which prevents non-admin users from
-logging in.
-
-⚠️ Disable import mode before letting users work in the instance.
-
-**Related issue:** [#6237](https://github.com/zammad/zammad/issues/6237)
 
 ### `Exceptions::UnprocessableEntity` will be removed
 
@@ -73,6 +72,42 @@ instead.
 **Related issue:** [#5580](https://github.com/zammad/zammad/issues/5580)
 
 ## 7.3
+
+### `String#utf8_encode` and `Object#to_utf8` were deprecated in favour of `TextEncoding.utf8_encode`
+
+**Who is affected?** Developers of third-party packages, patches or add-ons that call
+`String#utf8_encode`, `String#utf8_encode!` or `Object#to_utf8`.
+
+Encoding resolution moved out of `lib/core_ext/string.rb` into a dedicated class, `TextEncoding`,
+which takes the string as an argument: `string.utf8_encode(from: 'iso-8859-1')` became
+`TextEncoding.utf8_encode(string, from: 'iso-8859-1')`, and `object.to_utf8` became
+`TextEncoding.utf8_encode(object.to_s)`. `String` no longer requires the `rchardet` and `mail` gems.
+
+`String#utf8_encode` and `Object#to_utf8` still work and now emit a deprecation warning.
+`String#utf8_encode!` was removed without a deprecation period, since `TextEncoding.utf8_encode`
+never modifies its argument and always returns a new string.
+
+⚠️ Replace calls to `String#utf8_encode` and `Object#to_utf8` with `TextEncoding.utf8_encode`, and
+replace `String#utf8_encode!` with an assignment from it.
+
+**Related issue:** [#6371](https://github.com/zammad/zammad/issues/6371)
+
+### Import mode also enables maintenance mode
+
+**Who is affected?** Admins of instances that are left in import mode while users are expected to work
+in them.
+
+Import mode was never intended for productive environments. An instance running in import mode now
+automatically runs in maintenance mode as well: while the `import_mode` setting is enabled, every
+authenticated request of a user without the `admin.maintenance` permission is refused. REST and API
+requests get `403 Forbidden`, and GraphQL treats the session as logged out. This covers new logins,
+sessions that were already open, and API access via token or HTTP basic authentication alike. An
+impersonated session is only exempt when the administrator who switched into it holds
+`admin.maintenance`; this also applies to the classic maintenance mode.
+
+⚠️ Disable import mode before letting users work in the instance.
+
+**Related issue:** [#6237](https://github.com/zammad/zammad/issues/6237)
 
 ### Deleting organizations via API requires the `admin.organization` permission
 
