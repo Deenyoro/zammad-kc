@@ -40,6 +40,7 @@ const ARTICLE_TYPE_LABELS: Record<string, string> = {
   email: __('Email'),
   teams_chat_message: __('Teams Chat'),
   ringcentral_sms_message: __('RingCentral SMS'),
+  freepbx_sms_message: __('FreePBX SMS'),
   note: __('Note'),
   phone: __('Phone'),
   web: __('Web'),
