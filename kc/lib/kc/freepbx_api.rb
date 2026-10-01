@@ -39,6 +39,10 @@
 #                     media: [{ filename:, content_type:, data_base64: }] }
 #        → { id: "sms:12346" }
 #
+#   GET  /contacts   (optional)
+#        → { contacts: [{ name: "Jane Smith", numbers: ["+14125550123"] }] }
+#        The PBX phonebook, used to put names next to numbers on SMS tickets.
+#
 #   Webhook (optional, for instant delivery): the connector POSTs each new
 #   message, in the <message> shape above (or { messages: [...] }), to
 #   <zammad>/api/v1/kc/freepbx_sms_webhook with the header
@@ -83,6 +87,13 @@ module Kc
     def extensions
       result = get('/extensions')
       Array(result['extensions'] || result[:extensions])
+    end
+
+    # The PBX phonebook (Contact Manager): [{ name:, numbers: ["+1..."] }].
+    # Optional endpoint; older connectors answer 404.
+    def contacts
+      result = get('/contacts')
+      Array(result['contacts'] || result[:contacts])
     end
 
     # ---- SMS -----------------------------------------------------------

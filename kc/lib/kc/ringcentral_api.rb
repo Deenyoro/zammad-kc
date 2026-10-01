@@ -336,6 +336,13 @@ module Kc
       api_get("#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/phone-number")
     end
 
+    # One page of the extension's personal address book (contacts the user
+    # keeps in the RingCentral app).
+    def address_book_contacts(page: 1, per_page: 250)
+      query = { page: page, perPage: per_page }.to_query
+      api_get("#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/address-book/contact?#{query}")
+    end
+
     # ------------------------------------------------------------------
     # Call Log (for missed call detection)
     # ------------------------------------------------------------------

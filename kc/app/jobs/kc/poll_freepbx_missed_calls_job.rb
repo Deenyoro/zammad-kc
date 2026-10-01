@@ -38,6 +38,11 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   # from here.
   HISTORY_LAG = 20.minutes
 
+  # Calls placed from an extension are only ever noted on a text thread,
+  # never filed, so they need no head start for RingCentral; they wait just
+  # long enough for the PBX to finish writing the call's CDR rows.
+  NOTE_LAG = 2.minutes
+
   # A missed call has finished ringing, and so has its CDR row, well inside
   # this margin. A clean poll may move the watermark up to PBX time minus it
   # even when it found nothing; otherwise the watermark sits at the last
@@ -189,7 +194,7 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
 
     if thread_notes_enabled?
       each_settled_call(outbound_legs(api, minutes), since, channel) do |linkedid, call_legs, first, start|
-        if start > HISTORY_LAG.ago
+        if start > NOTE_LAG.ago
           held = [held, start].compact.min
           next
         end
@@ -289,6 +294,10 @@ class Kc::PollFreepbxMissedCallsJob < ApplicationJob
   end
 
   def note_outbound_call(linkedid, call_legs, first, start)
+    # Calls the PBX originates itself (escalation alerts) run on a Local/
+    # channel; a person dialling from a phone is on PJSIP/SIP.
+    return if first[:channel].to_s.start_with?('Local/') || first[:dcontext].to_s.start_with?('kc-alert')
+
     ext = (first[:src].presence || first[:cnum]).to_s.delete('^0-9')
     return if ext.blank? || ext.length > 6
 

@@ -55,7 +55,10 @@ const actionPlugin: TicketArticleActionPlugin = {
         agent: ['change'],
       },
       perform(ticket, article, { openReplyForm }) {
-        const from = article.from?.raw
+        // "Jane Smith (+14125550100)" carries the number in parentheses.
+        const raw = article.from?.raw
+        const number = raw?.match(/\(([^()]+)\)\s*$/)?.[1]
+        const from = number && /^\+?[\d\s.-]{7,}$/.test(number) ? number : raw
         const smsPrefs = getSmsPreferences(ticket)
         const articleData = {
           articleType: 'freepbx_sms_message',

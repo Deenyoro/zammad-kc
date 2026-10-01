@@ -109,3 +109,16 @@ so a lost webhook only delays a message.
 The Sangoma SMS module's own "SMS Webhook" feature and smsconnector's provider
 callbacks can be used as the trigger; the connector translates their payload
 into the shape above.
+
+## `GET /contacts` (optional)
+
+The PBX phonebook (Contact Manager), so SMS tickets and call notes can show
+"Jane Smith (+14125550123)" instead of a bare number.
+
+```json
+{ "contacts": [ { "name": "Jane Smith", "numbers": ["+14125550123", "+14125550124"] } ] }
+```
+
+Zammad reads the whole list at most every 30 minutes and matches numbers on
+their last ten digits. A connector without this endpoint answers `404`;
+Zammad then simply uses the Zammad users and the RingCentral address book.
