@@ -87,25 +87,14 @@ class Kc::NewConversationsController < ApplicationController
     user = if customer_id.present?
              User.find_by(id: customer_id)
            end
-    user ||= User.find_by(phone: normalized_phone) || User.find_by(mobile: normalized_phone)
-    if user.nil?
-      user = User.create!(
-        firstname:     normalized_phone,
-        lastname:      '',
-        phone:         normalized_phone,
-        active:        true,
-        role_ids:      Role.signup_role_ids,
-        updated_by_id: 1,
-        created_by_id: 1,
-      )
-    end
+    user ||= sms_customer_for(normalized_phone)
 
     # Determine group
     group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
 
     # Build ticket title
     title_template = Setting.get('kc_ringcentral_sms_ticket_title_template').to_s.presence || 'SMS from {phone}'
-    title_phone    = recipients.size > 1 ? "#{normalized_phone} +#{recipients.size - 1}" : normalized_phone.to_s
+    title_phone    = recipients.size > 1 ? "#{normalized_phone} +#{recipients.size - 1}" : sms_contact_display(normalized_phone)
     title = title_template.gsub('{phone}', title_phone).truncate(100, omission: '...')
 
     transaction_class = 'Transaction'.safe_constantize
@@ -363,21 +352,12 @@ class Kc::NewConversationsController < ApplicationController
                        end
 
     user = User.find_by(id: customer_id) if customer_id.present?
-    user ||= User.find_by(phone: normalized_phone) || User.find_by(mobile: normalized_phone)
-    user ||= User.create!(
-      firstname:     normalized_phone,
-      lastname:      '',
-      phone:         normalized_phone,
-      active:        true,
-      role_ids:      Role.signup_role_ids,
-      updated_by_id: 1,
-      created_by_id: 1,
-    )
+    user ||= sms_customer_for(normalized_phone)
 
     group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
 
     title_template = Setting.get('kc_freepbx_sms_ticket_title_template').to_s.presence || 'SMS from {phone}'
-    title_phone    = recipients.size > 1 ? "#{normalized_phone} +#{recipients.size - 1}" : normalized_phone.to_s
+    title_phone    = recipients.size > 1 ? "#{normalized_phone} +#{recipients.size - 1}" : sms_contact_display(normalized_phone)
     title = title_template.gsub('{phone}', title_phone).truncate(100, omission: '...')
 
     transaction_class = 'Transaction'.safe_constantize
@@ -639,6 +619,26 @@ class Kc::NewConversationsController < ApplicationController
     return channels.find_by(id: default_id) || channels.first if default_id
 
     channels.first
+  end
+
+  def sms_customer_for(number)
+    contacts = 'Kc::PhoneContacts'.safe_constantize
+    return contacts.find_or_create_customer(number) if contacts
+
+    User.find_by(phone: number) || User.find_by(mobile: number) || User.create!(
+      firstname:     number,
+      lastname:      '',
+      phone:         number,
+      active:        true,
+      role_ids:      Role.signup_role_ids,
+      updated_by_id: 1,
+      created_by_id: 1,
+    )
+  end
+
+  def sms_contact_display(number)
+    contacts = 'Kc::PhoneContacts'.safe_constantize
+    contacts ? contacts.display(number) : number.to_s
   end
 
   def normalize_phone_fallback(number)

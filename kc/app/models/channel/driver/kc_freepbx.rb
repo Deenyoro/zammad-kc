@@ -68,6 +68,7 @@ class Channel::Driver::KcFreepbx
     our_phone  = resolve_our_phone(channel, to_phones)
     others     = other_participants(from_phone, to_phones, our_phone)
 
+    'Kc::PhoneContacts'.safe_constantize&.warm!
     transaction_class.execute(reset_user_id: true, context: 'freepbx_sms') do
       user   = find_or_create_user(from_phone)
       ticket = find_or_create_ticket(channel, message_data, user, our_phone, others)
@@ -99,6 +100,7 @@ class Channel::Driver::KcFreepbx
     execute_options = { reset_user_id: true, context: 'freepbx_sms' }
     execute_options[:disable] = %w[Transaction::Notification Transaction::Trigger] if mode == :backfill
 
+    'Kc::PhoneContacts'.safe_constantize&.warm!
     transaction_class.execute(execute_options) do
       UserInfo.current_user_id = agent.id
 
@@ -251,6 +253,8 @@ class Channel::Driver::KcFreepbx
 
   def find_or_create_user(phone)
     normalized = normalize_phone(phone)
+    contacts   = 'Kc::PhoneContacts'.safe_constantize
+    return contacts.find_or_create_customer(normalized) if contacts
 
     user = User.find_by(phone: normalized) || User.find_by(mobile: normalized)
     return user if user
@@ -264,6 +268,13 @@ class Channel::Driver::KcFreepbx
       updated_by_id: 1,
       created_by_id: 1,
     )
+  end
+
+  # "Jane Smith (+14125550100)" when the number is a known contact.
+  def contact_display(number)
+    normalized = normalize_phone(number) || number.to_s
+    contacts   = 'Kc::PhoneContacts'.safe_constantize
+    contacts ? contacts.display(normalized) : normalized
   end
 
   def find_agent_for_channel(channel)
@@ -432,7 +443,7 @@ class Channel::Driver::KcFreepbx
 
   def build_ticket_title(from_phone)
     template = Setting.get('kc_freepbx_sms_ticket_title_template').to_s.presence || 'SMS from {phone}'
-    phone    = normalize_phone(from_phone) || from_phone.to_s
+    phone    = contact_display(from_phone)
     template.gsub('{phone}', phone).truncate(100, omission: '...')
   end
 
@@ -452,7 +463,7 @@ class Channel::Driver::KcFreepbx
       ticket_id:     ticket.id,
       type_id:       article_type&.id,
       sender_id:     sender&.id,
-      from:          normalize_phone(from_phone),
+      from:          contact_display(from_phone),
       subject:       nil,
       body:          message_data[:text].to_s.strip.presence || (message_data[:attachments].present? ? '(MMS)' : '-'),
       content_type:  'text/plain',
@@ -484,7 +495,7 @@ class Channel::Driver::KcFreepbx
       type_id:       (Ticket::Article::Type.find_by(name: 'note') || Ticket::Article::Type.first)&.id,
       sender_id:     (Ticket::Article::Sender.find_by(name: 'Agent') || Ticket::Article::Sender.first)&.id,
       from:          plan[:our_phone],
-      to:            plan[:others].join(', '),
+      to:            plan[:others].map { |n| contact_display(n) }.join(', '),
       subject:       nil,
       body:          "#{text}#{CAPTURE_SUFFIX}#{sent_by}",
       content_type:  'text/plain',

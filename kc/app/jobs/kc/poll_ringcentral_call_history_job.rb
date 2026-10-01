@@ -28,7 +28,8 @@
 #     later replaced by the real Inbound record with the same sessionId.
 #     Filing the preliminary record produced "outbound" calls to our own
 #     number, attributed to whichever user had that number on file.
-#     So: records younger than SETTLE_LAG are not filed yet, records whose
+#     So: records younger than SETTLE_LAG are not filed yet (their
+#     text-thread note is written, and rewritten once they settle), records whose
 #     external party is one of our own numbers are never filed, and a
 #     record that changes after filing updates its ticket (upsert).
 #   - A forwarded call (RingCentral → FreePBX) shows a FindMe leg to the
@@ -222,7 +223,12 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
 
     result = call_record[:result].to_s
     return start_time if result.blank? || result == 'In Progress'
-    return start_time if settle && start_time > SETTLE_LAG.ago
+
+    # A young record may still be replaced (see the class comment), so its
+    # history ticket waits. The text-thread note does not: the agent who
+    # just called a texting customer expects to see it now, and a later
+    # version of the record rewrites the same note.
+    young = settle && start_time > SETTLE_LAG.ago
 
     inbound     = call_record[:direction].to_s == 'Inbound'
     from_number = normalize_number(call_record.dig(:from, :phoneNumber))
@@ -266,7 +272,7 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
     line      = "#{from_number || call_record.dig(:from, :extensionNumber)} → #{to_number || call_record.dig(:to, :extensionNumber)}"
 
     filed = :skipped
-    if history_enabled?
+    if history_enabled? && !young
       filed = file_call_record(
         dedup_key:  dedup_key,
         channel:    channel,
@@ -292,6 +298,7 @@ class Kc::PollRingcentralCallHistoryJob < ApplicationJob
       source:     'RingCentral',
       via:        inbound ? nil : call_record.dig(:from, :name).presence,
     )
+    return start_time if young
     return :noted if filed == :skipped && noted == :noted
 
     filed
