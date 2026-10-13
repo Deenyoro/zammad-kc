@@ -25,16 +25,18 @@ RSpec.describe Cti::Log do
       end
     end
 
-    context 'when over 60 Log records exist' do
+    context 'when more Log records than the view limit exist' do
       subject!(:cti_logs) do
-        61.times.map do |_i| # rubocop:disable Performance/TimesMap
+        4.times.map do |_i| # rubocop:disable Performance/TimesMap
           travel 1.second
           create(:'cti/log')
         end
       end
 
-      it 'returns the 60 latest ones in the :list key' do
-        expect(described_class.log(user)[:list]).to match_array(cti_logs.last(60))
+      before { allow(described_class).to receive(:view_limit).and_return(3) }
+
+      it 'returns the latest ones up to the view limit in the :list key' do
+        expect(described_class.log(user)[:list]).to match_array(cti_logs.last(3))
       end
     end
 
@@ -110,8 +112,12 @@ RSpec.describe Cti::Log do
   end
 
   describe '.push_caller_list_update?' do
-    let!(:existing_logs) { create_list(:'cti/log', 60) }
     let(:log) { create(:'cti/log') }
+
+    before do
+      allow(described_class).to receive(:view_limit).and_return(3)
+      create_list(:'cti/log', 3)
+    end
 
     context 'when given log is older than existing logs' do
       before { travel(-10.seconds) }
@@ -415,6 +421,49 @@ RSpec.describe Cti::Log do
       end
     end
 
+    context 'with the timing of a whole call' do
+      let(:event) { 'newCall' }
+
+      def process(event, **extra)
+        described_class.process(attributes.merge('event' => event, **extra))
+      end
+
+      it 'records waiting and talking time of an answered call', :aggregate_failures do
+        freeze_time
+        process('newCall')
+        travel 2.seconds
+        process('answer')
+
+        expect(described_class.last).to have_attributes(start_at: Time.zone.now, duration_waiting_time: 2, end_at: nil, duration_talking_time: nil)
+
+        travel 3.seconds
+        process('hangup', 'cause' => 'normalClearing')
+
+        expect(described_class.last).to have_attributes(end_at: Time.zone.now, duration_waiting_time: 2, duration_talking_time: 3, comment: 'normalClearing')
+      end
+
+      it 'records only the waiting time of an unanswered call', :aggregate_failures do
+        freeze_time
+        process('newCall')
+        travel 2.seconds
+        process('hangup', 'cause' => 'cancel')
+
+        expect(described_class.last).to have_attributes(start_at: nil, end_at: Time.zone.now, duration_waiting_time: 2, duration_talking_time: nil)
+      end
+
+      it 'marks an outbound call as done right away' do
+        process('newCall', 'direction' => 'out')
+
+        expect(described_class.last).to have_attributes(done: true, queue: '49123456', from_comment: 'user 1')
+      end
+
+      it 'joins a list of users into one comment' do
+        process('newCall', 'user' => ['user 1', 'user 2'])
+
+        expect(described_class.last.to_comment).to eq('user 1, user 2')
+      end
+    end
+
     context 'for preferences.from verification', performs_jobs: true do
       subject(:log) do
         described_class.process(attributes)
@@ -505,24 +554,25 @@ RSpec.describe Cti::Log do
 
   describe 'Callbacks -' do
     describe 'Updating agent sessions:' do
-      before { allow(Sessions).to receive(:send_to).with(any_args) }
+      let!(:agent) { create(:agent) }
+
+      before do
+        allow(described_class).to receive(:view_limit).and_return(3)
+        allow(Sessions).to receive(:send_to)
+      end
 
       context 'on creation' do
         it 'pushes "cti_list_push" event' do
-          User.with_permissions('cti.agent').each do |u|
-            expect(Sessions).to receive(:send_to).with(u.id, { event: 'cti_list_push' })
-          end
-
           create(:cti_log)
+
+          expect(Sessions).to have_received(:send_to).with(agent.id, { event: 'cti_list_push' })
         end
 
-        context 'with over 60 existing Log records' do
-          before { create_list(:cti_log, 60) }
+        context 'with more existing Log records than the view limit' do
+          before { create_list(:cti_log, described_class.view_limit) }
 
           it '(always) pushes "cti_list_push" event' do
-            User.with_permissions('cti.agent').each do |u|
-              expect(Sessions).to receive(:send_to).with(u.id, { event: 'cti_list_push' })
-            end
+            expect(Sessions).to receive(:send_to).with(agent.id, { event: 'cti_list_push' })
 
             create(:cti_log)
           end
@@ -530,35 +580,29 @@ RSpec.describe Cti::Log do
       end
 
       context 'on update' do
-        subject!(:log) { create(:cti_log) }
+        subject!(:log) { travel_to(1.minute.ago) { create(:cti_log) } }
 
         it 'pushes "cti_list_push" event' do
-          User.with_permissions('cti.agent').each do |u|
-            expect(Sessions).to receive(:send_to).with(u.id, { event: 'cti_list_push' })
-          end
+          expect(Sessions).to receive(:send_to).with(agent.id, { event: 'cti_list_push' })
 
           log.touch
         end
 
-        context 'when among the latest 60 Log records' do
-          before { create_list(:cti_log, 59) }
+        context 'when among the latest Log records within the view limit' do
+          before { create_list(:cti_log, described_class.view_limit - 1) }
 
           it 'pushes "cti_list_push" event' do
-            User.with_permissions('cti.agent').each do |u|
-              expect(Sessions).to receive(:send_to).with(u.id, { event: 'cti_list_push' })
-            end
+            expect(Sessions).to receive(:send_to).with(agent.id, { event: 'cti_list_push' })
 
             log.touch
           end
         end
 
-        context 'when not among the latest 60 Log records' do
-          before { create_list(:cti_log, 60) }
+        context 'when not among the latest Log records within the view limit' do
+          before { create_list(:cti_log, described_class.view_limit) }
 
           it 'does NOT push "cti_list_push" event' do
-            User.with_permissions('cti.agent').each do |u|
-              expect(Sessions).not_to receive(:send_to).with(u.id, { event: 'cti_list_push' })
-            end
+            expect(Sessions).not_to receive(:send_to)
 
             log.touch
           end

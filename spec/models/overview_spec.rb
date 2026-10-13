@@ -24,6 +24,12 @@ RSpec.describe Overview, type: :model do
   it_behaves_like 'Association clears cache', association: :roles
   it_behaves_like 'Association clears cache', association: :users
 
+  describe 'validation' do
+    subject { build(:overview) }
+
+    it { is_expected.to validate_presence_of(:roles) }
+  end
+
   context 'link generation' do
 
     it 'generates from name' do
@@ -128,6 +134,26 @@ RSpec.describe Overview, type: :model do
   describe 'Make conditions AND/OR and thus enable several conditions of same type #2185' do
     it 'does create overviews with the expert structure' do
       expect { create(:overview, :condition_expert) }.not_to raise_error
+    end
+  end
+
+  describe 'order direction validation', :aggregate_failures do
+    it 'accepts ASC and DESC (case-insensitive)' do
+      expect(build(:overview, order: { by: 'created_at', direction: 'ASC' }, group_direction: 'desc')).to be_valid
+    end
+
+    it 'rejects a malicious order direction' do
+      overview = build(:overview, order: { by: 'created_at', direction: "DESC, (SELECT CAST('x' AS integer))" })
+
+      expect(overview).not_to be_valid
+      expect(overview.errors.full_messages.join).to include('Invalid order direction')
+    end
+
+    it 'rejects a malicious group direction' do
+      overview = build(:overview, group_direction: 'ASC; DROP TABLE tickets')
+
+      expect(overview).not_to be_valid
+      expect(overview.errors.full_messages.join).to include('Invalid order direction')
     end
   end
 

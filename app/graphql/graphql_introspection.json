@@ -15843,15 +15843,11 @@
                 },
                 {
                   "name": "formId",
-                  "description": "Form identifier of the form for the new article to copy attachments to",
+                  "description": "Form identifier of the form for the new article to copy attachments to (forward only)",
                   "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "FormId",
-                      "ofType": null
-                    }
+                    "kind": "SCALAR",
+                    "name": "FormId",
+                    "ofType": null
                   },
                   "defaultValue": null
                 }
@@ -17928,6 +17924,60 @@
               "deprecationReason": null
             },
             {
+              "name": "userCurrentPushSubscriptionAdd",
+              "description": "Register the web push subscription of the current browser for the current user",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The push subscription data",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "UserPushSubscriptionInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UserCurrentPushSubscriptionAddPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userCurrentPushSubscriptionDelete",
+              "description": "Remove a web push subscription of the current user",
+              "args": [
+                {
+                  "name": "endpoint",
+                  "description": "Push service endpoint of the subscription to remove",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UserCurrentPushSubscriptionDeletePayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "userCurrentRecentCloseReset",
               "description": "Reset recently closed items of the current user",
               "args": [],
@@ -19715,6 +19765,30 @@
                   "kind": "SCALAR",
                   "name": "Int",
                   "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "unseenPushTags",
+              "description": "Tags of the web pushes whose notifications the user has not seen yet, so a device can close the other ones",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
                 }
               },
               "isDeprecated": false,
@@ -29790,6 +29864,18 @@
               "deprecationReason": null
             },
             {
+              "name": "quotableAuthorName",
+              "description": "Author name for the reply citation ('On ..., X wrote:'), following the configured email sender format",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "quotableCc",
               "description": "'Cc' information of the original email to be inserted in the quoted email block",
               "args": [],
@@ -37818,6 +37904,96 @@
         },
         {
           "kind": "OBJECT",
+          "name": "UserCurrentPushSubscriptionAddPayload",
+          "description": "Autogenerated return type of UserCurrentPushSubscriptionAdd.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "success",
+              "description": "Was the subscription registered?",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UserCurrentPushSubscriptionDeletePayload",
+          "description": "Autogenerated return type of UserCurrentPushSubscriptionDelete.",
+          "fields": [
+            {
+              "name": "errors",
+              "description": "Errors encountered during execution of the mutation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserError",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "success",
+              "description": "Was the subscription removed?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "UserCurrentRecentCloseResetPayload",
           "description": "Autogenerated return type of UserCurrentRecentCloseReset.",
           "fields": [
@@ -40219,38 +40395,88 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "UserSignupInput",
-          "description": "The user sign-up fields.",
+          "name": "UserPushSubscriptionInput",
+          "description": "Web push subscription of the current browser (PushSubscription.toJSON())",
           "fields": null,
           "inputFields": [
             {
-              "name": "objectAttributeValues",
-              "description": "Additional custom attributes (names + values)",
+              "name": "endpoint",
+              "description": "Push service endpoint of the subscription",
               "type": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "ObjectAttributeValueInput",
-                    "ofType": null
-                  }
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 }
               },
               "defaultValue": null
             },
             {
-              "name": "login",
-              "description": "The user login",
+              "name": "keys",
+              "description": "Client keys of the subscription",
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "UserPushSubscriptionKeysInput",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UserPushSubscriptionKeysInput",
+          "description": "Client keys of a web push subscription (PushSubscription.toJSON().keys)",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "p256dh",
+              "description": "Public key of the client, base64url encoded",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
+            {
+              "name": "auth",
+              "description": "Authentication secret of the client, base64url encoded",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "UserSignupInput",
+          "description": "The user sign-up fields.",
+          "fields": null,
+          "inputFields": [
             {
               "name": "firstname",
               "description": "The user first name",
@@ -40416,12 +40642,12 @@
               "deprecationReason": null
             },
             {
-              "name": "session",
-              "description": "The current session, if the verification was successful.",
+              "name": "success",
+              "description": "This indicates if the verification was successful.",
               "args": [],
               "type": {
-                "kind": "OBJECT",
-                "name": "Session",
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -40927,24 +41153,6 @@
           "description": "The taskbar item fields.",
           "fields": null,
           "inputFields": [
-            {
-              "name": "objectAttributeValues",
-              "description": "Additional custom attributes (names + values)",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "ObjectAttributeValueInput",
-                    "ofType": null
-                  }
-                }
-              },
-              "defaultValue": null
-            },
             {
               "name": "key",
               "description": "The itaskbar item related object key identifier",

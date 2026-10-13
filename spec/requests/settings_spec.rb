@@ -207,6 +207,7 @@ RSpec.describe 'Settings', type: :request do
     it 'masks the API key of the translation service but not its URL' do
       url = 'https://translate.example.com'
 
+      stub_hostname_resolution(url)
       stub_request(:get, "#{url}/languages")
         .to_return(status: 200, body: [{ code: 'en' }].to_json, headers: { 'Content-Type' => 'application/json' })
       stub_request(:post, "#{url}/translate")
@@ -381,23 +382,24 @@ RSpec.describe 'Settings', type: :request do
       expect(response).to have_http_status(:forbidden)
     end
 
-    it 'can not update protected setting' do
+    it 'can not update protected setting', :aggregate_failures do
       setting = Setting.find_by(name: 'application_secret')
       params = {
         id:    setting.id,
         state: 'Examaple'
       }
-      put "/api/v1/settings/#{setting.id}", params: params, as: :json
 
       authenticated_as(admin)
-      put "/api/v1/settings/#{setting.id}", params: {}, as: :json
+      expect { put "/api/v1/settings/#{setting.id}", params: params, as: :json }
+        .not_to change { setting.reload.state_current }
       expect(response).to have_http_status(:forbidden)
     end
 
     context 'when reset is used', authenticated_as: :admin do
-      it 'can not reset protected setting' do
+      it 'can not reset protected setting', :aggregate_failures do
         setting = Setting.find_by(name: 'application_secret')
-        post "/api/v1/settings/reset/#{setting.id}", params: {}, as: :json
+        expect { post "/api/v1/settings/reset/#{setting.id}", params: {}, as: :json }
+          .not_to change { setting.reload.state_current }
         expect(response).to have_http_status(:forbidden)
       end
 

@@ -336,6 +336,18 @@ Setting.create_if_not_exists(
   frontend:    true
 )
 Setting.create_if_not_exists(
+  title:       __('Alternative fully qualified domain name'),
+  name:        'alternative_fqdn',
+  area:        'System::WebSocket',
+  description: __('Defines an additional fully qualified domain name of the system, which is accepted as an origin for WebSocket connections.'),
+  state:       '',
+  preferences: {
+    online_service_disable: true,
+    permission:             ['admin.system'],
+  },
+  frontend:    false
+)
+Setting.create_if_not_exists(
   title:       __('WebSocket backend'),
   name:        'websocket_backend',
   area:        'System::WebSocket',
@@ -6565,4 +6577,33 @@ Setting.create_if_not_exists(
   state:       '',
   preferences: { online_service_disable: true, permission: ['admin.package'] },
   frontend:    false,
+)
+
+web_push_vapid_key = WebPush.generate_key
+
+Setting.create_if_not_exists(
+  title:       __('Web Push VAPID Private Key'),
+  name:        'web_push_vapid_private_key',
+  area:        'Core::WebPush',
+  description: __('Defines the private key used to sign web push notifications.'),
+  options:     {},
+  state:       web_push_vapid_key.private_key,
+  preferences: {
+    permission: ['admin'],
+    protected:  true,
+  },
+  frontend:    false
+)
+Setting.create_if_not_exists(
+  title:       __('Web Push VAPID Public Key'),
+  name:        'web_push_vapid_public_key',
+  area:        'Core::WebPush',
+  description: __('Defines the public key browsers use to subscribe to web push notifications.'),
+  options:     {},
+  state:       web_push_vapid_key.public_key,
+  preferences: {
+    permission: ['admin'],
+    protected:  true,
+  },
+  frontend:    true
 )

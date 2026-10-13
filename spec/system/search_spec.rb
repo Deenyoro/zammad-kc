@@ -150,6 +150,43 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
           expect(page).to have_css('.batch-overlay-circle--top.js-batch-macro-circle')
             .and(have_css('.batch-overlay-circle--bottom.js-batch-assign-circle'))
         end
+
+        context 'with priority icons enabled' do
+          let(:before_authenticate) { Setting.set('ui_ticket_priority_icons', true) }
+
+          it 'shows the ticket number in the dragged row' do
+            within(:active_content, '.main .table') do
+              element = page.find(:table_row, ticket_1.id).native
+              click_and_hold(element)
+              move_mouse_by(0, 5)
+              move_mouse_by(0, 7)
+            end
+
+            expect(page).to have_css('.batch-dragger', text: ticket_1.number)
+          ensure
+            release_mouse
+          end
+        end
+      end
+
+      context 'when a row on a non-ticket tab is dragged' do
+        let(:customer)            { create(:customer, firstname: 'Testing') }
+        let(:before_authenticate) { customer }
+
+        it 'does not show the batch actions' do
+          find('[data-tab-content=User]').click
+
+          within(:active_content, '.main .table') do
+            element = page.find(:table_row, customer.id).native
+            click_and_hold(element)
+            move_mouse_by(0, 5)
+            move_mouse_by(0, 7)
+          end
+
+          expect(page).to have_no_css('.batch-dragger', visible: :all)
+        ensure
+          release_mouse
+        end
       end
     end
   end
@@ -514,15 +551,15 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
       end
 
       it 'does switch search results properly' do
-        expect(page.find('.js-tableBody')).to have_text('Testing Ticket 1')
-        expect(page.find('.js-tableBody')).to have_no_text('Testing Ticket 2')
+        expect(page).to have_css('.js-tableBody', text: 'Testing Ticket 1')
+        expect(page).to have_no_css('.js-tableBody', text: 'Testing Ticket 2')
         expect(current_url).to include('Testing%20Ticket%201')
 
         # switch by global search
         fill_in id: 'global-search', with: '"Testing Ticket 2"'
         click_on 'Show Search Details'
-        expect(page.find('.js-tableBody')).to have_text('Testing Ticket 2')
-        expect(page.find('.js-tableBody')).to have_no_text('Testing Ticket 1')
+        expect(page).to have_css('.js-tableBody', text: 'Testing Ticket 2')
+        expect(page).to have_no_css('.js-tableBody', text: 'Testing Ticket 1')
         expect(current_url).to include('Testing%20Ticket%202')
       end
     end
@@ -533,14 +570,14 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
       end
 
       it 'does switch search results properly' do
-        expect(page.find('.js-tableBody')).to have_text('Testing Ticket 1')
-        expect(page.find('.js-tableBody')).to have_no_text('Testing Ticket 2')
+        expect(page).to have_css('.js-tableBody', text: 'Testing Ticket 1')
+        expect(page).to have_no_css('.js-tableBody', text: 'Testing Ticket 2')
         expect(current_url).to include('Testing%20Ticket%201')
 
         # switch by url
         visit '#search/"Testing Ticket 2"'
-        expect(page.find('.js-tableBody')).to have_text('Testing Ticket 2')
-        expect(page.find('.js-tableBody')).to have_no_text('Testing Ticket 1')
+        expect(page).to have_css('.js-tableBody', text: 'Testing Ticket 2')
+        expect(page).to have_no_css('.js-tableBody', text: 'Testing Ticket 1')
         expect(current_url).to include('Testing%20Ticket%202')
       end
     end
@@ -584,7 +621,9 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
     end
 
     context 'when customer' do
-      let(:authenticate_user) { customer }
+      let(:authenticate_user)   { customer }
+      let(:customer_ticket)     { create(:ticket, customer: customer, group: Group.first, title: "Ticket of #{organizations[0].name}") }
+      let(:before_authenticate) { customer_ticket }
 
       before do
         fill_in id: 'global-search', with: organizations[0].name.to_s
@@ -592,7 +631,8 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
 
       it 'does not show any organizations in global search because only agents have access to it' do
         within '.global-search-result' do
-          expect(page).to have_no_text(organizations[0].name)
+          expect(page).to have_css('.nav-tab.ticket-popover', text: customer_ticket.title)
+          expect(page).to have_no_css('.nav-tab.organization')
         end
       end
     end
@@ -723,7 +763,6 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
 
   describe 'Admin user can not find user or organization in the search bar #4574' do
     let(:admin) { create(:admin_only) }
-    let(:agent)        { create(:agent, groups: [Group.first]) }
     let(:organization) { create(:organization, name: SecureRandom.uuid) }
     let(:customer)     { create(:customer, organization: organization, firstname: SecureRandom.uuid) }
     let(:ticket)       { create(:ticket, title: SecureRandom.uuid, customer: customer, group: Group.first) }
@@ -732,72 +771,21 @@ RSpec.describe 'Search', authenticated_as: :authenticate, searchindex: true, typ
       visit '#dashboard'
     end
 
-    context 'when customer' do
-      let(:before_authenticate) { organization && customer && ticket }
-      let(:authenticate_user) { customer }
-
-      it 'does find the ticket' do
-        fill_in id: 'global-search', with: ticket.title
-
-        expect(page.find('.global-search-menu')).to have_text(ticket.title)
-      end
-
-      it 'does not find the customer' do
-        fill_in id: 'global-search', with: customer.firstname
-
-        expect(page.find('.global-search-menu')).to have_no_text(customer.firstname)
-      end
-
-      it 'does not find the organization' do
-        fill_in id: 'global-search', with: organization.name
-
-        expect(page.find('.global-search-menu')).to have_no_text(organization.name)
-      end
-    end
-
-    context 'when agent' do
-      let(:before_authenticate) { organization && customer && ticket }
-      let(:authenticate_user) { agent }
-
-      it 'does find the ticket' do
-        fill_in id: 'global-search', with: ticket.title
-
-        expect(page.find('.global-search-menu')).to have_text(ticket.title)
-      end
-
-      it 'does find the customer' do
-        fill_in id: 'global-search', with: customer.firstname
-
-        expect(page.find('.global-search-menu')).to have_text(customer.firstname)
-      end
-
-      it 'does find the organization' do
-        fill_in id: 'global-search', with: organization.name
-
-        expect(page.find('.global-search-menu')).to have_text(organization.name)
-      end
-    end
-
+    # The search permissions of the other roles are covered by spec/services/service/search_spec.rb.
     context 'when admin only' do
       let(:authenticate_user) { admin }
       let(:before_authenticate) { organization && customer && ticket }
 
-      it 'does not find the ticket' do
-        fill_in id: 'global-search', with: ticket.title
-
-        expect(page.find('.global-search-menu')).to have_no_text(ticket.title)
-      end
-
-      it 'does find the customer' do
+      it 'finds the customer and the organization, but not the ticket' do
         fill_in id: 'global-search', with: customer.firstname
-
         expect(page.find('.global-search-menu')).to have_text(customer.firstname)
-      end
 
-      it 'does find the organization' do
         fill_in id: 'global-search', with: organization.name
-
         expect(page.find('.global-search-menu')).to have_text(organization.name)
+
+        fill_in id: 'global-search', with: ticket.title
+        expect(page.find('.global-search-menu')).to have_no_text(organization.name)
+        expect(page.find('.global-search-menu')).to have_no_text(ticket.title)
       end
     end
   end

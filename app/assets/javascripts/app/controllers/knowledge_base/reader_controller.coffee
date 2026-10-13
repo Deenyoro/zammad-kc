@@ -102,7 +102,7 @@ class App.KnowledgeBaseReaderController extends App.Controller
   renderBody: (translation) ->
     body = translation.content().body
     body = @prepareLinks(body)
-    body = @prepareVideos(body)
+    body = App.KnowledgeBaseReaderController.prepareVideos(body)
 
     @answerBody.html(body)
     @bindInlineImagePreview()
@@ -128,32 +128,14 @@ class App.KnowledgeBaseReaderController extends App.Controller
 
     $('<container>').append(input).html()
 
-  prepareVideos: (input) ->
-    input.replace /\(([\s]*)widget:([\s]*)video[\W]([\s\S])+?\)/g, (match) ->
-      settings = match
-        .slice(1, -1)
-        .split(',')
-        .map (pair) -> pair.split(':').map (elem) -> elem.trim()
-        .reduce (memo, elem) ->
-          memo[elem[0]] = elem[1]
-          return memo
-        , {}
+  @prepareVideos: (input) ->
+    App.KnowledgeBaseVideo.replaceMarkers input, (settings) ->
+      url = App.KnowledgeBaseVideo.embedUrl(settings)
+      return '' if !url
 
-      # coffeelint: disable=indentation
-      url = switch settings.provider
-            when 'youtube'
-              "https://www.youtube.com/embed/#{settings.id}"
-            when 'vimeo'
-              "https://player.vimeo.com/video/#{settings.id}"
-            when 'peertube'
-              "https://#{settings.host}/videos/embed/#{settings.id}"
-            when 'mediacms'
-              "https://#{settings.host}/embed?m=#{settings.id}"
-      # coffeelint: enable=indentation
+      idAttribute = App.Utils.htmlEscape("#{settings.provider}#{settings.id ? ''}")
 
-      return match unless url
-
-      "<div class='videoWrapper'><iframe allowfullscreen id='#{settings.provider}#{settings.id}' type='text/html' src='#{url}' frameborder='0'></iframe></div>"
+      "<div class='videoWrapper'><iframe allowfullscreen id='#{idAttribute}' type='text/html' src='#{App.Utils.htmlEscape(url)}' frameborder='0'></iframe></div>"
 
   renderAttachments: (attachments) ->
     @answerAttachments.html App.view('generic/attachments')(

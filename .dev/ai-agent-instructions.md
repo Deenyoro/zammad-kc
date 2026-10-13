@@ -67,6 +67,13 @@ small methods are preferred over explanation.
 - Translatable strings: use complete, meaningful source strings,
   sentence case for English source strings, and check for existing
   near-duplicate strings before adding new ones.
+- Red marks the point of no return: `danger` and `remove` stay only on
+  controls that act immediately. A trigger that only opens a confirmation
+  dialog or a confirming flyout is not red: a button becomes `tertiary`
+  with an icon naming the action (`trash3` for delete and discard,
+  `arrow-counterclockwise` for reset), a menu item carries no variant, a
+  `remove` icon button keeps its icon and takes the variant UX names per
+  place. The decisive button in the dialog or flyout is `danger`.
 
 ## Essential Commands
 
@@ -147,6 +154,9 @@ You MUST read the relevant file(s) below before responding when working on that 
 - `.dev/agent_docs/testing_services_and_graphql.md` — How to split spec
   coverage between a service and the query, mutation or subscription that
   calls it
+- `.dev/agent_docs/ruby_patterns.md` — Conventions for every Ruby class or
+  module in `app/` and `lib/`: instance state and readers, acronyms in constant
+  names, text from outside, timeouts around a caller's block
 - `.dev/agent_docs/service_patterns.md` — Service object conventions and structure
 - `.dev/agent_docs/knowledge_base_patterns.md` — Knowledge base rules for the
   new stack (Vue/GraphQL/services) only: the single active knowledge base and

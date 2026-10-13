@@ -19,7 +19,7 @@ export type KnowledgeBaseAnswerInfoForPopoverQueryVariables = Exact<{
 }>;
 
 
-export type KnowledgeBaseAnswerInfoForPopoverQuery = { knowledgeBaseAnswer: { __typename: 'KnowledgeBaseAnswer', id: string, translation: { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } } | null | undefined } };
+export type KnowledgeBaseAnswerInfoForPopoverQuery = { knowledgeBaseAnswer: { __typename: 'KnowledgeBaseAnswer', id: string, translation: { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, maybeLocale: string | null | undefined, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } } | null | undefined } };
 
 export type OrganizationInfoForPopoverQueryVariables = Exact<{
   organizationId: string | number;
@@ -217,7 +217,7 @@ export type KnowledgeBaseAnswerPreInfoFragment = { __typename: 'KnowledgeBaseAns
 
 export type KnowledgeBaseAnswerTaskbarTabAttributesFragment = { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, visibility: Types.EnumKnowledgeBaseVisibility, kbLocale: { __typename: 'KnowledgeBaseLocale', id: string, systemLocale: { __typename: 'Locale', locale: string } } };
 
-export type KnowledgeBaseAnswerTranslationFragment = { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } };
+export type KnowledgeBaseAnswerTranslationFragment = { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, maybeLocale: string | null | undefined, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } };
 
 export type KnowledgeBaseCategoryBreadcrumbFragment = { __typename: 'KnowledgeBaseCategory', breadcrumb: Array<{ __typename: 'KnowledgeBaseCategory', id: string, categoryIcon: string, iconSet: 'anticon' | 'FontAwesome' | 'material' | 'ionicons' | 'Simple-Line-Icons', visibility: Types.EnumKnowledgeBaseVisibility, translation: { __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string } | null | undefined }> };
 
@@ -443,7 +443,7 @@ export type LinkAddMutationVariables = Exact<{
 
 
 export type LinkAddMutation = { linkAdd: { __typename: 'LinkAddPayload', link: { __typename: 'Link', type: Types.EnumLinkType, item:
-        | { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } }
+        | { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, maybeLocale: string | null | undefined, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } }
         | { __typename: 'Ticket', id: string, internalId: number, title: string, stateColorCode: Types.EnumTicketStateColorCode, state: { __typename: 'TicketState', id: string, name: string } }
        } | null | undefined, errors: Array<{ __typename: 'UserError', message: string, field: string | null | undefined }> | null | undefined } | null | undefined };
 
@@ -461,7 +461,7 @@ export type LinkListQueryVariables = Exact<{
 
 
 export type LinkListQuery = { linkList: Array<{ __typename: 'Link', type: Types.EnumLinkType, item:
-      | { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } }
+      | { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, maybeLocale: string | null | undefined, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } }
       | { __typename: 'Ticket', id: string, internalId: number, title: string, stateColorCode: Types.EnumTicketStateColorCode, state: { __typename: 'TicketState', id: string, name: string } }
      }> | null | undefined };
 
@@ -472,7 +472,7 @@ export type LinkUpdatesSubscriptionVariables = Exact<{
 
 
 export type LinkUpdatesSubscription = { linkUpdates: { __typename: 'LinkUpdatesPayload', links: Array<{ __typename: 'Link', type: Types.EnumLinkType, item:
-        | { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } }
+        | { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, maybeLocale: string | null | undefined, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } }
         | { __typename: 'Ticket', id: string, internalId: number, title: string, stateColorCode: Types.EnumTicketStateColorCode, state: { __typename: 'TicketState', id: string, name: string } }
        }> | null | undefined } };
 
@@ -906,7 +906,7 @@ export type UserSignupVerifyMutationVariables = Exact<{
 }>;
 
 
-export type UserSignupVerifyMutation = { userSignupVerify: { __typename: 'UserSignupVerifyPayload', session: { __typename: 'Session', id: string, afterAuth: { __typename: 'SessionAfterAuth', type: Types.EnumAfterAuthType, data: any } | null | undefined } | null | undefined, errors: Array<{ __typename: 'UserError', message: string, messagePlaceholder: Array<string> | null | undefined, field: string | null | undefined, exception: Types.EnumUserErrorException | null | undefined }> | null | undefined } | null | undefined };
+export type UserSignupVerifyMutation = { userSignupVerify: { __typename: 'UserSignupVerifyPayload', success: boolean | null | undefined, errors: Array<{ __typename: 'UserError', message: string, messagePlaceholder: Array<string> | null | undefined, field: string | null | undefined, exception: Types.EnumUserErrorException | null | undefined }> | null | undefined } | null | undefined };
 
 export type CtiLogAttributesFragment = { __typename: 'CtiLog', id: string, direction: string, state: string, comment: string | null | undefined, from: string, to: string, fromPretty: string, toPretty: string, fromComment: string | null | undefined, toComment: string | null | undefined, done: boolean, durationWaitingTime: number | null | undefined, durationTalkingTime: number | null | undefined, createdAt: string, fromMatches: Array<{ __typename: 'CtiLogCallerIdMatch', level: string, comment: string | null | undefined, user: { __typename: 'User', id: string, internalId: number, firstname: string | null | undefined, lastname: string | null | undefined, fullname: string | null | undefined, image: string | null | undefined, vip: boolean | null | undefined, outOfOffice: boolean | null | undefined, outOfOfficeStartAt: string | null | undefined, outOfOfficeEndAt: string | null | undefined, active: boolean | null | undefined } | null | undefined }>, toMatches: Array<{ __typename: 'CtiLogCallerIdMatch', level: string, comment: string | null | undefined, user: { __typename: 'User', id: string, internalId: number, firstname: string | null | undefined, lastname: string | null | undefined, fullname: string | null | undefined, image: string | null | undefined, vip: boolean | null | undefined, outOfOffice: boolean | null | undefined, outOfOfficeStartAt: string | null | undefined, outOfOfficeEndAt: string | null | undefined, active: boolean | null | undefined } | null | undefined }> };
 
@@ -1236,7 +1236,7 @@ export type TicketAiRelatedKnowledgeBaseAnswersQueryVariables = Exact<{
 }>;
 
 
-export type TicketAiRelatedKnowledgeBaseAnswersQuery = { ticketAIRelatedKnowledgeBaseAnswers: { __typename: 'TicketAIRelatedKnowledgeBaseAnswersResult', pending: boolean, answers: Array<{ __typename: 'TicketAIRelatedKnowledgeBaseAnswer', score: number, translation: { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } } }> | null | undefined } };
+export type TicketAiRelatedKnowledgeBaseAnswersQuery = { ticketAIRelatedKnowledgeBaseAnswers: { __typename: 'TicketAIRelatedKnowledgeBaseAnswersResult', pending: boolean, answers: Array<{ __typename: 'TicketAIRelatedKnowledgeBaseAnswer', score: number, translation: { __typename: 'KnowledgeBaseAnswerTranslation', id: string, title: string, maybeLocale: string | null | undefined, visibility: Types.EnumKnowledgeBaseVisibility, categoryTreeTranslation: Array<{ __typename: 'KnowledgeBaseCategoryTranslation', id: string, title: string }>, content: { __typename: 'KnowledgeBaseAnswerTranslationContent', bodyExcerpt: string | null | undefined }, answer: { __typename: 'KnowledgeBaseAnswer', id: string, archivedAt: string | null | undefined, publishedAt: string | null | undefined, internalAt: string | null | undefined, tags: Array<string> | null | undefined, category: { __typename: 'KnowledgeBaseCategory', id: string } }, kbLocale: { __typename: 'KnowledgeBaseLocale', systemLocale: { __typename: 'Locale', locale: string, name: string } } } }> | null | undefined } };
 
 export type TicketAttachmentsQueryVariables = Exact<{
   ticketId: string | number;
@@ -1608,7 +1608,7 @@ export type OnlineNotificationsQuery = { onlineNotifications: { __typename: 'Onl
 export type OnlineNotificationsCountSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnlineNotificationsCountSubscription = { onlineNotificationsCount: { __typename: 'OnlineNotificationsCountPayload', unseenCount: number } };
+export type OnlineNotificationsCountSubscription = { onlineNotificationsCount: { __typename: 'OnlineNotificationsCountPayload', unseenCount: number, unseenPushTags: Array<string> } };
 
 export type OrganizationAttributesFragment = { __typename: 'Organization', id: string, internalId: number, name: string | null | undefined, shared: boolean | null | undefined, domain: string | null | undefined, domainAssignment: boolean | null | undefined, active: boolean | null | undefined, note: string | null | undefined, vip: boolean | null | undefined, objectAttributeValues: Array<{ __typename: 'ObjectAttributeValue', value: any, renderedLink: string | null | undefined, attribute: { __typename: 'ObjectManagerFrontendAttribute', name: string, display: string } }> | null | undefined };
 
@@ -1721,11 +1721,11 @@ export type TicketArticleDeleteMutation = { ticketArticleDelete: { __typename: '
 
 export type TicketArticleEmailForwardReplyMutationVariables = Exact<{
   articleId: string | number;
-  formId: string;
+  formId?: string | null | undefined;
 }>;
 
 
-export type TicketArticleEmailForwardReplyMutation = { ticketArticleEmailForwardReply: { __typename: 'TicketArticleEmailForwardReplyPayload', quotableFrom: string | null | undefined, quotableTo: string | null | undefined, quotableCc: string | null | undefined, attachments: Array<{ __typename: 'StoredFile', id: string, internalId: number, name: string, size: number | null | undefined, type: string | null | undefined }>, errors: Array<{ __typename: 'UserError', message: string, messagePlaceholder: Array<string> | null | undefined, field: string | null | undefined, exception: Types.EnumUserErrorException | null | undefined }> | null | undefined } | null | undefined };
+export type TicketArticleEmailForwardReplyMutation = { ticketArticleEmailForwardReply: { __typename: 'TicketArticleEmailForwardReplyPayload', quotableFrom: string | null | undefined, quotableTo: string | null | undefined, quotableCc: string | null | undefined, quotableAuthorName: string | null | undefined, attachments: Array<{ __typename: 'StoredFile', id: string, internalId: number, name: string, size: number | null | undefined, type: string | null | undefined }>, errors: Array<{ __typename: 'UserError', message: string, messagePlaceholder: Array<string> | null | undefined, field: string | null | undefined, exception: Types.EnumUserErrorException | null | undefined }> | null | undefined } | null | undefined };
 
 export type TicketArticleRetryMediaDownloadMutationVariables = Exact<{
   articleId: string | number;
@@ -2078,6 +2078,20 @@ export type UserCurrentLocaleMutationVariables = Exact<{
 
 
 export type UserCurrentLocaleMutation = { userCurrentLocale: { __typename: 'UserCurrentLocalePayload', success: boolean, errors: Array<{ __typename: 'UserError', message: string, messagePlaceholder: Array<string> | null | undefined, field: string | null | undefined, exception: Types.EnumUserErrorException | null | undefined }> | null | undefined } | null | undefined };
+
+export type UserCurrentPushSubscriptionAddMutationVariables = Exact<{
+  input: Types.UserPushSubscriptionInput;
+}>;
+
+
+export type UserCurrentPushSubscriptionAddMutation = { userCurrentPushSubscriptionAdd: { __typename: 'UserCurrentPushSubscriptionAddPayload', success: boolean | null | undefined, errors: Array<{ __typename: 'UserError', message: string, messagePlaceholder: Array<string> | null | undefined, field: string | null | undefined, exception: Types.EnumUserErrorException | null | undefined }> | null | undefined } | null | undefined };
+
+export type UserCurrentPushSubscriptionDeleteMutationVariables = Exact<{
+  endpoint: string;
+}>;
+
+
+export type UserCurrentPushSubscriptionDeleteMutation = { userCurrentPushSubscriptionDelete: { __typename: 'UserCurrentPushSubscriptionDeletePayload', success: boolean, errors: Array<{ __typename: 'UserError', message: string, messagePlaceholder: Array<string> | null | undefined, field: string | null | undefined, exception: Types.EnumUserErrorException | null | undefined }> | null | undefined } | null | undefined };
 
 export type UserCurrentTwoFactorConfigurationQueryVariables = Exact<{ [key: string]: never; }>;
 

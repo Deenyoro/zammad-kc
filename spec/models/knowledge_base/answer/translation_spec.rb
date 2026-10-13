@@ -1,12 +1,12 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
-require 'models/contexts/factory_context'
+require 'models/knowledge_base/plain_title_index_examples'
 
 RSpec.describe KnowledgeBase::Answer::Translation, current_user_id: 1, type: :model do
   subject { create(:knowledge_base_answer_translation) }
 
-  include_context 'factory'
+  it_behaves_like 'indexing the plain title'
 
   it { is_expected.to validate_presence_of(:title) }
   it { is_expected.to validate_uniqueness_of(:kb_locale_id).scoped_to(:answer_id).with_message(%r{}) }
@@ -162,6 +162,27 @@ RSpec.describe KnowledgeBase::Answer::Translation, current_user_id: 1, type: :mo
         expect(attrs['publication_state'])
           .to eq(answer.can_be_published_aasm.calculated_state)
       end
+    end
+  end
+
+  describe '.vector_index_reload' do
+    # A reload embeds one document at a time for however long the knowledge base is - a run that has
+    # become obsolete stops between documents instead of finishing what a successor throws away.
+    it 'stops between records once the run is obsolete', :aggregate_failures do
+      create_list(:knowledge_base_answer, 2)
+
+      allow(Service::AI::VectorDB::Available).to receive(:execute).and_return(true)
+      allow(described_class).to receive(:vector_index_scope).and_return(described_class.all)
+
+      updated = 0
+      allow_any_instance_of(described_class).to receive(:vector_index_update) { updated += 1 }
+
+      checks     = [false, true]
+      abort_when = -> { checks.shift }
+
+      expect { described_class.vector_index_reload(abort_when:) }
+        .to raise_error(Service::AI::VectorDB::Reload::Aborted)
+      expect(updated).to eq(1)
     end
   end
 

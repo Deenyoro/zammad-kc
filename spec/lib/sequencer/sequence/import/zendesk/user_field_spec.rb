@@ -67,7 +67,31 @@ RSpec.describe Sequencer::Sequence::Import::Zendesk::UserField, sequencer: :sequ
     end
 
     it 'does not try to add a existing field' do
-      expect { process(process_payload) }.not_to raise_error
+      expect { process(process_payload) }.to not_change(User, :column_names).and not_change(ObjectManager::Attribute, :count)
+    end
+  end
+
+  context 'when trying to import an unsupported lookup field' do
+    let(:resource) do
+      ZendeskAPI::UserField.new(
+        nil,
+        {
+          'id'                       => 206_515,
+          'type'                     => 'lookup',
+          'key'                      => 'standard::manager',
+          'title'                    => 'Manager',
+          'active'                   => true,
+          'system'                   => true,
+          'relationship_target_type' => 'zen:user',
+          'created_at'               => '2026-09-01 11:05:45 UTC',
+          'updated_at'               => '2026-09-01 11:05:45 UTC'
+        }
+      )
+    end
+
+    it 'skips the field', :aggregate_failures do
+      expect { process(process_payload) }.not_to change(User, :column_names)
+      expect(process_payload[:field_map]).to be_empty
     end
   end
 end

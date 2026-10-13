@@ -345,7 +345,7 @@ RSpec.describe Gql::Queries::Ticket::Articles, type: :graphql do
       end
 
       it 'does not find internal articles' do
-        expect(response_articles.pluck(:id)).to not_include(internal_article.id)
+        expect(response_articles.pluck('id')).to not_include(gql.id(internal_article))
       end
 
       context 'when has originBy' do
@@ -558,6 +558,45 @@ RSpec.describe Gql::Queries::Ticket::Articles, type: :graphql do
         gql.execute(query, variables:)
 
         expect(gql.result.nodes.pluck('translation')).to all(be_nil)
+      end
+    end
+  end
+
+  context 'when fetching the detected language of articles' do
+    let(:query) do
+      <<~QUERY
+        query ticketArticles($ticketId: ID!) {
+          ticketArticles(ticketId: $ticketId) {
+            edges {
+              node {
+                id
+                detectedLanguage
+              }
+            }
+          }
+        }
+      QUERY
+    end
+    let(:customer)  { create(:customer) }
+    let(:ticket)    { create(:ticket, customer:) }
+    let(:agent)     { create(:agent, groups: [ticket.group]) }
+    let(:variables) { { ticketId: gql.id(ticket) } }
+
+    let!(:article) { create(:ticket_article, ticket:, detected_language: 'de') }
+
+    let(:response_articles) { gql.result.nodes }
+
+    before { gql.execute(query, variables:) }
+
+    context 'with an agent', authenticated_as: :agent do
+      it 'returns the detected language' do
+        expect(response_articles).to include(include('id' => gql.id(article), 'detectedLanguage' => 'de'))
+      end
+    end
+
+    context 'with a customer', authenticated_as: :customer do
+      it 'returns no detected language' do
+        expect(response_articles).to include(include('id' => gql.id(article), 'detectedLanguage' => nil))
       end
     end
   end
