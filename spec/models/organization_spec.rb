@@ -129,6 +129,12 @@ RSpec.describe Organization, type: :model do
   end
 
   describe 'Updating organization members' do
+    # the member and organization associations are only part of the attributes for privileged
+    # callers, while these examples are about cache invalidation
+    around do |example|
+      UserInfo.with_system_context { example.run }
+    end
+
     context 'when member gets removed' do
       let(:customer) { create(:customer, organization: organization) }
 
@@ -185,6 +191,12 @@ RSpec.describe Organization, type: :model do
   end
 
   describe 'Updating secondary organization members' do
+    # the member and organization associations are only part of the attributes for privileged
+    # callers, while these examples are about cache invalidation
+    around do |example|
+      UserInfo.with_system_context { example.run }
+    end
+
     context 'when member gets removed' do
       let(:customer)               { create(:customer, organization: organization) }
       let(:secondary_organization) { create(:organization) }
@@ -247,6 +259,49 @@ RSpec.describe Organization, type: :model do
 
   end
 
+  describe 'Guarding secondary organization members', :aggregate_failures do
+    let(:customer)               { create(:customer, organization: organization) }
+    let(:secondary_organization) { create(:organization) }
+
+    %i[<< push append concat].each do |method|
+      it "is not allowed to add a member whose primary organization it is via ##{method}" do
+        expect { organization.secondary_members.public_send(method, customer) }
+          .to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Secondary organizations cannot include the primary organization.')
+        expect(customer.reload.organizations).to be_empty
+      end
+    end
+
+    it 'is not allowed to add the same member twice' do
+      secondary_organization.secondary_members << customer
+
+      expect { secondary_organization.secondary_members << customer }
+        .to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Secondary organizations cannot include the same organization twice.')
+      expect(customer.reload.organizations).to eq([secondary_organization])
+    end
+
+    it 'is not allowed to assign the same member twice' do
+      expect { secondary_organization.update!(secondary_member_ids: [customer.id, customer.id]) }
+        .to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Secondary organizations cannot include the same organization twice.')
+      expect(customer.reload.organizations).to be_empty
+    end
+
+    it 'allows to add a member with another primary organization' do
+      expect { secondary_organization.secondary_members << customer }.not_to raise_error
+      expect(customer.reload.organizations).to eq([secondary_organization])
+    end
+
+    it 'is not allowed to assign a member whose primary organization it is' do
+      expect { organization.secondary_member_ids = [customer.id] }
+        .to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Secondary organizations cannot include the primary organization.')
+      expect(customer.reload.organizations).to be_empty
+    end
+
+    it 'allows to move a member from primary to secondary regardless of attribute order' do
+      expect { organization.update!(secondary_member_ids: [customer.id], member_ids: []) }.not_to raise_error
+      expect(customer.reload).to have_attributes(organization: nil, organizations: [organization])
+    end
+  end
+
   describe '#all_members' do
     let!(:primary_user) { create(:user, organization:, organizations: create_list(:organization, 3)) }
     let!(:secondary_user) { create(:user, organization: create(:organization), organizations: [organization]) }
@@ -267,6 +322,73 @@ RSpec.describe Organization, type: :model do
       organization.destroy_dependent_associations
       expect { user_1_ticket_1.reload }.not_to raise_error
       expect { user_2_ticket_1.reload }.to raise_exception(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe '#attributes_with_association_ids' do
+    let(:organization)         { create(:organization) }
+    let(:foreign_organization) { create(:organization) }
+    let(:customer)             { create(:customer, organization: organization) }
+    let(:agent)                { create(:agent) }
+    let(:secondary_member) do
+      create(:customer, organization: foreign_organization, organizations: [organization])
+    end
+
+    before { secondary_member }
+
+    it 'includes the secondary member ids without a user context' do
+      expect(organization.attributes_with_association_ids['secondary_member_ids']).to eq([secondary_member.id])
+    end
+
+    it 'omits the secondary member ids for a customer on a warm cache' do
+      # The cache stores the unfiltered attributes and is read before the filtering runs, so the
+      # cache hit is a second route to the same hash and must be filtered just as well.
+      organization.attributes_with_association_ids
+
+      UserInfo.with_user_id(customer.id) do
+        expect(organization.attributes_with_association_ids).not_to include('secondary_member_ids')
+      end
+    end
+
+    it 'includes the secondary member ids for an agent' do
+      UserInfo.with_user_id(agent.id) do
+        expect(organization.attributes_with_association_ids['secondary_member_ids']).to eq([secondary_member.id])
+      end
+    end
+
+    it 'omits the secondary member ids for a customer' do
+      UserInfo.with_user_id(customer.id) do
+        expect(organization.attributes_with_association_ids).not_to include('secondary_member_ids')
+      end
+    end
+  end
+
+  describe '#assets' do
+    let(:organization)         { create(:organization) }
+    let(:foreign_organization) { create(:organization) }
+    let(:customer)             { create(:customer, organization: organization) }
+    let(:agent)                { create(:agent) }
+    let(:secondary_member) do
+      create(:customer, organization: foreign_organization, organizations: [organization])
+    end
+
+    before { secondary_member }
+
+    # Covers every asset consumer at once, including the global search endpoint, which is the only
+    # search a customer can reach.
+    it 'does not ship a secondary member as an asset to a customer', :aggregate_failures do
+      UserInfo.with_user_id(customer.id) do
+        assets = organization.assets({})
+
+        expect(assets[described_class.to_app_model][organization.id].keys).to match_array(%w[id name active])
+        expect(assets[User.to_app_model]).not_to include(secondary_member.id)
+      end
+    end
+
+    it 'still ships a secondary member as an asset to an agent' do
+      UserInfo.with_user_id(agent.id) do
+        expect(organization.assets({})[User.to_app_model]).to include(secondary_member.id)
+      end
     end
   end
 end

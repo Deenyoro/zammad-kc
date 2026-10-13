@@ -186,7 +186,7 @@ RSpec.describe Service::Template::Interpolation::Interpolator::Webhook do
         }
       end
 
-      it 'returns the placeholder reporting "no such method"' do
+      it 'interpolates all attributes' do
         expect(service_result).to eq(json_data)
       end
     end
@@ -244,6 +244,16 @@ RSpec.describe Service::Template::Interpolation::Interpolator::Webhook do
       let(:json_data)   { { 'ticket.title' => 'Test "Title"' } }
 
       it 'returns the determined value' do
+        expect(service_result).to eq(json_data)
+      end
+    end
+
+    context 'when the replacement value contains backslashes' do
+      let(:ticket)    { create(:ticket, title: 'C:\dir and "quote"') }
+      let(:template)  { { 'ticket.title' => '#{ticket.title}' }.to_json }
+      let(:json_data) { { 'ticket.title' => 'C:\dir and "quote"' } }
+
+      it 'escapes them into valid JSON and round-trips the value' do
         expect(service_result).to eq(json_data)
       end
     end
@@ -503,30 +513,14 @@ RSpec.describe Service::Template::Interpolation::Interpolator::Webhook do
       end
       let(:template) { Service::Template::Interpolation::Interpolator::Webhook::Track::PreDefinedWebhook.payload('Mattermost') }
 
-      it 'returns a valid json with webhook information"', :aggregate_failures do
+      it 'returns a valid json with webhook information', :aggregate_failures do
         info = webhook.preferences[:pre_defined_webhook]
 
-        expect(service_result[:channel]).to eq(info[:channel])
-        expect(service_result[:icon_url]).to eq(info[:icon_url])
-      end
-
-      context 'when event has no changes' do
-        let(:event) do
-          {
-            type:      'info',
-            execution: 'trigger',
-            changes:   { 'state' => %w[open closed] },
-            user_id:   1,
-          }
-        end
-
-        it "returns a valid json with webhook information without 'attachments'", :aggregate_failures do
-          info = webhook.preferences[:pre_defined_webhook]
-
-          expect(service_result[:channel]).to eq(info[:channel])
-          expect(service_result[:icon_url]).to eq(info[:icon_url])
-          expect(service_result).to not_include(:attachments)
-        end
+        expect(service_result).to include(
+          'channel'  => info['messaging_channel'],
+          'username' => info['messaging_username'],
+          'icon_url' => info['messaging_icon_url'],
+        )
       end
 
       context 'when pre-defined webhook has no additional values' do

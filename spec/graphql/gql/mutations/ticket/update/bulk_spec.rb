@@ -2,6 +2,9 @@
 
 require 'rails_helper'
 
+# What a bulk update does is covered by spec/services/service/ticket/bulk/ and
+#   spec/jobs/ticket_bulk_update_job_spec.rb — this covers the GraphQL surface only: how the
+#   result is mapped to IDs, and the payload.
 RSpec.describe Gql::Mutations::Ticket::Update::Bulk, :aggregate_failures, type: :graphql do
   let(:query) do
     <<~QUERY
@@ -44,6 +47,45 @@ RSpec.describe Gql::Mutations::Ticket::Update::Bulk, :aggregate_failures, type: 
         gql.execute(query, variables: variables)
         expect(gql.result.data).to eq(expected_response)
         expect(ticket1.reload).to have_attributes(title: 'Ticket Bulk Update Mutation Test')
+      end
+
+      context 'with object attribute values' do
+        let(:input_payload) do
+          { title: 'Ticket Bulk Update Mutation Test', objectAttributeValues: [] }
+        end
+
+        it 'updates the attributes' do
+          gql.execute(query, variables: variables)
+          expect(gql.result.data).to eq(expected_response)
+          expect(ticket1.reload).to have_attributes(title: 'Ticket Bulk Update Mutation Test')
+        end
+
+        context 'with a custom object attribute', db_strategy: :reset do
+          let(:other_customer) { create(:customer) }
+          let(:object_attribute) do
+            screens = { create: { 'admin.organization': { shown: true, required: false } } }
+            create(:object_manager_attribute_text, object_name: 'Ticket', screens: screens).tap do |_oa|
+              ObjectManager::Attribute.migration_execute
+            end
+          end
+          let(:input_payload) do
+            {
+              title:                 'Ticket Bulk Update Mutation Test',
+              objectAttributeValues: [
+                { name: object_attribute.name, value: 'object_attribute_value' },
+                { name: 'customer_id',         value: other_customer.id },
+              ],
+            }
+          end
+
+          it 'applies the custom attribute and drops the internal one' do
+            gql.execute(query, variables: variables)
+
+            expect(gql.result.data).to eq(expected_response)
+            expect(ticket1.reload.public_send(object_attribute.name)).to eq('object_attribute_value')
+            expect(ticket1.reload.customer_id).to eq(customer.id)
+          end
+        end
       end
 
       context 'when a ticket update fails' do
@@ -175,61 +217,6 @@ RSpec.describe Gql::Mutations::Ticket::Update::Bulk, :aggregate_failures, type: 
             expect(ticket1.articles.last.type.name).to eq('note')
             expect(ticket2.reload.articles.last.body).to eq('bulk note body')
             expect(ticket2.articles.last.type.name).to eq('note')
-          end
-
-          context 'when one ticket update fails' do
-            before do
-              allow(Service::Ticket::Update).to receive(:execute).and_wrap_original do |m, *args, **kwargs|
-                if kwargs[:ticket].title == 'Ticket 2'
-                  raise ActiveRecord::RecordNotSaved.new('test failure during update of second ticket', ticket2)
-                end
-
-                m.call(*args, **kwargs)
-              end
-            end
-
-            it 'processes successful tickets and isolates failures' do
-              perform_enqueued_jobs do
-                gql.execute(query, variables:)
-                expect(gql.result.data).to include(async: true, total: 2)
-              end
-
-              # Ticket 1 should have the note added
-              expect(ticket1.reload.articles.last.body).to eq('bulk note body')
-              expect(ticket1.articles.last.type.name).to eq('note')
-
-              # Ticket 2 should not have a new article (failure was isolated)
-              ticket2.reload
-              expect(ticket2.articles.where(body: 'bulk note body')).to be_empty
-            end
-          end
-
-          context 'when permission is denied for one ticket' do
-            before do
-              allow_any_instance_of(TicketPolicy).to receive(:agent_update_access?).and_wrap_original do |m, *args|
-                ticket = m.receiver.record
-                if ticket.title == 'Ticket 2'
-                  false
-                else
-                  m.call(*args)
-                end
-              end
-            end
-
-            it 'processes authorized tickets and isolates permission failures' do
-              perform_enqueued_jobs do
-                gql.execute(query, variables:)
-                expect(gql.result.data).to include(async: true, total: 2)
-              end
-
-              # Ticket 1 should have the note added
-              expect(ticket1.reload.articles.last.body).to eq('bulk note body')
-              expect(ticket1.articles.last.type.name).to eq('note')
-
-              # Ticket 2 should not have a new article (permission denied)
-              ticket2.reload
-              expect(ticket2.articles.where(body: 'bulk note body')).to be_empty
-            end
           end
         end
       end

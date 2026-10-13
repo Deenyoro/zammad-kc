@@ -233,9 +233,10 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
       end
 
       it 'shows the sidebar once the ticket starts matching, without a page refresh' do
-        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary]')
+        expect(page).to have_text(ticket.title)
+          .and have_no_css('.tabsSidebar-tab[data-tab=summary]')
 
-        ensure_websocket
+        wait_for_authenticated_session(user: agent)
 
         ticket.update!(priority: Ticket::Priority.find_by(name: '3 high'))
 
@@ -265,7 +266,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
       it 'hides the sidebar once the ticket stops matching, without a page refresh' do
         expect(page).to have_css('.tabsSidebar-tab[data-tab=summary]')
 
-        ensure_websocket
+        wait_for_authenticated_session(user: agent)
 
         ticket.update!(priority: Ticket::Priority.find_by(name: '2 normal'))
 
@@ -279,7 +280,7 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         expect(page).to have_css('.tabsSidebar-tab[data-tab=summary].active')
 
-        ensure_websocket
+        wait_for_authenticated_session(user: agent)
 
         ticket.update!(priority: Ticket::Priority.find_by(name: '2 normal'))
 
@@ -305,7 +306,8 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
 
         refresh
 
-        expect(page).to have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
+        expect(page).to have_css('.tabsSidebar-tab[data-tab=summary]')
+          .and have_no_css('.tabsSidebar-tab[data-tab=summary] .tabsSidebar-tab-dot')
       end
 
       it 'dot is visible when summary is updated while looking at other tab' do
@@ -514,7 +516,11 @@ RSpec.describe 'Ticket Summary', authenticated_as: :authenticate, type: :system 
       let(:ai_analytics_usage) { create(:ai_analytics_usage, ai_analytics_run:, user: agent, rating: nil) }
 
       it 'does not record usage again when switching to summary tab', do_not_click_summary_tab: true do
-        expect { click '.tabsSidebar-tab[data-tab=summary]' }.not_to change(ai_analytics_usage, :updated_at)
+        expect do
+          click '.tabsSidebar-tab[data-tab=summary]'
+          expect(page).to have_css('.sidebar[data-tab="summary"] .js-aiFeedbackButtons')
+          await_empty_ajax_queue
+        end.not_to change { ai_analytics_usage.reload.updated_at }
       end
 
       it 'renders feedback buttons' do

@@ -48,8 +48,17 @@ RSpec.describe Gql::Mutations::KnowledgeBase::Answer::Suggestion::Content::Trans
       let(:copied_inline_attachments)   { copied_attachments.select(&:inline?) }
       let(:copied_attached_attachments) { copied_attachments.reject(&:inline?) }
 
-      it 'converts inline images to base64 data' do
+      it 'points inline images to the copied attachments' do
         expect(gql.result.data[:body]).to include("src=\"/api/v1/attachments/#{copied_inline_attachments.first.id}")
+      end
+
+      context 'with an embedded video' do
+        let(:knowledge_base_answer) { create(:knowledge_base_answer, :published, :with_video) }
+
+        it 'replaces the video marker with a link to the video', :aggregate_failures do
+          expect(gql.result.data[:body]).to include("<a href='https://www.youtube.com/watch?v=vTTzwJsHpU8'>")
+          expect(gql.result.data[:body]).not_to include('widget: video')
+        end
       end
 
       it 'contains attachments' do
@@ -95,7 +104,7 @@ RSpec.describe Gql::Mutations::KnowledgeBase::Answer::Suggestion::Content::Trans
       end
     end
 
-    context 'without authenticated session', authenticated_as: :customer do
+    context 'with a customer', authenticated_as: :customer do
       it 'fails with error type' do
         expect(gql.result.error_type).to eq(Exceptions::Forbidden)
       end

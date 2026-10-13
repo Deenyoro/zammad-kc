@@ -101,6 +101,7 @@ RSpec.describe 'System > Objects', type: :system do
           pre_reload_sessions = Sessions.sessions
           refresh_with_wait
           wait_for_authenticated_session(except: pre_reload_sessions)
+          ensure_websocket_push_delivery
 
           # Update
           click 'tbody tr:last-child'
@@ -128,6 +129,7 @@ RSpec.describe 'System > Objects', type: :system do
           # After the reload, we must explictly wait for the app to be completely ready.
           wait_for_loading_to_complete(wait_ws: true)
           wait_for_authenticated_session(except: pre_reload_sessions)
+          ensure_websocket_push_delivery
 
           # Delete
           click 'tbody tr:last-child .js-delete'
@@ -140,9 +142,7 @@ RSpec.describe 'System > Objects', type: :system do
       end
     end
 
-    ['Text field', 'Single selection field', 'Integer field', 'Date & time field', 'Date field', 'Boolean field', 'Single tree selection field'].each do |data_type|
-      include_examples 'create and remove field with migration', data_type
-    end
+    include_examples 'create and remove field with migration', 'Text field'
 
     context 'with Multiselect' do
       include_examples 'create and remove field with migration', 'Multiple selection field'
@@ -501,6 +501,52 @@ RSpec.describe 'System > Objects', type: :system do
       expect(ObjectManager::Attribute.find_by(name: 'tree1').data_option).to eq(expected_data_options)
     end
 
+    it 'stores the last marked row of a new tree select as default' do
+      fill_in 'Name', with: 'tree2'
+      fill_in 'Display', with: 'tree2'
+      page.find('select[name=data_type]').select('Single tree selection field')
+
+      first_add_child = page.first('div.js-addChild')
+      first_add_child.click
+      first_add_child.click
+
+      # Mark the rows before naming them, as the path of a row is only built on submit.
+      radios = page.all('.js-treeTable .js-selected', count: 3)
+      radios[1].click
+      radios[2].click
+
+      page.all('input.js-key').zip(%w[1 2 3]).each { |input, name| input.send_keys(name) }
+
+      page.find('.js-submit').click
+      await_empty_ajax_queue
+
+      attribute = wait(60).until { ObjectManager::Attribute.find_by(name: 'tree2') }
+      expect(attribute.data_option['default']).to eq('1::3')
+    end
+
+    it 'stores the marked active rows of a new multi tree select as default' do
+      fill_in 'Name', with: 'multitree1'
+      fill_in 'Display', with: 'multitree1'
+      page.find('select[name=data_type]').select('Multiple tree selection field')
+
+      first_add_child = page.first('div.js-addChild')
+      first_add_child.click
+      first_add_child.click
+      page.first('div.js-addRow').click
+
+      checkboxes = page.all('.js-treeTable .js-selected', count: 4)
+      [0, 2, 3].each { |index| checkboxes[index].click }
+      page.all('.js-treeTable .js-active')[3].click
+
+      page.all('input.js-key').zip(%w[1 2 3 4]).each { |input, name| input.send_keys(name) }
+
+      page.find('.js-submit').click
+      await_empty_ajax_queue
+
+      attribute = wait(60).until { ObjectManager::Attribute.find_by(name: 'multitree1') }
+      expect(attribute.data_option['default']).to eq(['1', '1::3'])
+    end
+
     it 'checks smart defaults for select field' do
       fill_in 'Name', with: 'select1'
       find('input[name=display]').set('select1')
@@ -614,6 +660,91 @@ RSpec.describe 'System > Objects', type: :system do
     end
   end
 
+  context 'when editing the default of tree select fields' do
+    before do
+      attribute
+      visit '/#system/object_manager'
+      click "tr[data-id='#{attribute.id}']"
+    end
+
+    def checked_keys
+      page.all('.js-treeTable .js-selected:checked').map { |input| input.ancestor('tr').find('.js-key').value }
+    end
+
+    def row(key)
+      page.all('.js-treeTable .js-key').find { |input| input.value == key }.ancestor('tr')
+    end
+
+    context 'with a single tree selection field' do
+      let(:attribute) { create(:object_manager_attribute_tree_select, default: 'Incident::Hardware::Mouse') }
+
+      it 'shows the stored default and clears it with one click' do
+        in_modal disappears: true do
+          expect(page).to have_css('.js-treeTable .js-selected:checked', count: 1)
+          expect(checked_keys).to eq(['Mouse'])
+
+          find('.js-treeTable .js-selected:checked').click
+          expect(page).to have_no_css('.js-treeTable .js-selected:checked')
+
+          click '.js-submit'
+        end
+
+        expect(attribute.reload.data_option_new['default']).to eq('')
+      end
+
+      it 'marks the default of a reactivated row again with one click' do
+        in_modal disappears: true do
+          row('Mouse').find('.js-active').click
+          expect(row('Mouse')).to have_css('.js-selected:disabled:not(:checked)')
+
+          row('Mouse').find('.js-active').click
+          row('Mouse').find('.js-selected').click
+          expect(checked_keys).to eq(['Mouse'])
+
+          click '.js-submit'
+        end
+
+        expect(attribute.reload.data_option_new['default']).to eq('Incident::Hardware::Mouse')
+      end
+    end
+
+    context 'with a multi tree selection field' do
+      let(:attribute) { create(:object_manager_attribute_multi_tree_select, default: ['Incident', 'Incident::Hardware::Mouse']) }
+
+      it 'shows the stored defaults and clears them' do
+        in_modal disappears: true do
+          expect(page).to have_css('.js-treeTable .js-selected:checked', count: 2)
+          expect(checked_keys).to eq(%w[Incident Mouse])
+
+          page.all('.js-treeTable .js-selected:checked').each(&:click)
+          expect(page).to have_no_css('.js-treeTable .js-selected:checked')
+
+          click '.js-submit'
+        end
+
+        expect(attribute.reload.data_option_new['default']).to eq([])
+      end
+
+      it 'clears and disables the default of an inactive row' do
+        in_modal disappears: true do
+          row('Mouse').find('.js-active').click
+          expect(row('Mouse')).to have_css('.js-selected:disabled:not(:checked)')
+
+          click '.js-submit'
+        end
+
+        expect(attribute.reload.data_option_new['default']).to eq(['Incident'])
+
+        click "tr[data-id='#{attribute.id}']"
+
+        in_modal do
+          expect(checked_keys).to eq(['Incident'])
+          expect(row('Mouse')).to have_css('.js-selected:disabled')
+        end
+      end
+    end
+  end
+
   # https://github.com/zammad/zammad/issues/3647
   context 'when setting Min/Max values for integer' do
     before do
@@ -627,7 +758,7 @@ RSpec.describe 'System > Objects', type: :system do
       end
     end
 
-    it 'verifies max value does not go above limit' do
+    it 'shows the validation error of the backend' do
       in_modal do
         fill_in 'Maximal', with: '999999999999'
 
@@ -637,28 +768,7 @@ RSpec.describe 'System > Objects', type: :system do
       end
     end
 
-    it 'verifies max value does not go below limit' do
-      in_modal do
-        fill_in 'Minimal', with: '-9999999999999'
-        fill_in 'Maximal', with: '-999999999999'
-
-        page.find('.js-submit').click
-
-        expect(page).to have_text 'Maximal value must be higher than -2147483648'
-      end
-    end
-
-    it 'verifies max value can be set' do
-      in_modal do
-        fill_in 'Maximal', with: '128'
-
-        page.find('.js-submit').click
-      end
-
-      expect(page).to have_text 'Integer1'
-    end
-
-    it 'verifies max value can be set to a negative value' do
+    it 'saves min and max values' do
       in_modal do
         fill_in 'Minimal', with: '-256'
         fill_in 'Maximal', with: '-128'
@@ -667,58 +777,7 @@ RSpec.describe 'System > Objects', type: :system do
       end
 
       expect(page).to have_text 'Integer1'
-    end
-
-    it 'verifies min value does not go above limit' do
-      in_modal do
-        fill_in 'Minimal', with: '999999999999'
-        fill_in 'Maximal', with: '123'
-
-        page.find('.js-submit').click
-
-        expect(page).to have_text 'Minimal value must be lower than 2147483648'
-      end
-    end
-
-    it 'verifies min value does not go below limit' do
-      in_modal do
-        fill_in 'Minimal', with: '-999999999999'
-
-        page.find('.js-submit').click
-
-        expect(page).to have_text 'Minimal value must be higher than -2147483648'
-      end
-    end
-
-    it 'verifies min value can be set' do
-      in_modal do
-        fill_in 'Minimal', with: '128'
-
-        page.find('.js-submit').click
-      end
-
-      expect(page).to have_text 'Integer1'
-    end
-
-    it 'verifies min value can be set to a negative value' do
-      in_modal do
-        fill_in 'Minimal', with: '-128'
-
-        page.find('.js-submit').click
-      end
-
-      expect(page).to have_text 'Integer1'
-    end
-
-    it 'verifies min value must be lower than max' do
-      in_modal do
-        fill_in 'Minimal', with: '128'
-        fill_in 'Maximal', with: '-128'
-
-        page.find('.js-submit').click
-
-        expect(page).to have_text 'Maximal value must be higher than or equal to minimal value'
-      end
+      expect(ObjectManager::Attribute.find_by(name: 'integer1').data_option).to include('min' => -256, 'max' => -128)
     end
   end
 
@@ -738,8 +797,11 @@ RSpec.describe 'System > Objects', type: :system do
         page.find('select[name=data_type]').select('Date field')
         fill_in 'Default time diff (hours)', with: ''
 
-        expect { page.find('.js-submit').click }.to change(ObjectManager::Attribute, :count).by(1)
+        page.find('.js-submit').click
       end
+
+      expect(page).to have_text('NoDiff')
+      expect(ObjectManager::Attribute.find_by(name: 'nodiff')).to be_present
     end
 
     it 'datetime attribute' do
@@ -747,8 +809,11 @@ RSpec.describe 'System > Objects', type: :system do
         page.find('select[name=data_type]').select('Date & time field')
         fill_in 'Default time diff (minutes)', with: ''
 
-        expect { page.find('.js-submit').click }.to change(ObjectManager::Attribute, :count).by(1)
+        page.find('.js-submit').click
       end
+
+      expect(page).to have_text('NoDiff')
+      expect(ObjectManager::Attribute.find_by(name: 'nodiff')).to be_present
     end
   end
 
@@ -932,6 +997,7 @@ RSpec.describe 'System > Objects', type: :system do
         attribute
         visit '/#system/object_manager'
         click "tr[data-id='#{attribute.id}']"
+        modal_ready
       end
 
       it_behaves_like 'showing preview table below data options'

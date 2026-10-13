@@ -35,6 +35,7 @@ RSpec.describe 'Ticket Update', type: :system do
         select('closed', from: 'state_id')
         click('.js-attributeBar .js-submit')
         expect(page).to have_no_css('.js-submitDropdown .js-submit[disabled]')
+        await_empty_ajax_queue
       end
 
       # the update should have failed and thus the ticket is still in the new state
@@ -45,6 +46,7 @@ RSpec.describe 'Ticket Update', type: :system do
         find(".edit [name=#{attribute.name}]").select('name 2')
         click('.js-attributeBar .js-submit')
         expect(page).to have_no_css('.js-submitDropdown .js-submit[disabled]')
+        await_empty_ajax_queue
       end
 
       ticket.reload
@@ -96,9 +98,26 @@ RSpec.describe 'Ticket Update', type: :system do
 
         click('.js-attributeBar .js-submit')
         expect(page).to have_no_css('.js-submitDropdown .js-submit[disabled]')
+        await_empty_ajax_queue
 
         ticket.reload
         expect(ticket[date_attribute.name]).to be_nil
+      end
+    end
+  end
+
+  context 'when updating a ticket with an empty tree select attribute that has a default', db_strategy: :reset do
+    let!(:attribute) { create_attribute(:object_manager_attribute_tree_select, :shown_screen, default: 'Incident::Hardware::Mouse') }
+
+    # Without the explicit nil, SetDefaults would store the default on the new ticket.
+    let(:ticket) { create(:ticket, group: group, attribute.name => nil) }
+
+    it 'does not apply the default' do
+      visit "#ticket/zoom/#{ticket.id}"
+
+      within(:active_content) do
+        expect(page).to have_css('.js-objectNumber', text: ticket.number)
+        check_tree_select_field_value(attribute.name, '')
       end
     end
   end
@@ -159,6 +178,7 @@ RSpec.describe 'Ticket Update', type: :system do
           click('.js-openDropdownMacro')
           click(".js-dropdownActionMacro[data-id=\"#{macro.id}\"]")
           expect(page).to have_no_css('.js-submitDropdown .js-submit[disabled]')
+          await_empty_ajax_queue
         end
 
         expect(page).to have_field(attribute.name, with: attribute_value, visible: :all)
@@ -204,6 +224,7 @@ RSpec.describe 'Ticket Update', type: :system do
           click('.js-openDropdownMacro')
           click(".js-dropdownActionMacro[data-id=\"#{macro.id}\"]")
           expect(page).to have_no_css('.js-submitDropdown .js-submit[disabled]')
+          await_empty_ajax_queue
         end
 
         expect(page).to have_css('.content.active .article-content', text: 'test body')
@@ -307,11 +328,13 @@ RSpec.describe 'Ticket Update', type: :system do
       end
 
       taskbar_tab_close("Ticket-#{ticket.id}")
+
+      expect(page).to have_no_css(".tasks .task[data-key='Ticket-#{ticket.id}']")
     end
   end
 
   context 'when using text modules' do
-    include_examples 'text modules', path: "#ticket/zoom/#{Ticket.first.id}", ticket: Ticket.first
+    include_examples 'text modules', path: -> { "#ticket/zoom/#{ticket.id}" }, ticket: -> { ticket }
 
     context 'when owner is used in a text module and was updated in the ticket', authenticated_as: :authenticate do
       let(:user)         { User.find_by(email: 'agent1@example.com') }
@@ -348,6 +371,7 @@ RSpec.describe 'Ticket Update', type: :system do
 
           find('.js-submit').click
           expect(page).to have_no_css('.js-submitDropdown .js-submit[disabled]')
+          await_empty_ajax_queue
 
           expect(ticket.reload.owner_id).to eq(another_user.id)
           check_select_field_value('owner_id', another_user.id.to_s)
@@ -360,7 +384,7 @@ RSpec.describe 'Ticket Update', type: :system do
   end
 
   context 'when using macros' do
-    include_examples 'macros', path: "#ticket/zoom/#{Ticket.first.id}"
+    include_examples 'macros', path: -> { "#ticket/zoom/#{ticket.id}" }
   end
 
   context 'when group will be changed' do

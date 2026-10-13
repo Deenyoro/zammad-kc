@@ -10,41 +10,46 @@ require 'capybara/playwright'
 # The patches below reach into gem internals, so they are written against this
 #   exact version. On an upgrade: check whether they were fixed upstream, drop
 #   what is obsolete, then bump the pin here.
-if Gem.loaded_specs['capybara-playwright-driver'].version != Gem::Version.new('0.5.10')
+if Gem.loaded_specs['capybara-playwright-driver'].version != Gem::Version.new('0.5.12')
   raise 'capybara-playwright-driver was updated - re-evaluate the patches in ' \
         "#{__FILE__} against the new version, then adjust the version pin."
 end
 
-module ZammadCapybaraPlaywrightNodePatches
-  # Most node operations are wrapped in the gem's #assert_element_not_stale,
-  #   which translates raw Playwright errors for detached/navigated-away
-  #   elements into StaleReferenceError - a member of the driver's
-  #   invalid_element_errors, which Capybara's synchronize machinery rescues,
-  #   reloads the node for and retries (just like Selenium's
-  #   StaleElementReferenceError). These action methods lack the wrapper, so
-  #   e.g. a list row torn down and re-rendered between find and click
-  #   surfaces as a raw Playwright::Error that nothing retries. Route them
-  #   through the same translation.
-  %i[click right_click double_click hover obscured? drag_to].each do |method_name|
-    define_method(method_name) do |*args, **options, &block|
-      assert_element_not_stale { super(*args, **options, &block) }
-    end
-  end
+# Messages the browser reports when the element or its document went away
+#   mid-operation. The gem translates most of them into StaleReferenceError,
+#   which is one of the driver's invalid_element_errors and therefore makes
+#   Capybara reload the node and retry - but it misses three cases:
+#
+#   - its Firefox pattern expects the channel name `content::page`, while the
+#     browser actually reports `content::85/124/3` and the like, so the error
+#     falls through untranslated;
+#   - page-level finds run through the gem's #assert_page_alive, which retries a
+#     few of them but raises the raw error once its retries are used up, so a
+#     navigation during e.g. a `have_css?` wait can abort the wait instead of
+#     retrying it;
+#   - a few node methods evaluate in the page without going through the
+#     translating wrapper at all (see the patches below).
+module ZammadCapybaraPlaywrightStaleErrors
+  MESSAGES = Regexp.union(
+    'Execution context was destroyed, most likely because of a navigation',
+    'Element is not attached to the DOM',
+    'Cannot find context with specified id',
+    'Unable to adopt element handle from a different document',
+    %r{exception while running method "adoptNode"},
+  ).freeze
 
-  # Capybara reads - #text, #[], #visible? - run hundreds of times per example,
-  #   and the gem spends 2-4 browser round trips on each one: #assert_element_
-  #   not_stale fires a bare `enabled?` liveness probe before every read,
-  #   #visible_text additionally calls #visible? (another probe + evaluate)
-  #   before extracting the text, and #[] splits property and attribute lookup
-  #   over three calls. Selenium needs one WebDriver command for each of these;
-  #   measured on one desktop example the difference is 7,319 vs 1,195 round
-  #   trips, and in CI every round trip crosses the Docker network to the
-  #   browser service container. Fold each read into a single evaluate.
-  #
-  # The staleness contract stays intact: for a detached element the JS throws
-  #   the exact message the gem's own rescue translates into
-  #   StaleReferenceError, so Capybara's synchronize machinery reloads the node
-  #   and retries the same as before.
+  # Re-raises as StaleReferenceError when the message says the element or its
+  #   document went away, and re-raises unchanged otherwise.
+  def self.translate(error)
+    raise error if !MESSAGES.match?(error.message)
+
+    raise Capybara::Playwright::Node::StaleReferenceError, error
+  end
+end
+
+# The JS the read overrides below run in the page. Kept in their own module so
+#   the patch module stays about behaviour.
+module ZammadCapybaraPlaywrightReadScripts
   STALE_GUARD_JS = <<~JS.freeze
     if (!el.isConnected) throw new Error('Element is not attached to the DOM');
   JS
@@ -88,21 +93,19 @@ module ZammadCapybaraPlaywrightNodePatches
     }
   JS
 
-  # Text extraction as in the gem's #visible_text, but the normalization keeps
-  #   consecutive newlines: the gem's gsub(/\n+/, "\n") makes blank lines (e.g.
-  #   empty editor lines between paragraphs) unobservable, which the Selenium
-  #   drivers do observe - specs would need driver-conditional expectations.
+  # The gem reads innerText, which differs from the WebDriver element text the
+  #   Selenium drivers return - most visibly in line breaks, a <p> boundary is
+  #   two there - so exact multi-line expectations only held under Selenium.
+  #   Uses Selenium's own algorithm instead, see playwright_visible_text.js.
+  #   The formatter guards the file's leading parenthesis with a semicolon.
+  WEBDRIVER_TEXT_JS = File.read(File.join(__dir__, 'playwright_visible_text.js'))
+                          .lines.drop_while { |line| line.start_with?('//') || line.strip.empty? }
+                          .join.delete_prefix(';').freeze
+
   VISIBLE_TEXT_JS = <<~JS.freeze
     (el) => {
       #{STALE_GUARD_JS}
-      #{IS_VISIBLE_JS}
-      if (!isVisible(el)) {
-        return '';
-      }
-      if (el.nodeName == 'TEXTAREA' || el instanceof SVGElement) {
-        return el.textContent;
-      }
-      return el.innerText;
+      return (#{WEBDRIVER_TEXT_JS})(el);
     }
   JS
 
@@ -129,16 +132,77 @@ module ZammadCapybaraPlaywrightNodePatches
       return value;
     }
   JS
+end
 
+module ZammadCapybaraPlaywrightNodePatches
+  include ZammadCapybaraPlaywrightReadScripts
+
+  # Most node operations are wrapped in the gem's #assert_element_not_stale,
+  #   which translates raw Playwright errors for detached/navigated-away
+  #   elements into StaleReferenceError - a member of the driver's
+  #   invalid_element_errors, which Capybara's synchronize machinery rescues,
+  #   reloads the node for and retries (just like Selenium's
+  #   StaleElementReferenceError). Its own patterns miss the Firefox message
+  #   (see above), so route what it re-raises through the broader translation.
+  def assert_element_not_stale(&)
+    super
+  rescue ::Playwright::Error => e
+    ZammadCapybaraPlaywrightStaleErrors.translate(e)
+  end
+
+  # These read methods evaluate in the page without that wrapper, and
+  #   Capybara already has a rescue waiting for each of them - but only for the
+  #   translated error:
+  #
+  #   - #== is called per candidate node while filtering a query
+  #     (Queries::SelectorQuery#matches_filters?), which rescues
+  #     invalid_element_errors and drops the node from the result set;
+  #   - #tag_name is called by Node::Element#inspect, which rescues them into
+  #     "Obsolete #<Capybara::Node::Element>". Untranslated it raises *while
+  #     Capybara builds a failure message*, replacing the real failure with a
+  #     navigation error - the reason a stale <select> reports
+  #     "Execution context was destroyed" instead of what did not match;
+  #   - the predicates back Capybara's own #disabled?/#readonly? etc., where a
+  #     stale node means the enclosing synchronize should retry.
+  #
+  # Translated rather than wrapped in #assert_element_not_stale, because that
+  #   wrapper spends a liveness round trip per call and these run per candidate
+  #   node per query. Selenium raises its own StaleElementReferenceError here,
+  #   which is what those rescues were written for (#== not even that: it
+  #   compares element ids client-side without touching the browser).
+  #
+  # Still unguarded, but with no observed failures: the mutating #set, #drop,
+  #   #scroll_by, #trigger, #unselect_option and #shadow_root.
+  %i[== tag_name disabled? readonly? multiple?].each do |method_name|
+    define_method(method_name) do |*args|
+      super(*args)
+    rescue ::Playwright::Error => e
+      ZammadCapybaraPlaywrightStaleErrors.translate(e)
+    end
+  end
+
+  # Capybara reads - #text, #[], #visible? - run hundreds of times per example,
+  #   and the gem spends 2-4 browser round trips on each one: #assert_element_
+  #   not_stale fires a bare `enabled?` liveness probe before every read,
+  #   #visible_text additionally calls #visible? (another probe + evaluate)
+  #   before extracting the text, and #[] splits property and attribute lookup
+  #   over three calls. Selenium needs one WebDriver command for each of these;
+  #   measured on one desktop example the difference is 7,319 vs 1,195 round
+  #   trips, and in CI every round trip crosses the Docker network to the
+  #   browser service container. Fold each read into a single evaluate.
+  #
+  # The staleness contract stays intact: for a detached element the JS throws
+  #   the exact message the gem's own rescue translates into
+  #   StaleReferenceError, so Capybara's synchronize machinery reloads the node
+  #   and retries the same as before.
   def visible?
     read_in_one_round_trip(VISIBLE_JS)
   end
 
+  # Already trimmed and with non-breaking spaces replaced, as Selenium returns
+  #   it - trimming again would drop a trailing space Selenium keeps.
   def visible_text
-    text = read_in_one_round_trip(VISIBLE_TEXT_JS)
-    text.to_s.scrub.gsub(%r{\A[[:space:]&&[^\u00a0]]+}, '')
-        .gsub(%r{[[:space:]&&[^\u00a0]]+\z}, '')
-        .tr("\u00a0", ' ')
+    read_in_one_round_trip(VISIBLE_TEXT_JS).to_s.scrub
   end
 
   def all_text
@@ -167,96 +231,18 @@ end
 
 Capybara::Playwright::Node.prepend(ZammadCapybaraPlaywrightNodePatches)
 
-module ZammadCapybaraPlaywrightTextInputPatches
-  # The gem writes a value in two steps - #fill for everything but the last
-  #   character, then #type for that last one, so key handlers see a real
-  #   keystroke. #type focuses the element first, and a focus can put the caret
-  #   at offset 0 (same reason a fresh field ignores :backspace), so if the page
-  #   reacts to #fill's input event by re-rendering or refocusing, the final
-  #   character is inserted at the *start* of the field. Nothing raises - the
-  #   field just ends up holding a different value than the spec asked for
-  #   (observed in CI: 'tag1, tag2, tag3' became '3tag1, tag2, tag').
-  #
-  # Re-assert the caret between the two steps, via the Selection API rather than
-  #   an End keypress: End is meaningful to ARIA widgets (a listbox jumps to its
-  #   last option), so pressing it changes behaviour in e.g. the desktop
-  #   treeselect search. This way the page sees exactly the key events the
-  #   unpatched gem would produce. Only the plain single-line case is handled
-  #   here; everything else stays with the gem.
-  #
-  # Asserting the caret narrows the race but cannot close it: the page's own
-  #   timers keep running, and one firing between the assertion and the keystroke
-  #   moves the caret again. That still happened in CI (tags_spec wrote
-  #   '3New Tag 12'), so verify the result and repair it - see #set_text.
-
-  private
-
-  def set_text(text, append:)
-    return super if append || text.include?("\t")
-
-    case @element.evaluate('el => el.isContentEditable ? "contenteditable" : (el.type === "number" ? "number" : "")')
-    when 'contenteditable'
-      return super
-    when 'number'
-      return replace_number_text(text)
+module ZammadCapybaraPlaywrightBrowserPatches
+  # Page-level finds use the gem's #assert_page_alive, which retries a few
+  #   staleness errors but raises the raw Playwright::Error once its retries are
+  #   used up, so a navigation while Capybara waits for a selector can abort the
+  #   wait instead of being retried.
+  %i[find_css find_xpath].each do |method_name|
+    define_method(method_name) do |*args, **options, &block|
+      super(*args, **options, &block)
+    rescue ::Playwright::Error => e
+      ZammadCapybaraPlaywrightStaleErrors.translate(e)
     end
-
-    clusters   = text.scan(%r{\X})
-    typed_text = clusters.last.to_s
-    prefix     = clusters[0...-1].join
-
-    @element.fill(prefix, timeout: @timeout)
-    return if typed_text.empty?
-
-    move_caret_to_end
-    @element.type(typed_text, timeout: @timeout)
-
-    observed = @element.input_value(timeout: @timeout)
-    return if observed == text
-
-    # Repair only a misplaced keystroke: the value has to be the prefix with the
-    #   typed character inserted at some other position. Anything else belongs to
-    #   the page - a keydown handler discarding the character, an input mask
-    #   rewriting the value - and repairing that would put back what the page
-    #   just refused, letting this driver quietly disagree with the Selenium ones
-    #   instead of failing.
-    return if misplaced_values(clusters).exclude?(observed)
-
-    @element.fill(text, timeout: @timeout)
-  end
-
-  # Every value the field could hold if the typed character had landed at the
-  #   wrong offset, built from grapheme clusters so multi-codepoint characters
-  #   stay intact. Excludes the character being missing altogether, which is a
-  #   refusal by the page rather than a misplacement.
-  def misplaced_values(clusters)
-    prefix_clusters = clusters[0...-1]
-
-    (0..prefix_clusters.length).map do |index|
-      (prefix_clusters[0...index] + [clusters.last] + prefix_clusters[index...]).join
-    end
-  end
-
-  def move_caret_to_end
-    @element.evaluate(<<~JS)
-      (el) => {
-        // Throws for input types that have no text selection (number, date, ...).
-        try { el.setSelectionRange(el.value.length, el.value.length) } catch (e) {}
-      }
-    JS
-  end
-
-  # Playwright's #fill validates a number input against the HTML5 number grammar,
-  #   so filling everything but the last character throws for values like '-7'
-  #   ("Cannot type text into input[type=number]"). Select the current value and
-  #   type over it instead, which also keeps the keystrokes intact. Same approach
-  #   the gem takes upstream (capybara-playwright-driver#152), not yet released.
-  def replace_number_text(text)
-    return @element.fill('', timeout: @timeout) if text.empty?
-
-    @element.select_text(timeout: @timeout)
-    @element.type(text, timeout: @timeout)
   end
 end
 
-Capybara::Playwright::Node::TextInput.prepend(ZammadCapybaraPlaywrightTextInputPatches)
+Capybara::Playwright::Browser.prepend(ZammadCapybaraPlaywrightBrowserPatches)

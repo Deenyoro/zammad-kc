@@ -14,7 +14,10 @@ RSpec.describe 'Manage > Organizations', type: :system do
         it 'creates record', db_strategy: :reset do
 
           # required to edit attribute in admin interface
-          screens = { create: { 'admin.organization': { shown: true, required: false } } }
+          screens = {
+            create: { 'admin.organization': { shown: true, required: false } },
+            edit:   { 'admin.organization': { shown: true, required: false } },
+          }
 
           attribute = create(:object_manager_attribute_text,
                              object_name:             'Organization',
@@ -43,6 +46,44 @@ RSpec.describe 'Manage > Organizations', type: :system do
           within(:active_content) do
             expect(page).to have_text name
           end
+
+          organization = Organization.find_by(name: name)
+          expect(organization[attribute.name]).to eq('value')
+
+          within(:active_content) do
+            click 'td', text: name
+          end
+
+          in_modal do
+            expect(page).to have_css("[data-attribute-name='#{attribute.name}'] a.controls-button[href='https://example.com']")
+          end
+        end
+      end
+    end
+
+    context 'with tree select defaults', db_strategy: :reset do
+      let(:screens)               { { create: { '-all-' => { shown: true } } } }
+      let!(:tree_attribute)       { create(:object_manager_attribute_tree_select, object_name: 'Organization', screens: screens, default: 'Incident::Hardware::Mouse') }
+      let!(:multi_tree_attribute) { create(:object_manager_attribute_multi_tree_select, object_name: 'Organization', screens: screens, default: ['Incident', 'Incident::Hardware::Mouse']) }
+
+      before do
+        ObjectManager::Attribute.migration_execute
+        refresh
+
+        visit 'manage/organizations'
+
+        within(:active_content) do
+          click '[data-type="new"]'
+        end
+      end
+
+      it 'prefills the default values' do
+        in_modal do
+          check_tree_select_field_value(tree_attribute.name, 'Incident::Hardware::Mouse')
+
+          expect(page).to have_css("div[data-attribute-name='#{multi_tree_attribute.name}'] span.token-label", exact_text: 'Incident')
+          expect(page).to have_css("div[data-attribute-name='#{multi_tree_attribute.name}'] span.token-label", exact_text: 'Incident › Hardware › Mouse')
+          expect(find("select[name='#{multi_tree_attribute.name}']", visible: :all).value).to contain_exactly('Incident', 'Incident::Hardware::Mouse')
         end
       end
     end

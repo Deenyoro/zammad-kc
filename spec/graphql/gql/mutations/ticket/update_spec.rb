@@ -2,6 +2,9 @@
 
 require 'rails_helper'
 
+# What updating a ticket does is covered by spec/services/service/ticket/update_spec.rb and
+#   spec/services/service/ticket/article/create_spec.rb — this covers the GraphQL surface only:
+#   input transformation, authorization, how the service's errors reach the client, and the payload.
 RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graphql do
   let(:query) do
     <<~QUERY
@@ -104,18 +107,9 @@ RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graph
           }
         end
 
-        it 'adds a new article with a specific type' do
+        it 'adds a new article' do
           expect { gql.execute(query, variables: variables) }
             .to change(Ticket::Article, :count).by(1)
-
-          expect(Ticket.last.articles.last.type.name).to eq('note')
-        end
-
-        it 'adds a new article with a specific sender' do
-          expect { gql.execute(query, variables: variables) }
-            .to change(Ticket::Article, :count).by(1)
-
-          expect(Ticket.last.articles.last.sender.name).to eq('Agent')
         end
 
         context 'with macro' do
@@ -184,19 +178,6 @@ RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graph
               expect(gql.result.error_message)
                 .to match('Time Accounting is not enabled')
             end
-          end
-        end
-
-        context 'with active secure mailing (S/MIME)' do
-          before do
-            Setting.set('smime_integration', true)
-          end
-
-          it 'adds a new article' do
-            expect { gql.execute(query, variables: variables) }
-              .to change(Ticket::Article, :count).by(1)
-
-            expect(Ticket.last.articles.last.type.name).to eq('note')
           end
         end
       end
@@ -368,6 +349,28 @@ RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graph
         end
       end
 
+      context 'when trying to inject internal attributes via objectAttributeValues' do
+        let(:other_customer) { create(:customer) }
+        let(:input_payload) do
+          input_base_payload
+            .tap { |h| h.delete(:ownerId) }
+            .tap { |h| h.delete(:customer) }
+            .tap do |h|
+              h[:objectAttributeValues] = [
+                { name: 'customer_id', value: other_customer.id },
+                { name: 'number',      value: '99999' },
+              ]
+            end
+        end
+
+        it 'ignores them and keeps the stored values' do
+          expect { gql.execute(query, variables:) }
+            .not_to change { ticket.reload.slice(:customer_id, :number) }
+
+          expect(gql.result.data[:ticket]).to eq(expected_response)
+        end
+      end
+
       context 'when trying to change the group_id' do
         let(:other_group)   { create(:group) }
         let(:input_payload) do
@@ -392,18 +395,9 @@ RSpec.describe Gql::Mutations::Ticket::Update, :aggregate_failures, type: :graph
           }
         end
 
-        it 'adds a new article with a specific type' do
+        it 'adds a new article' do
           expect { gql.execute(query, variables: variables) }
             .to change(Ticket::Article, :count).by(1)
-
-          expect(Ticket.last.articles.last.type.name).to eq('web')
-        end
-
-        it 'adds a new article with a specific sender' do
-          expect { gql.execute(query, variables: variables) }
-            .to change(Ticket::Article, :count).by(1)
-
-          expect(Ticket.last.articles.last.sender.name).to eq('Customer')
         end
       end
     end

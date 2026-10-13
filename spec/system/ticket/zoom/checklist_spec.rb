@@ -22,16 +22,6 @@ RSpec.describe 'Ticket zoom > Checklist', authenticated_as: :authenticate, curre
     click_on text
   end
 
-  # The ticket zoom may render its sidebar again once the checklist has loaded, which resets it
-  #   to the first tab and drops an earlier click. Clicking the active tab would collapse it.
-  def open_checklist_sidebar(checklist)
-    wait(30).until do
-      click '.tabsSidebar-tab[data-tab=checklist]' if page.has_no_css?('.tabsSidebar-tab.active[data-tab=checklist]', wait: 0)
-
-      page.has_text?(checklist.name.upcase, wait: 1) # checklist name is shown in all-caps
-    end
-  end
-
   before do
     visit "#ticket/zoom/#{ticket.id}"
   end
@@ -78,7 +68,7 @@ RSpec.describe 'Ticket zoom > Checklist', authenticated_as: :authenticate, curre
       #   Refresh (a real fetch, independent of that push) and reopen the tab if that happens.
       refresh if page.has_button?('Add empty checklist', wait: 5)
 
-      open_checklist_sidebar(checklist)
+      open_checklist_sidebar
       await_empty_ajax_queue
     end
 
@@ -240,9 +230,10 @@ RSpec.describe 'Ticket zoom > Checklist', authenticated_as: :authenticate, curre
       expect(page).to have_select('checklist_template_id')
 
       # Sometimes, by clicking the button, nothing happens.
-      sleep 0.1
-      click_on('Add from a template')
-      wait.until { page.has_content?('Please select a checklist template.') }
+      wait.until do
+        click_on('Add from a template')
+        page.has_content?('Please select a checklist template.', wait: 1)
+      end
 
       select checklist_template.name, from: 'checklist_template_id'
       wait.until { page.has_no_content?('Please select a checklist template.') }

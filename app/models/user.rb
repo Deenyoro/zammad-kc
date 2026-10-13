@@ -24,6 +24,7 @@ class User < ApplicationModel
   include User::HasAuditLogs
   include User::Search
   include User::SearchIndex
+  include User::TerminatesSessions
   include User::TouchesOrganization
   include User::TriggersSubscriptions
   include User::PerformsGeoLookup
@@ -33,13 +34,14 @@ class User < ApplicationModel
 
   SENSITIVE_FIELDS = %i[password].freeze
 
-  has_and_belongs_to_many :organizations,          after_add: %i[cache_update create_organization_add_history], after_remove: %i[cache_update create_organization_remove_history], before_add: %i[check_organization_uniqueness], class_name: 'Organization'
+  has_and_belongs_to_many :organizations,          after_add: %i[cache_update create_organization_add_history], after_remove: %i[cache_update create_organization_remove_history], before_add: %i[check_organization_uniqueness ensure_different_organizations_on_commit], class_name: 'Organization'
   has_and_belongs_to_many :overviews,              dependent: :nullify
   has_many                :tokens,                 after_add: :cache_update, after_remove: :cache_update, dependent: :destroy
   has_many                :authorizations,         after_add: :cache_update, after_remove: :cache_update, dependent: :destroy
   has_many                :online_notifications,   dependent: :destroy
   has_many                :taskbars,               dependent: :destroy
   has_many                :user_devices,           dependent: :destroy
+  has_many                :push_subscriptions,     dependent: :destroy
   has_one                 :chat_agent_created_by,  class_name: 'Chat::Agent', foreign_key: :created_by_id, dependent: :destroy, inverse_of: :created_by
   has_one                 :chat_agent_updated_by,  class_name: 'Chat::Agent', foreign_key: :updated_by_id, dependent: :destroy, inverse_of: :updated_by
   has_many                :chat_sessions,          class_name: 'Chat::Session', dependent: :destroy
@@ -75,6 +77,7 @@ class User < ApplicationModel
   # the transaction dispatcher must be run after the workflow checks!
   include ChecksCoreWorkflow
   include HasTransactionDispatcher
+  include ChecksSecondaryOrganizationsOnCommit
 
   core_workflow_screens 'create', 'edit', 'invite_agent'
   core_workflow_admin_screens 'create', 'edit'
@@ -165,20 +168,7 @@ returns
     # Email sending: always first name last name (regardless of setting)
     format = recipient_line ? 'first_last' : Setting.get('user_name_format')
 
-    parts, separator = case format
-                       when 'last_first'
-                         [[lastname, firstname], ' ']
-                       when 'last_first_comma'
-                         [[lastname, firstname], ', ']
-                       else
-                         [[firstname, lastname], ' ']
-                       end
-
-    name = parts
-      .map { |part| part.to_s.strip }
-      .compact_blank
-      .join(separator)
-      .strip
+    name = display_name_from_parts(format)
 
     if name.blank? && email.present? && email_fallback
       return email
@@ -199,6 +189,37 @@ returns
     end
 
     name
+  end
+
+=begin
+
+display name of user, built only from the name parts following the given
+format - without any fallback to personal data like email or phone. The
+server side twin of the frontend's displayNameFromParts().
+
+  user = User.find(123)
+  result = user.display_name_from_parts
+
+returns
+
+  result = "Bob Smith"
+
+=end
+
+  def display_name_from_parts(format = Setting.get('user_name_format'))
+    parts, separator = case format
+                       when 'last_first'
+                         [[lastname, firstname], ' ']
+                       when 'last_first_comma'
+                         [[lastname, firstname], ', ']
+                       else
+                         [[firstname, lastname], ' ']
+                       end
+
+    parts
+      .map { |part| part.to_s.strip }
+      .compact_blank
+      .join(separator)
   end
 
 =begin
@@ -1203,10 +1224,16 @@ raise 'At least one user need to have admin permissions'
   end
 
   def check_organization_uniqueness(new_organization)
-    return if organization != new_organization && organization_ids.exclude?(new_organization.id)
+    return if organization_ids.exclude?(new_organization.id)
 
-    errors.add :base, __('Secondary organizations cannot include the primary organization.')
+    errors.add :base, __('Secondary organizations cannot include the same organization twice.')
 
     raise ActiveRecord::RecordInvalid, self
+  end
+
+  def ensure_different_organizations_on_commit(_new_organization)
+    return if new_record?
+
+    check_secondary_organizations_on_commit(User.where(id: id))
   end
 end

@@ -9,7 +9,8 @@ RSpec.describe 'Ticket zoom > Link knowledge base answer', type: :system do
     include_context 'basic Knowledge Base'
 
     let(:ticket)      { create(:ticket, group: Group.find_by(name: 'Users')) }
-    let(:translation) { published_answer.translations.first }
+    let(:answer)      { create(:knowledge_base_answer, :published, category:, translation_attributes: { title: 'Warranty & Returns' }) }
+    let(:translation) { answer.translations.first }
 
     def authenticate
       translation
@@ -34,7 +35,7 @@ RSpec.describe 'Ticket zoom > Link knowledge base answer', type: :system do
 
             find('.js-input').send_keys translation.title
 
-            find(%(li[data-value="#{translation.id}"])).click
+            find(%(li[data-value="#{translation.id}"]), text: 'Warranty & Returns').click
 
             # Scoped to '.link_kb_answers' already, so 'ol' alone is enough - re-adding the ancestor
             # class here made this a self-referential descendant selector, which some CSS engines
@@ -488,6 +489,7 @@ RSpec.describe 'Ticket zoom > Link knowledge base answer', type: :system do
 
       it 'still checks for duplicate answers in the generation modal' do
         within :active_content, '.link_kb_answers' do
+          expect(page).to have_css('.js-kb-ai-generate')
           expect(page).to have_no_text('Suggested knowledge')
           expect(Service::Ticket::AI::RelatedKnowledgeBaseAnswers).not_to have_received(:execute)
 
