@@ -108,10 +108,17 @@ class Kc::TeamsSubscriptionManager
                          .where(ticket_state_types: { name: 'closed' })
                          .select(:id)
 
+    tenant_id = channel.options.with_indifferent_access[:tenant_id].to_s
+
     scope = Ticket.where('preferences LIKE ?', '%teams_chat%')
     scope = scope.where.not(state_id: closed_state_ids).or(scope.where('updated_at > ?', RECENT_TICKET_DAYS.days.ago))
+    # Only this channel's tenant: Graph refuses (403) a subscription on another
+    # tenant's chat, which made every renewal pass retry and fail for them.
     scope.select(:id, :preferences)
-         .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
+         .filter_map do |t|
+           teams_chat = t.preferences['teams_chat'] || {}
+           teams_chat['chat_id'] if Kc::PollTeamsChatMessagesJob.same_tenant?(teams_chat, tenant_id)
+         end
          .to_set
   end
   public :subscribable_chat_ids
