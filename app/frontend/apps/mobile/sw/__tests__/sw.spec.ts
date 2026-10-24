@@ -13,10 +13,6 @@ vi.mock('#shared/sw/pushNotificationDatabase.ts', async () => {
   return pushNotificationDatabaseMock
 })
 vi.mock('workbox-core', () => ({ clientsClaim: vi.fn() }))
-vi.mock('workbox-precaching', () => ({
-  cleanupOutdatedCaches: vi.fn(),
-  precacheAndRoute: vi.fn(),
-}))
 
 type Listener = (event: never) => void
 
@@ -50,12 +46,16 @@ const getNotifications = vi.fn(async ({ tag }: { tag?: string } = {}) =>
 )
 const matchAll = vi.fn(async (): Promise<unknown[]> => [])
 const openWindow = vi.fn(async () => null)
+const cacheKeys = vi.fn(async (): Promise<string[]> => [])
+const cacheDelete = vi.fn(async () => true)
+
+const scope = 'https://zammad.example.com/mobile/'
 
 const workerGlobals = {
   skipWaiting: vi.fn(async () => {}),
-  registration: { showNotification, getNotifications },
+  registration: { scope, showNotification, getNotifications },
   clients: { matchAll, openWindow },
-  __WB_MANIFEST: [],
+  caches: { keys: cacheKeys, delete: cacheDelete },
 }
 
 const waitUntilResult = async (event: { waitUntil: ReturnType<typeof vi.fn> }) => {
@@ -101,11 +101,29 @@ describe('mobile service worker', () => {
 
   it('registers the worker lifecycle and push handlers', () => {
     expect(Object.keys(listeners).sort()).toEqual([
+      'activate',
       'message',
       'notificationclick',
       'notificationclose',
       'push',
     ])
+  })
+
+  describe('activate', () => {
+    it('deletes the precache an earlier worker left behind', async () => {
+      cacheKeys.mockResolvedValue([
+        `workbox-precache-v2-${scope}`,
+        `workbox-runtime-${scope}`,
+        'workbox-precache-v2-https://zammad.example.com/other/',
+      ])
+
+      const event = { waitUntil: vi.fn() }
+      ;(listeners.activate as (event: unknown) => void)(event)
+      await waitUntilResult(event)
+
+      expect(cacheDelete).toHaveBeenCalledTimes(1)
+      expect(cacheDelete).toHaveBeenCalledWith(`workbox-precache-v2-${scope}`)
+    })
   })
 
   describe('push', () => {
@@ -273,6 +291,20 @@ describe('mobile service worker', () => {
       await waitUntilResult(event)
 
       expect(await takeVanishedPushNotifications([])).toEqual([])
+    })
+  })
+
+  describe('message', () => {
+    it('closes every displayed push on request of the app', async () => {
+      const first = displayNotification('ticket-42')
+      const second = displayNotification('online-notification-7')
+
+      const event = { data: { type: 'CLOSE_PUSH_NOTIFICATIONS' }, waitUntil: vi.fn() }
+      ;(listeners.message as (event: unknown) => void)(event)
+      await waitUntilResult(event)
+
+      expect(first.close).toHaveBeenCalled()
+      expect(second.close).toHaveBeenCalled()
     })
   })
 

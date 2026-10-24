@@ -53,7 +53,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,                   null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :users, [:login], unique: true
+    add_index :users, 'LOWER(login)', unique: true, name: 'index_users_on_login'
     add_index :users, [:email]
     # add_index :users, [:email], unique: => true
     add_index :users, [:organization_id]
@@ -93,7 +93,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,                    null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :signatures, [:name], unique: true
+    add_index :signatures, 'LOWER(name)', unique: true, name: 'index_signatures_on_name'
     add_foreign_key :signatures, :users, column: :created_by_id
     add_foreign_key :signatures, :users, column: :updated_by_id
 
@@ -132,7 +132,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,                     null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :groups, [:name], unique: true
+    add_index :groups, 'LOWER(name)', unique: true, name: 'index_groups_on_name'
     add_index :groups, :parent_id
     add_index :groups, [:email_address_id]
     add_index :groups, [:signature_id]
@@ -152,7 +152,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,                     null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :roles, [:name], unique: true
+    add_index :roles, 'LOWER(name)', unique: true, name: 'index_roles_on_name'
     add_foreign_key :roles, :users, column: :created_by_id
     add_foreign_key :roles, :users, column: :updated_by_id
 
@@ -184,7 +184,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,                     null: false
       t.timestamps limit: 3,   null: false
     end
-    add_index :organizations, [:name], unique: true
+    add_index :organizations, 'LOWER(name)', unique: true, name: 'index_organizations_on_name'
     add_index :organizations, [:domain]
     add_foreign_key :users, :organizations
     add_foreign_key :organizations, :users, column: :created_by_id
@@ -351,6 +351,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.timestamps limit: 3, null: false
     end
     add_index :tag_items, [:name_downcase]
+    add_index :tag_items, [:name], unique: true, name: 'index_tag_items_on_name'
 
     create_table :tags do |t|
       t.references :tag_item,                       null: false
@@ -361,7 +362,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
     end
     add_index :tags, [:o_id]
     add_index :tags, [:tag_object_id]
-    add_index :tags, [:tag_item_id]
+    add_index :tags, %i[tag_item_id tag_object_id o_id], unique: true
     add_foreign_key :tags, :tag_items
     add_foreign_key :tags, :tag_objects
     add_foreign_key :tags, :users, column: :created_by_id
@@ -576,7 +577,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,                         null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :schedulers, [:name], unique: true
+    add_index :schedulers, 'LOWER(name)', unique: true, name: 'index_schedulers_on_name'
     add_foreign_key :schedulers, :users, column: :created_by_id
     add_foreign_key :schedulers, :users, column: :updated_by_id
 
@@ -593,7 +594,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,                       null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :calendars, [:name], unique: true
+    add_index :calendars, 'LOWER(name)', unique: true, name: 'index_calendars_on_name'
     add_foreign_key :calendars, :users, column: :created_by_id
     add_foreign_key :calendars, :users, column: :updated_by_id
 
@@ -639,12 +640,12 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.string :name,                         limit: 200,   null: false
       t.string :display,                      limit: 200,   null: false
       t.string :data_type,                    limit: 100,   null: false
-      t.text :data_option,                    limit: 800.kilobytes + 1,  null: true
-      t.text :data_option_new,                limit: 800.kilobytes + 1,  null: true
+      t.jsonb :data_option,                   null: false, default: {}
+      t.jsonb :data_option_new,               null: false, default: {}
       t.boolean :editable,                                  null: false, default: true
       t.boolean :internal,                                  null: false, default: false
       t.boolean :active,                                    null: false, default: true
-      t.string :screens,                      limit: 2000,  null: true
+      t.jsonb :screens,                       null: false, default: {}
       t.boolean :to_create,                                 null: false, default: false
       t.boolean :to_migrate,                                null: false, default: false
       t.boolean :to_delete,                                 null: false, default: false
@@ -847,17 +848,17 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.column :created_by_id,        :integer,                null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :jobs, [:name], unique: true
+    add_index :jobs, 'LOWER(name)', unique: true, name: 'index_jobs_on_name'
     add_foreign_key :jobs, :users, column: :created_by_id
     add_foreign_key :jobs, :users, column: :updated_by_id
 
     create_table :core_workflows do |t|
       t.string :name,                     limit: 100, null: false
       t.string :object,                   limit: 100, null: true
-      t.text   :preferences,              limit: 500.kilobytes + 1, null: true
-      t.text   :condition_saved,          limit: 500.kilobytes + 1, null: true
-      t.text   :condition_selected,       limit: 500.kilobytes + 1, null: true
-      t.text   :perform,                  limit: 500.kilobytes + 1, null: true
+      t.jsonb  :preferences,              null: false, default: {}
+      t.jsonb  :condition_saved,          null: false, default: {}
+      t.jsonb  :condition_selected,       null: false, default: {}
+      t.jsonb  :perform,                  null: false, default: {}
       t.boolean :active,                  null: false, default: true
       t.boolean :stop_after_match,        null: false, default: false
       t.boolean :changeable,              null: false, default: true
@@ -866,7 +867,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,           null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :core_workflows, [:name], unique: true
+    add_index :core_workflows, 'LOWER(name)', unique: true, name: 'index_core_workflows_on_name'
     add_foreign_key :core_workflows, :users, column: :created_by_id
     add_foreign_key :core_workflows, :users, column: :updated_by_id
 
@@ -879,7 +880,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
       t.integer :created_by_id,           null: false
       t.timestamps limit: 3, null: false
     end
-    add_index :ldap_sources, [:name], unique: true
+    add_index :ldap_sources, 'LOWER(name)', unique: true, name: 'index_ldap_sources_on_name'
     add_foreign_key :ldap_sources, :users, column: :created_by_id
     add_foreign_key :ldap_sources, :users, column: :updated_by_id
 
@@ -1020,7 +1021,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
 
       t.timestamps limit: 3, null: false
 
-      t.index :name, unique: true
+      t.index 'LOWER(name)', unique: true, name: 'index_ai_agents_on_name'
       t.index :active
     end
 
@@ -1040,7 +1041,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
 
       t.timestamp :analytics_stats_reset_at, limit: 3, null: true
 
-      t.index :name, unique: true
+      t.index 'LOWER(name)', unique: true, name: 'index_ai_text_tools_on_name'
       t.index :active
     end
 
@@ -1079,7 +1080,7 @@ class CreateBase < ActiveRecord::Migration[4.2]
 
       t.timestamps limit: 3
 
-      t.index :name, unique: true
+      t.index 'LOWER(name)', unique: true, name: 'index_ai_provider_connections_on_name'
       t.index :default_chat
       t.index :default_embedding
       t.index :default_ocr

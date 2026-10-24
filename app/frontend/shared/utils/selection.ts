@@ -45,6 +45,18 @@ const firstSelectedItemNumber = (list: Element, range: Range) => {
 const elementRoot = (container: Node) =>
   container.nodeType === Node.ELEMENT_NODE ? (container as Element) : container.parentElement
 
+const restoreAncestorChain = (fragment: DocumentFragment, root: Element, outermost: Element) => {
+  let element: Element | null = root
+
+  while (element) {
+    const wrapper = element.cloneNode(false) as Element
+    wrapper.append(...Array.from(fragment.childNodes))
+    fragment.appendChild(wrapper)
+
+    element = element === outermost ? null : element.parentElement
+  }
+}
+
 // A selection drawn inside a single list item keeps nothing of what held it: the item, whatever it
 // wraps its content in, and the list itself are all common ancestors, so the clone comes back as
 // bare text belonging to no list at all. Rebuild that chain from the selection outwards, up to and
@@ -53,17 +65,18 @@ const restoreListItemWrapper = (fragment: DocumentFragment, root: Element) => {
   const item = root.closest('li')
   if (!item) return null
 
-  let element: Element | null = root
-
-  while (element) {
-    const wrapper = element.cloneNode(false) as Element
-    wrapper.append(...Array.from(fragment.childNodes))
-    fragment.appendChild(wrapper)
-
-    element = element === item ? null : element.parentElement
-  }
+  restoreAncestorChain(fragment, root, item)
 
   return item.parentElement
+}
+
+// Line breaks inside a preformatted block are plain characters. A selection drawn inside the block
+// comes back without it, and the editor collapses them into spaces, so put the block back around it.
+const restorePreformattedWrapper = (fragment: DocumentFragment, root: Element) => {
+  const block = root.closest('pre')
+  if (!block) return
+
+  restoreAncestorChain(fragment, root, block)
 }
 
 // `cloneContents()` drops the common ancestor of the selection, so a selection drawn inside a
@@ -129,6 +142,9 @@ const cloneRangeContents = (range: Range) => {
   const listOfItem = LIST_TAGS.has(root.tagName) ? null : restoreListItemWrapper(contents, root)
   const listRoot = listOfItem ?? root
 
+  // A restored item already holds any preformatted block inside of it.
+  if (!listOfItem) restorePreformattedWrapper(contents, root)
+
   restoreListWrapper(contents, listRoot)
   restoreOrderedListStart(contents, range, listRoot)
 
@@ -160,4 +176,32 @@ export const getCurrentSelectionData = (): SelectionData => {
     html,
     selection: sel,
   }
+}
+
+const caretPointFromPoint = (x: number, y: number) => {
+  if (document.caretPositionFromPoint) {
+    const position = document.caretPositionFromPoint(x, y)
+    return position && { node: position.offsetNode, offset: position.offset }
+  }
+
+  // Non-standard fallback for Safari and older Chromium.
+  if (document.caretRangeFromPoint) {
+    const range = document.caretRangeFromPoint(x, y)
+    return range && { node: range.startContainer, offset: range.startOffset }
+  }
+
+  return null
+}
+
+// Character offset within the text of `container` at the given viewport point, or `null` when the
+// browser cannot tell or the point lies outside of it.
+export const getCaretOffsetFromPoint = (container: HTMLElement, x: number, y: number) => {
+  const point = caretPointFromPoint(x, y)
+  if (!point || !container.contains(point.node)) return null
+
+  const range = document.createRange()
+  range.setStart(container, 0)
+  range.setEnd(point.node, point.offset)
+
+  return range.toString().length
 }

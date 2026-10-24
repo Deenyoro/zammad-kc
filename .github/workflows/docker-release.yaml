@@ -13,14 +13,15 @@ on:
   schedule:
     # Build for develop only once per workday to avoid hitting rate limits on docker hub.
     - cron:  '10 6 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   docker-build-image:
-    if: github.repository == 'zammad/zammad'
+    if: github.repository == 'zammad/zammad' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/develop')
     strategy:
       matrix:
         runs-on:
-          - runner: ubuntu-24.04
+          - runner: ubuntu-26.04
             platform: 'amd64'
           - runner: ['self-hosted', 'arm64']
             platform: 'arm64'
@@ -82,8 +83,8 @@ jobs:
           annotations: ${{ steps.meta.outputs.annotations }}
 
   docker-create-multiarch-manifest:
-    if: github.repository == 'zammad/zammad'
-    runs-on: ubuntu-24.04
+    if: github.repository == 'zammad/zammad' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-26.04
     needs:
       - docker-build-image
     strategy:

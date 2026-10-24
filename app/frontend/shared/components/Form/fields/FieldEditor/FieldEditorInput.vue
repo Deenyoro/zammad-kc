@@ -9,6 +9,7 @@ import { computed, onMounted, onUnmounted, ref, toRef, useTemplateRef, watch } f
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import { useAttachments } from '#shared/components/Form/fields/FieldEditor/composables/useAttachments.ts'
 import { useSignatureHandling } from '#shared/components/Form/fields/FieldEditor/composables/useSignatureHandling.ts'
+import { EXTENSION_NAME as knowledgeBaseMentionExtensionName } from '#shared/components/Form/fields/FieldEditor/extensions/KnowledgeBaseSuggestion.ts'
 import { EXTENSION_NAME as userMentionExtensionName } from '#shared/components/Form/fields/FieldEditor/extensions/UserMention.ts'
 import {
   imageExtensionName,
@@ -18,6 +19,7 @@ import {
   getPlainExtensions,
   PlaceholderExtensionName,
 } from '#shared/components/Form/fields/FieldEditor/extensions.ts'
+import { forgetInlineImages } from '#shared/components/Form/fields/FieldEditor/features/image-handler/inlineImageUploads.ts'
 import FieldEditorFooter from '#shared/components/Form/fields/FieldEditor/FieldEditorFooter.vue'
 import type {
   EditorContentType,
@@ -331,9 +333,12 @@ const updateContentTypeKey = props.context.node.on(
   },
 )
 
+const resetKey = props.context.node.on('reset', () => forgetInlineImages(props.context.formId))
+
 onUnmounted(() => {
   props.context.node.off(updateValueKey)
   props.context.node.off(updateContentTypeKey)
+  props.context.node.off(resetKey)
 })
 
 const focusEditor = () => {
@@ -373,6 +378,14 @@ const editorCustomContext = {
   addSignature,
   removeSignature,
   focus: focusEditor,
+  // Set either way, to replace the queued variant the wrapper offers until the editor is loaded.
+  insertKnowledgeBaseAnswer: editorExtensions.value.some(
+    ({ name }) => name === knowledgeBaseMentionExtensionName,
+  )
+    ? (translationId: ID) => {
+        editor.value?.commands.insertKnowledgeBaseAnswer(translationId)
+      }
+    : undefined,
 }
 
 // eslint-disable-next-line vue/no-mutating-props
@@ -392,6 +405,12 @@ onMounted(() => {
   // The editor may mount after the article form is already set up (async import,
   //   late dialog rendering) - reconcile the signature it may have missed (#804).
   syncSignature(true)
+
+  editor.value?.on('inline-images-replaced', () => {
+    if (!editor.value) return
+
+    props.context.node.input(getEditorContent(editor.value, contentType.value))
+  })
 
   if (VITE_TEST_MODE) {
     testFlags.set(`${props.context.formId}.${props.context.node.name}.editor.ready`)
