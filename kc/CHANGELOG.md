@@ -3,6 +3,15 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.3 (2026-10-24)
+
+Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
+
+- Teams chat: the "Detected connected account message" and "Detected agent
+  message" lines are now debug level. The poll re-reads every recent message
+  each 30-second cycle (the driver's dedup check runs later), so at info level
+  they repeated for already-imported messages, about 80 lines a minute.
+
 ## 0.0.2 (2026-10-24)
 
 Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).

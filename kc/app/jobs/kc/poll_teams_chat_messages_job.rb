@@ -232,12 +232,12 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
         # Messages from the connected account (Zammad service user) sent directly
         # in Teams should be treated as agent messages for context capture.
         is_agent = true
-        Rails.logger.info "KC Teams Poll: Detected connected account message in chat #{chat_id} — treating as agent for context capture"
+        Rails.logger.debug "KC Teams Poll: Detected connected account message in chat #{chat_id} — treating as agent for context capture"
       elsif sender_email.present?
         agent_user = User.find_by(email: sender_email.downcase)
         is_agent = agent_user.present? && (agent_user.role?('Agent') || agent_user.role?('Admin'))
         if is_agent
-          Rails.logger.info "KC Teams Poll: Detected agent message from #{sender_email} in chat #{chat_id}"
+          Rails.logger.debug "KC Teams Poll: Detected agent message from #{sender_email} in chat #{chat_id}"
         end
       end
 
