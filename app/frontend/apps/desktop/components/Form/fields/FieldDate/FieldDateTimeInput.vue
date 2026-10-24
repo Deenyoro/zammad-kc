@@ -32,12 +32,25 @@ const contextReactive = toRef(props, 'context')
 
 const { hasValue, localValue } = useValue(contextReactive)
 
-const { ariaLabels, displayFormat, is24, maxDate, minDate, timePicker, valueFormat } =
-  useDateTime(contextReactive)
+const {
+  ariaLabels,
+  displayFormat,
+  maxDate,
+  minDate,
+  refreshNow,
+  timeConfig,
+  timePicker,
+  valueFormat,
+} = useDateTime(contextReactive)
 
 // Shared model handling: drops a half-selected range when `partialRange` is
 // false so only a complete range reaches the form value.
-const { pickerModel } = usePickerModel(contextReactive, localValue)
+const { pickerModel, clampDateClick } = usePickerModel(
+  contextReactive,
+  localValue,
+  minDate,
+  maxDate,
+)
 
 const config = computed(() => ({
   keepActionRow: true,
@@ -262,12 +275,17 @@ watch(masked, (newValue) => {
 })
 
 const open = () => {
+  refreshNow()
+
   nextTick(() => {
     testFlags.set('field-date-time.opened')
   })
 }
 
 const closed = () => {
+  // https://github.com/Vuepic/vue-datepicker/issues/1307
+  pickerInstance.value?.switchView('calendar')
+
   nextTick(() => {
     testFlags.set('field-date-time.closed')
   })
@@ -317,11 +335,7 @@ const closed = () => {
       :disabled="context.disabled"
       :range="rangeConfig"
       :partial-range="context.partialRange"
-      :time-config="{
-        enableTimePicker: timePicker,
-        is24: is24,
-        ignoreTimeValidation: !timePicker,
-      }"
+      :time-config="timeConfig"
       :formats="displayFormat"
       :dark="isDarkMode"
       :locale="dateFnsLocale"
@@ -346,6 +360,7 @@ const closed = () => {
       offset="12"
       @open="open"
       @closed="closed"
+      @date-click="clampDateClick($event) && pickerInstance?.closeMenu()"
       @blur="context.handlers.blur"
     >
       <template #dp-input>

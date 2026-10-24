@@ -13,6 +13,7 @@ export interface ConfigList {
   ai_assistance_ticket_summary_config: unknown
   ai_assistance_ticket_summary_selector: unknown
   ai_provider: boolean
+  alternative_fqdn: string
   api_password_access?: boolean | null
   api_token_access?: boolean | null
   auth_facebook?: boolean | null
@@ -36,6 +37,16 @@ export interface ConfigList {
   cti_integration?: boolean | null
   customer_ticket_create?: boolean | null
   customer_ticket_create_group_ids: unknown
+  dashboard: boolean
+  dashboard_activity_stream: boolean
+  dashboard_activity_stream_own: boolean
+  dashboard_first_steps: boolean
+  dashboard_stats_ticket_channel_distribution: boolean
+  dashboard_stats_ticket_escalation: boolean
+  dashboard_stats_ticket_in_process: boolean
+  dashboard_stats_ticket_load_measure: boolean
+  dashboard_stats_ticket_reopen: boolean
+  dashboard_stats_ticket_waiting_time: boolean
   datepicker_show_calendar_weeks?: boolean | null
   default_controller: string
   defaults_calendar_subscriptions_tickets: unknown

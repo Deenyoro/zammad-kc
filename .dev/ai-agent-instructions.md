@@ -35,7 +35,10 @@ The CoffeeScript frontend uses REST controllers.
 
 ## General Guidelines
 
-- All new files except Markdown files (`*.md`) must include the Zammad copyright header.
+- Add the Zammad copyright header to new, manually authored source files. Exempt documentation,
+  templates (`*.eco`, `*.erb`), GraphQL documents, generated or third-party files, lockfiles, and
+  non-source fixtures, data, configuration and assets. For other file types, follow the applicable
+  lint configuration and comparable files.
 - Never edit translation files (`i18n/*.po`) directly —
   translations are managed via translations.zammad.org.
 
@@ -80,8 +83,9 @@ small methods are preferred over explanation.
 ### Backend
 
 ```bash
-RAILS_ENV=test VITE_TEST_MODE=1 bundle exec rspec spec/path/to/file_spec.rb  # Run specific RSpec test
-bundle exec rubocop --autocorrect app/path/to/file.rb                        # Lint specific Ruby file(s)
+RAILS_ENV=test VITE_TEST_MODE=1 bundle exec rspec spec/path/to/file_spec.rb                                     # Run specific RSpec test
+SELENIUM_BROWSER_HEADLESS=1 RAILS_ENV=test VITE_TEST_MODE=1 bundle exec rspec spec/system/path/to/file_spec.rb  # Run specific system spec (always headless)
+bundle exec rubocop --autocorrect app/path/to/file.rb                                                           # Lint specific Ruby file(s)
 ```
 
 ### Frontend
@@ -109,6 +113,8 @@ It serves on `localhost:3000`, with the websocket server on `6042` and Vite on
 `3036`. Export `ZAMMAD_RAILS_PORT`, `ZAMMAD_WEBSOCKET_PORT` and
 `VITE_RUBY_PORT` before `bin/dev` to move them — the whole stack has to agree
 on them, so export, do not set them per process.
+The `with-caddy` devcontainer variant additionally serves the whole stack on
+`localhost:8080` through a reverse proxy, for TLS tunnels; see its README.
 
 `zammad:bootstrap:reset` migrates, seeds and runs the auto wizard, which creates
 `admin@example.com` / `test`. Plain `zammad:db:init` skips the wizard and leaves
@@ -163,6 +169,10 @@ You MUST read the relevant file(s) below before responding when working on that 
   the deliberate exceptions to it
 - `.dev/agent_docs/database_migrations.md` — How to write migrations and work
   with seeds
+- `.dev/agent_docs/code_analysis.md` — The fallow hooks that audit a branch on
+  their own and what to do when one blocks; when to run fallow yourself: finding
+  an existing helper before writing one, tracing an "unused" export before
+  deleting it
 
 ## CodeGraph
 

@@ -62,6 +62,33 @@ class App.KnowledgeBaseAnswerTranslation extends App.Model
         }
     )
 
+  contentUrl: ->
+    @parent().generateURL() + "?include_contents=#{@content_id}"
+
+  # Fetches what inserting the answer into an article puts there: its body, with the images inlined,
+  # and its attachments, cloned into the article's upload cache.
+  # Without a fixed request ID, so a second insertion cannot abort a clone the server already made.
+  @fetchForInsertion: (url, id, formId, success, error) ->
+    App.Ajax.request(
+      type: 'GET'
+      url:  url
+      success: (data) ->
+        App.Collection.loadAssets(data.assets)
+
+        translation = App.KnowledgeBaseAnswerTranslation.find(id)
+        body        = translation.content().bodyWithPublicURLs()
+
+        App.Ajax.request(
+          type: 'POST'
+          data: JSON.stringify(form_id: formId)
+          url:  translation.parent().generateURL('/attachments/clone_to_form')
+          success: (data) ->
+            App.Utils.htmlImage2DataUrlAsync(body, (output) -> success(output, data.attachments))
+          error: error
+        )
+      error: error
+    )
+
   @processAttributes: (params) ->
     if (content_params = params['content']) && _.isObject(content_params)
       delete params['content']
@@ -95,16 +122,30 @@ class App.KnowledgeBaseAnswerTranslationContent extends App.Model
       attachments: @attachments
     attributes
 
+  # Mirrors the answer links part of the knowledgeBaseAnswerSuggestionContentTransform mutation.
+  #   Nothing resolves the links of the inserted body again, so they lose their target markers.
   bodyWithPublicURLs: ->
     parsed = $("<div>#{@constructor.linkVideoWidgets(@body)}</div>")
 
     for linkDom in parsed.find('a').addBack('a').toArray()
       switch $(linkDom).attr('data-target-type')
         when 'knowledge-base-answer'
-          if object = App.KnowledgeBaseAnswerTranslation.find $(linkDom).attr('data-target-id')
-            $(linkDom).attr 'href', object.publicBaseUrl()
+          object = App.KnowledgeBaseAnswerTranslation.find $(linkDom).attr('data-target-id')
+          answer = object?.parent()
+
+          if !answer
+            $(linkDom).replaceWith $(linkDom).contents()
           else
-            $(linkDom).attr 'href', '#'
+            kb_locale = App.KnowledgeBaseLocale.localeFor(object)
+            href      = if answer.visiblePublicly(kb_locale) && answer.knowledge_base()?.visiblePublicly(kb_locale)
+              object.publicBaseUrl()
+            else
+              App.Utils.joinUrlComponents(App.Utils.baseUrl(), object.uiUrl())
+
+            $(linkDom)
+              .attr('href', href)
+              .removeAttr('data-target-type')
+              .removeAttr('data-target-id')
 
     parsed[0].innerHTML
 

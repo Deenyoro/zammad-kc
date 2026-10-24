@@ -1,6 +1,6 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { getCurrentSelectionData } from '#shared/utils/selection.ts'
+import { getCaretOffsetFromPoint, getCurrentSelectionData } from '#shared/utils/selection.ts'
 
 const render = (html: string) => {
   document.body.innerHTML = `<div id="article">${html}</div>`
@@ -234,6 +234,52 @@ describe('getCurrentSelectionData', () => {
     expect(getCurrentSelectionData().html).toBe('<p>Some text</p><p>More text</p>')
   })
 
+  it('restores the preformatted block a selection was drawn inside of', () => {
+    const article = render('<pre>One\nTwo\nThree\nFour</pre>')
+    const block = article.querySelector('pre') as HTMLPreElement
+
+    selectText(block.firstChild as Text, 4, 13)
+
+    expect(getCurrentSelectionData().html).toBe('<pre>Two\nThree</pre>')
+  })
+
+  it('restores the code element along with its preformatted block', () => {
+    const article = render('<pre><code>One\nTwo\nThree</code></pre>')
+    const code = article.querySelector('code') as HTMLElement
+
+    selectText(code.firstChild as Text, 0, 7)
+
+    expect(getCurrentSelectionData().html).toBe('<pre><code>One\nTwo</code></pre>')
+  })
+
+  it('restores the preformatted block around formatted text selected inside of it', () => {
+    const article = render('<pre>One\n<b>Two</b>\nThree</pre>')
+    const block = article.querySelector('pre') as HTMLPreElement
+
+    select(block.firstChild as Text, 0, block.lastChild as Text, 6)
+
+    expect(getCurrentSelectionData().html).toBe('<pre>One\n<b>Two</b>\nThree</pre>')
+  })
+
+  it('does not wrap a preformatted block selected together with surrounding content twice', () => {
+    const article = render('<p>Before</p><pre>One\nTwo</pre>')
+    const paragraph = article.querySelector('p') as HTMLParagraphElement
+    const block = article.querySelector('pre') as HTMLPreElement
+
+    select(paragraph.firstChild as Text, 0, block.firstChild as Text, 7)
+
+    expect(getCurrentSelectionData().html).toBe('<p>Before</p><pre>One\nTwo</pre>')
+  })
+
+  it('restores a preformatted block inside a list item only once', () => {
+    const article = render('<ul><li><pre>One\nTwo</pre></li></ul>')
+    const block = article.querySelector('pre') as HTMLPreElement
+
+    selectText(block.firstChild as Text, 0, 7)
+
+    expect(getCurrentSelectionData().html).toBe('<ul><li><pre>One\nTwo</pre></li></ul>')
+  })
+
   it('leaves a selection drawn inside a paragraph untouched', () => {
     const article = render('<p>Some text here</p>')
     const paragraph = article.querySelector('p') as HTMLParagraphElement
@@ -241,5 +287,75 @@ describe('getCurrentSelectionData', () => {
     selectText(paragraph.firstChild as Text, 0, 4)
 
     expect(getCurrentSelectionData().html).toBe('Some')
+  })
+})
+
+describe('getCaretOffsetFromPoint', () => {
+  let container: HTMLDivElement
+
+  beforeEach(() => {
+    container = render('Visit <a href="#">the docs</a> today')
+  })
+
+  afterEach(() => {
+    document.body.innerHTML = ''
+    Reflect.deleteProperty(document, 'caretPositionFromPoint')
+    Reflect.deleteProperty(document, 'caretRangeFromPoint')
+  })
+
+  const link = () => container.querySelector('a')?.firstChild as Text
+
+  it('counts the characters up to the caret position at the point', () => {
+    const caretPositionFromPoint = vi.fn(() => ({ offsetNode: link(), offset: 4 }))
+    Object.defineProperty(document, 'caretPositionFromPoint', {
+      value: caretPositionFromPoint,
+      configurable: true,
+    })
+
+    expect(getCaretOffsetFromPoint(container, 10, 20)).toBe(10)
+    expect(caretPositionFromPoint).toHaveBeenCalledWith(10, 20)
+  })
+
+  it('falls back to the caret range at the point', () => {
+    Object.defineProperty(document, 'caretPositionFromPoint', {
+      value: undefined,
+      configurable: true,
+    })
+    Object.defineProperty(document, 'caretRangeFromPoint', {
+      value: () => {
+        const range = document.createRange()
+        range.setStart(container.lastChild as Text, 3)
+        return range
+      },
+      configurable: true,
+    })
+
+    expect(getCaretOffsetFromPoint(container, 10, 20)).toBe(17)
+  })
+
+  it('returns null for a point outside of the container', () => {
+    const outside = document.createElement('p')
+    outside.textContent = 'Elsewhere'
+    document.body.appendChild(outside)
+
+    Object.defineProperty(document, 'caretPositionFromPoint', {
+      value: () => ({ offsetNode: outside.firstChild, offset: 2 }),
+      configurable: true,
+    })
+
+    expect(getCaretOffsetFromPoint(container, 10, 20)).toBeNull()
+  })
+
+  it('returns null when the browser cannot locate the caret', () => {
+    Object.defineProperty(document, 'caretPositionFromPoint', {
+      value: () => null,
+      configurable: true,
+    })
+
+    expect(getCaretOffsetFromPoint(container, 10, 20)).toBeNull()
+  })
+
+  it('returns null without any caret API', () => {
+    expect(getCaretOffsetFromPoint(container, 10, 20)).toBeNull()
   })
 })
