@@ -3,6 +3,18 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.2 (2026-10-24)
+
+Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
+
+- Teams chat: each Teams channel now polls and subscribes only to chats from
+  its own Microsoft 365 tenant (the ticket's `teams_chat.tenant_id`). Before,
+  every channel polled every open Teams ticket's chat, so the other tenants'
+  accounts hit Graph 403 ("Failed for active chat", "Graph refused
+  subscription") on every 30-second cycle. Tickets without a recorded tenant
+  keep the old behaviour.
+- New spec: `kc/spec/jobs/kc/poll_teams_chat_messages_job_spec.rb`.
+
 ## 0.0.1 (2026-10-23)
 
 Zammad base: upstream `develop` at 0f1f86bbc2 (7.3.x, 2026-10-23).

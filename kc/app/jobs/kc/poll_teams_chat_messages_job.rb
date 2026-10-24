@@ -79,17 +79,31 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
   end
 
   # Returns chat_ids that have ANY open ticket — always poll these every cycle.
+  # Only chats from this channel's own tenant: each channel is a different
+  # Microsoft 365 tenant, and Graph answers 403 for another tenant's chat, so
+  # polling every channel's tickets through every account just fails.
   def active_chat_ids_for(channel)
     closed_state_ids = Ticket::State
                          .joins(:state_type)
                          .where(ticket_state_types: { name: 'closed' })
                          .select(:id)
+    tenant_id = channel.options.with_indifferent_access[:tenant_id].to_s
 
     Ticket.where('preferences LIKE ?', '%teams_chat%')
           .where.not(state_id: closed_state_ids)
           .select(:id, :preferences)
-          .filter_map { |t| t.preferences.dig('teams_chat', 'chat_id') }
+          .filter_map do |t|
+            teams_chat = t.preferences['teams_chat'] || {}
+            teams_chat['chat_id'] if self.class.same_tenant?(teams_chat, tenant_id)
+          end
           .uniq
+  end
+
+  # True when a ticket's Teams chat belongs to the channel's tenant. Tickets
+  # without a recorded tenant (older data) keep the previous behaviour.
+  def self.same_tenant?(teams_chat, tenant_id)
+    ticket_tenant = teams_chat['tenant_id'].to_s
+    ticket_tenant.blank? || tenant_id.blank? || ticket_tenant.casecmp?(tenant_id)
   end
 
   def discover_and_poll(channel, graph, opts, already_polled_ids)
