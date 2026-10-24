@@ -1,24 +1,32 @@
 # KC: Fix for Zammad bug in Ticket::Article::AddsMetadataEmail
 #
 # PROBLEM:
-# The upstream `recipient_name` method uses `created_by` to build the email
-# "From" header (e.g. "Dean Thomas via KawaConnect Helpdesk Support").
+# Upstream builds the email "From" header (e.g. "Dean Thomas via KawaConnect
+# Helpdesk Support") from `created_by`:
+#
+#   def metadata_email_process_from
+#     email_address = ticket.group.email_address
+#     self.from = Channel::EmailBuild.recipient_line(
+#       email_address.sender_display_name(created_by), email_address.email)
+#   end
+#
 # When an article is created via API token with `origin_by_id` set to a
 # different user, the From header shows the API token owner's name instead
 # of the intended author's name.
-#
-# Bug location: app/models/ticket/article/adds_metadata_email.rb lines 69-81
-#   `recipient_name` uses `created_by.firstname` / `created_by.lastname`
-#   instead of `author.firstname` / `author.lastname`
 #
 # The `author` method (defined in ticket/article.rb) returns:
 #   origin_by || created_by
 # This correctly resolves to the intended sender when origin_by_id is set.
 #
 # FIX:
-# Override `recipient_name` to use `author` (origin_by || created_by)
-# instead of `created_by`. When origin_by_id is nil, `author` equals
-# `created_by`, so behavior is identical for normal (non-API-token) usage.
+# Override `metadata_email_process_from` to pass `author` instead of
+# `created_by` to EmailAddress#sender_display_name. When origin_by_id is nil,
+# `author` equals `created_by`, so behavior is identical for normal UI usage.
+#
+# History: until upstream 6f5ca10dfe (Aug 2026) the name was built in a private
+# `recipient_name` method, which this concern overrode. Upstream moved the
+# logic to EmailAddress#sender_display_name, so the override now targets
+# `metadata_email_process_from` (fingerprinted in kc/upstream-fingerprints.txt).
 #
 # HARDENING:
 # 1. Boot-time check detects if upstream has already fixed the bug
@@ -40,13 +48,11 @@ module Kc::EmailFromOriginByFix
       return unless File.exist?(upstream_file)
 
       source = File.read(upstream_file)
-      uses_created_by = source.include?('created_by.firstname') && source.include?('created_by.lastname')
-      uses_author     = source.include?('author.firstname') && source.include?('author.lastname')
 
-      if uses_author && !uses_created_by
+      if source.include?('sender_display_name(author)')
         Rails.logger.info 'KC: EmailFromOriginByFix — upstream appears FIXED (uses author). ' \
                           'Consider removing this KC concern after testing.'
-      elsif uses_created_by
+      elsif source.include?('sender_display_name(created_by)')
         Rails.logger.info 'KC: EmailFromOriginByFix — upstream bug detected (uses created_by), fix is ACTIVE.'
       else
         Rails.logger.warn 'KC: EmailFromOriginByFix — could not detect upstream bug status. ' \
@@ -59,11 +65,10 @@ module Kc::EmailFromOriginByFix
 
   private
 
-  # Override upstream recipient_name to use `author` instead of `created_by`.
-  # `author` returns origin_by || created_by, so when origin_by_id is nil
-  # (normal UI usage), behavior is identical to upstream.
-  def recipient_name(email_address)
-    # Use author (origin_by || created_by) for the display name
+  # Override upstream metadata_email_process_from to use `author` instead of
+  # `created_by`. `author` returns origin_by || created_by, so when
+  # origin_by_id is nil (normal UI usage), behavior is identical to upstream.
+  def metadata_email_process_from
     effective_user = author
 
     # Guard: if author is somehow nil, fall back to upstream
@@ -72,28 +77,16 @@ module Kc::EmailFromOriginByFix
       return super
     end
 
-    if created_by_id != 1
-      case Setting.get('ticket_define_email_from')
-      when 'AgentNameSystemAddressName'
-        separator = Setting.get('ticket_define_email_from_separator')
+    email_address = ticket.group.email_address
+    return super if !email_address.respond_to?(:sender_display_name)
 
-        if origin_by_id.present? && origin_by_id != created_by_id
-          Rails.logger.debug { "KC: EmailFromOriginByFix — using origin_by '#{effective_user.fullname}' instead of created_by '#{created_by.fullname}' for email From on ticket #{ticket_id}" }
-        end
-
-        return "#{effective_user.firstname} #{effective_user.lastname} #{separator} #{email_address.name}"
-      when 'AgentName'
-        if origin_by_id.present? && origin_by_id != created_by_id
-          Rails.logger.debug { "KC: EmailFromOriginByFix — using origin_by '#{effective_user.fullname}' instead of created_by '#{created_by.fullname}' for email From on ticket #{ticket_id}" }
-        end
-
-        return "#{effective_user.firstname} #{effective_user.lastname}"
-      end
+    if origin_by_id.present? && origin_by_id != created_by_id
+      Rails.logger.debug { "KC: EmailFromOriginByFix — using origin_by '#{effective_user.fullname}' instead of created_by '#{created_by&.fullname}' for email From on ticket #{ticket_id}" }
     end
 
-    email_address.name
+    self.from = Channel::EmailBuild.recipient_line(email_address.sender_display_name(effective_user), email_address.email)
   rescue => e
-    Rails.logger.error "KC: EmailFromOriginByFix#recipient_name failed: #{e.message} — falling back to upstream"
+    Rails.logger.error "KC: EmailFromOriginByFix#metadata_email_process_from failed: #{e.message} — falling back to upstream"
     super
   end
 end

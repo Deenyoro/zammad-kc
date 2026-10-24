@@ -242,6 +242,10 @@ end
 
 **Frontend patches:** When KC must modify an existing upstream TypeScript/Vue file (no `prepend` equivalent), use a unified diff in `kc/patches/`. Generate with `git diff upstream/develop HEAD -- <file>`. The build-time `apply-patches.sh` script applies these before asset compilation. Ordinary drift after a fork sync is self-healed by CI (`kc/script/heal-patches.sh`); manual work is only needed when the build fails with a real conflict — then re-implement the change against the new upstream code and regenerate the patch.
 
+When upstream fixes what a patch worked around, move the patch to `kc/patches/retired/` (the scripts only read `kc/patches/*.patch`, so it is no longer applied).
+
+**Releases:** the KC version lives in `kc/VERSION` and the changes in `kc/CHANGELOG.md` (upstream's root `VERSION`/`CHANGELOG.md` stay untouched so fork syncs never conflict). Bump +0.0.1, add a changelog entry and push an annotated `vX.Y.Z` tag; the GitLab tag pipeline (`kc/gitlab-ci.yml`) builds `zammad-kc:X.Y.Z` and mirrors it to `ghcr.io/deenyoro/zammad-kc`.
+
 ### Key Rules
 
 1. **Never create a file in `kc/` that has the same path as an upstream Zammad file** — `rsync --ignore-existing` would silently skip it.

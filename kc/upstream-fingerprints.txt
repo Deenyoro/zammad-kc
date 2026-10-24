@@ -20,7 +20,9 @@ lib/microsoft_graph.rb::def parse_error(response)
 app/models/ticket/article/adds_metadata_general.rb::def metadata_general_process_origin_by
 
 # Kc::EmailFromOriginByFix replaces this (upstream bug workaround)
-app/models/ticket/article/adds_metadata_email.rb::def recipient_name
+app/models/ticket/article/adds_metadata_email.rb::def metadata_email_process_from
+app/models/ticket/article/adds_metadata_email.rb::sender_display_name(created_by)
+app/models/email_address.rb::def sender_display_name(user)
 
 # Kc::MergeToClosedState wraps this
 app/models/ticket.rb::def merge_to(data)
