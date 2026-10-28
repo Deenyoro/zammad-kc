@@ -3,6 +3,21 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.5 (2026-10-28)
+
+Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
+
+- New conversations (SMS, Teams, FreePBX texting): the agent now needs
+  create access to the destination group, the same rule Zammad applies to
+  normal ticket creation. Before, any agent could open a ticket in any group
+  by passing its id. A refused group answers 403 before anything is sent or
+  created; this also applies when the channel's default group is used.
+- Scheduled replies: at send time the reply is only sent if the agent who
+  scheduled it is still active and can still change the ticket. Otherwise it
+  is marked failed with the reason, like other scheduled-reply failures.
+- New specs: `kc/spec/requests/kc/new_conversations_spec.rb`,
+  `kc/spec/services/kc/execute_scheduled_article_spec.rb`.
+
 ## 0.0.4 (2026-10-28)
 
 Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
