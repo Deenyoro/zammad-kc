@@ -66,6 +66,11 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
+    # Same rule as upstream ticket creation: the agent needs create access
+    # to the destination group.
+    group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
+    return if !group_create_access!(group)
+
     from_phone = channel.options&.dig(:phone_number)
     if from_phone.blank?
       render json: { error: 'Channel has no phone number configured' }, status: :unprocessable_content
@@ -88,9 +93,6 @@ class Kc::NewConversationsController < ApplicationController
              User.find_by(id: customer_id)
            end
     user ||= sms_customer_for(normalized_phone)
-
-    # Determine group
-    group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
 
     # Build ticket title
     title_template = Setting.get('kc_ringcentral_sms_ticket_title_template').to_s.presence || 'SMS from {phone}'
@@ -200,6 +202,11 @@ class Kc::NewConversationsController < ApplicationController
       return
     end
 
+    # Same rule as upstream ticket creation: the agent needs create access
+    # to the destination group.
+    group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
+    return if !group_create_access!(group)
+
     graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
     if graph_class.nil?
       render json: { error: 'Internal error: MicrosoftTeamsGraph class not found' }, status: :internal_server_error
@@ -217,9 +224,6 @@ class Kc::NewConversationsController < ApplicationController
 
     # Resolve or create customer user (same logic as the Teams driver)
     user = find_or_create_teams_user(teams_user_id, display_name, email)
-
-    # Determine group
-    group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
 
     # Build ticket title
     title_template = Setting.get('kc_teams_chat_ticket_title_template').to_s.presence || 'Teams Message from {user_name}'
@@ -340,6 +344,11 @@ class Kc::NewConversationsController < ApplicationController
       render json: { error: 'The FreePBX connection for that number is not active' }, status: :unprocessable_content
       return
     end
+
+    # Same rule as upstream ticket creation: the agent needs create access
+    # to the destination group.
+    group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
+    return if !group_create_access!(group)
     if recipients.include?(from_phone)
       render json: { error: 'The sending number cannot be one of the recipients' }, status: :unprocessable_content
       return
@@ -353,8 +362,6 @@ class Kc::NewConversationsController < ApplicationController
 
     user = User.find_by(id: customer_id) if customer_id.present?
     user ||= sms_customer_for(normalized_phone)
-
-    group = Group.find_by(id: group_id) || Group.find_by(id: channel.group_id) || Group.first
 
     title_template = Setting.get('kc_freepbx_sms_ticket_title_template').to_s.presence || 'SMS from {phone}'
     title_phone    = recipients.size > 1 ? "#{normalized_phone} +#{recipients.size - 1}" : sms_contact_display(normalized_phone)
@@ -552,6 +559,20 @@ class Kc::NewConversationsController < ApplicationController
   end
 
   private
+
+  # Renders an error and returns false unless current_user may create
+  # tickets in the group (TicketPolicy#agent_create_access?, the check
+  # upstream applies to agent ticket creation).
+  def group_create_access!(group)
+    if group.nil?
+      render json: { error: __("The required value 'group_id' is missing.") }, status: :unprocessable_content
+      return false
+    end
+    return true if TicketPolicy.new(current_user, Ticket.new(group_id: group.id)).agent_create_access?
+
+    render json: { error: __('Not authorized to create tickets in this group.') }, status: :forbidden
+    false
+  end
 
   def find_or_create_teams_user(teams_user_id, display_name, email)
     # Try to find by Teams authorization first
