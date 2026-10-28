@@ -3,6 +3,24 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.4 (2026-10-28)
+
+Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
+
+- Teams chat (security): a file attachment whose link points somewhere other
+  than Microsoft Graph is no longer downloaded. Before, Zammad fetched any
+  link a message carried and sent the connected account's Microsoft access
+  token along with it, so a crafted message could collect the token or make
+  the server request internal addresses. Such files now appear as a link at
+  the end of the article.
+- Teams chat: a message picked up by the webhook and the 30-second poll at
+  the same moment was filed twice, and a chat's first message could open two
+  tickets. Each chat is now processed one message at a time and the
+  duplicate check is repeated under that lock.
+- FreePBX texting: media links pointing at another host no longer receive
+  the connection token; only the connector itself does.
+- New spec: `kc/spec/models/channel/driver/kc_microsoft_teams_chat_spec.rb`.
+
 ## 0.0.3 (2026-10-24)
 
 Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
