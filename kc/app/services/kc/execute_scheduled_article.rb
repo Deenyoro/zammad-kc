@@ -43,6 +43,16 @@ class Kc::ExecuteScheduledArticle
       return
     end
 
+    # Access is checked when the reply is scheduled, but it can go out up to
+    # 90 days later: the agent must still be active and still allowed to
+    # change the ticket, or nothing is sent.
+    access_error = scheduling_agent_access_error(ticket)
+    if access_error
+      Rails.logger.warn "KC: Scheduled article ##{@scheduled.id} not sent: #{access_error}"
+      @scheduled.update!(status: 'failed', error_message: access_error)
+      return
+    end
+
     # Allowlist article keys to prevent attribute injection
     article_params = @scheduled.article_data.deep_symbolize_keys.slice(*ALLOWED_ARTICLE_KEYS)
     form_id        = article_params.delete(:form_id)
@@ -142,6 +152,17 @@ class Kc::ExecuteScheduledArticle
   end
 
   private
+
+  # nil when the scheduling agent may still send on this ticket, otherwise
+  # the reason why not.
+  def scheduling_agent_access_error(ticket)
+    agent = User.find_by(id: @scheduled.created_by_id)
+    return "Scheduling user ##{@scheduled.created_by_id} no longer exists" if agent.nil?
+    return "Scheduling user ##{agent.id} is no longer active" if !agent.active?
+    return nil if TicketPolicy.new(agent, ticket).agent_update_access?
+
+    "Scheduling user ##{agent.id} no longer has change access to ticket ##{ticket.id}"
+  end
 
   # Validates form_id is numeric and returns integer, or nil if invalid/blank.
   def validated_form_id(form_id)
