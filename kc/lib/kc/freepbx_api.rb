@@ -132,7 +132,9 @@ module Kc
         url,
         {},
         {
-          headers:       headers,
+          # The connection token goes to the connector only, never to another
+          # host an absolute media url points at.
+          headers:       headers(auth: same_origin?(url)),
           open_timeout:  10,
           read_timeout:  60,
           total_timeout: 120,
@@ -164,6 +166,14 @@ module Kc
     end
 
     private
+
+    def same_origin?(url)
+      a = URI.parse(url.to_s)
+      b = URI.parse(base_url.to_s)
+      a.scheme.to_s.casecmp?(b.scheme.to_s) && a.host.to_s.casecmp?(b.host.to_s) && a.port == b.port
+    rescue URI::InvalidURIError
+      false
+    end
 
     def headers(auth: true)
       h = { 'Content-Type' => 'application/json' }
