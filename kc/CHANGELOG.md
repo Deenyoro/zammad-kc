@@ -3,6 +3,41 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.6 (2026-10-28)
+
+Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
+
+- RingCentral contact sync, in both directions, per RingCentral SMS account.
+  Both directions are off until turned on in Admin > KC Extensions >
+  RingCentral SMS > Edit ("Import RingCentral contacts into Zammad",
+  "Export directory numbers to RingCentral").
+  - Import: contacts in the account's RingCentral address book become
+    customers in Zammad, or are matched to an existing user by email, then
+    by phone number. Customers that were named after their own number get
+    the contact's name. Anyone else only has empty fields filled in: names
+    and emails already set are never changed. A contact's company is linked
+    when an organization with exactly that name exists; organizations are
+    never created.
+  - Export: every active Microsoft 365 directory user (all tenants) with a
+    phone or mobile number gets a contact in the RingCentral address book
+    with their name, organization, email and numbers, kept up to date. If
+    staff already have a contact for that number it is left exactly as it
+    is. Synced contacts carry "Synced from Zammad directory" in their notes;
+    removing that line, or deleting the contact, makes Zammad leave it alone.
+    Nothing is ever deleted in RingCentral, including the contacts of people
+    who are later deactivated in the directory.
+  - Contacts exported from Zammad are never imported back.
+  - Runs every 6 hours and from a new "Sync contacts now" button. The
+    admin page shows the last run: created, updated, unchanged, skipped,
+    errors and the last problem (for example a missing RingCentral
+    permission). Changes to RingCentral are paced to stay inside its rate
+    limit; if RingCentral still says to slow down, the rest is done on the
+    next run.
+- New specs: `kc/spec/services/kc/ringcentral_contact_sync_spec.rb`,
+  `kc/spec/lib/kc/ringcentral_api_spec.rb`,
+  `kc/spec/jobs/kc/ringcentral_contact_sync_job_spec.rb`,
+  `kc/spec/requests/kc/ringcentral_contact_sync_spec.rb`.
+
 ## 0.0.5 (2026-10-28)
 
 Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
