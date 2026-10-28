@@ -25,6 +25,21 @@ module Kc
     # Raised when RingCentral rejects the access token (HTTP 401).
     class AuthError < StandardError; end
 
+    # Raised on HTTP 403: the app or the user lacks a permission the call
+    # needs (errorCode InsufficientPermissions, or a feature not enabled).
+    class PermissionError < StandardError; end
+
+    # Raised on HTTP 429. retry_after is the Retry-After header in seconds
+    # (nil when RingCentral did not send one).
+    class RateLimitError < StandardError
+      attr_reader :retry_after
+
+      def initialize(message = nil, retry_after: nil)
+        super(message)
+        @retry_after = retry_after
+      end
+    end
+
     API_BASE_URL   = 'https://platform.ringcentral.com'.freeze
     OAUTH_BASE_URL = 'https://platform.ringcentral.com/restapi/oauth'.freeze
 
@@ -343,6 +358,22 @@ module Kc
       api_get("#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/address-book/contact?#{query}")
     end
 
+    # Adds a contact to the extension's personal address book.
+    # attributes: firstName, lastName, company, email, mobilePhone,
+    # businessPhone, notes, ... (RingCentral PersonalContactRequest).
+    # Returns the created contact (including its id).
+    def create_address_book_contact(attributes)
+      api_post("#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/address-book/contact", attributes)
+    end
+
+    # Replaces a contact of the extension's personal address book.
+    def update_address_book_contact(contact_id, attributes)
+      id = contact_id.to_s
+      raise ArgumentError, 'invalid contact id' if !id.match?(%r{\A\d+\z})
+
+      api_put("#{API_BASE_URL}/restapi/v1.0/account/~/extension/~/address-book/contact/#{id}", attributes)
+    end
+
     # ------------------------------------------------------------------
     # Call Log (for missed call detection)
     # ------------------------------------------------------------------
@@ -447,6 +478,22 @@ module Kc
       handle_response(response)
     end
 
+    def api_put(url, payload)
+      response = UserAgent.put(
+        url,
+        payload,
+        {
+          headers:       auth_headers,
+          json:          true,
+          open_timeout:  10,
+          read_timeout:  30,
+          total_timeout: 60,
+          log:           { facility: 'kc_ringcentral_api' },
+        },
+      )
+      handle_response(response)
+    end
+
     def api_delete(url)
       response = UserAgent.delete(
         url,
@@ -507,6 +554,23 @@ module Kc
       { 'Authorization' => "Bearer #{access_token}" }
     end
 
+    # Retry-After in seconds, or nil. RingCentral sends whole seconds; an
+    # HTTP date is accepted too.
+    def retry_after_seconds(response)
+      headers = response.respond_to?(:header) ? response.header : nil
+      return nil if !headers.is_a?(Hash)
+
+      value = headers.find { |key, _| key.to_s.casecmp?('retry-after') }&.last
+      value = value.first if value.is_a?(Array)
+      return nil if value.blank?
+      return value.to_i if value.to_s.match?(%r{\A\s*\d+\s*\z})
+
+      seconds = (Time.httpdate(value.to_s) - Time.current).ceil
+      seconds.positive? ? seconds : 0
+    rescue ArgumentError
+      nil
+    end
+
     def handle_response(response)
       if !response.success?
         error_body = begin
@@ -521,6 +585,8 @@ module Kc
         # refresh token chain was broken). Callers use AuthError to force a
         # refresh and — if that fails — surface the failure on the channel.
         raise AuthError, message if response.code.to_i == 401
+        raise PermissionError, message if response.code.to_i == 403
+        raise RateLimitError.new(message, retry_after: retry_after_seconds(response)) if response.code.to_i == 429
 
         raise message
       end

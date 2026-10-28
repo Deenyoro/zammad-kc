@@ -66,3 +66,11 @@ app/models/ticket.rb::self.organization_id = customer.organization_id
 # (reroute gate) both treat the 'merged_into' history entry as the canonical
 # evidence that a ticket was merged away — merge_to must keep writing it.
 app/models/ticket.rb::'merged_into',
+
+# Kc::RingcentralContactSync / Kc::RingcentralContactSyncJob: one run per
+# channel via the job lock, contact writes through UserAgent.put, Retry-After
+# read from the result's header hash, new customers get the signup roles.
+app/jobs/concerns/has_active_job_lock.rb::def lock_key
+lib/user_agent.rb::def self.put(
+lib/user_agent.rb::header:  response.each_header.to_h,
+app/models/role.rb::def self.signup_role_ids
