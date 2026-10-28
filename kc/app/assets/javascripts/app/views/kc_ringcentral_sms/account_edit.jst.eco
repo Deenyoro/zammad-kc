@@ -44,4 +44,19 @@
     <input type="datetime-local" name="poll_cutoff_date" id="poll_cutoff_date" class="form-control" value="<%= @options.poll_cutoff_date || '' %>">
     <p class="help-text"><%- @T('If set, only messages created after this date will be imported. Leave empty to import all historical messages.') %></p>
   </div>
+
+  <input type="hidden" name="contact_sync_form" value="1">
+  <div class="form-group">
+    <label><%- @T('Contact Sync') %></label>
+    <label class="inline-label">
+      <input type="checkbox" name="contact_import" value="true" <% if @options.contact_import is true or @options.contact_import is 'true': %>checked<% end %>>
+      <span><%- @T('Import RingCentral contacts into Zammad') %></span>
+    </label>
+    <p class="help-text"><%- @T('Contacts in this account\'s RingCentral address book become customers, or fill blank fields of the matching user (email, then phone number). Placeholder customers named after their number get the contact\'s name. Names and emails already set are never overwritten.') %></p>
+    <label class="inline-label">
+      <input type="checkbox" name="contact_export" value="true" <% if @options.contact_export is true or @options.contact_export is 'true': %>checked<% end %>>
+      <span><%- @T('Export directory numbers to RingCentral') %></span>
+    </label>
+    <p class="help-text"><%- @T('Every active Microsoft 365 directory user with a phone or mobile gets a contact in this account\'s RingCentral address book, kept up to date. Contacts staff created for the same number are left alone. Nothing is deleted in RingCentral.') %></p>
+  </div>
 </form>

@@ -6,6 +6,7 @@
 #      user picks a phone number; complete_setup creates the channel)
 #   - CRUD operations for SMS channels
 #   - Enable/disable channel toggling
+#   - Contact sync switches and a "Sync contacts now" trigger
 #
 # All admin endpoints require authentication + admin permission.
 #
@@ -308,6 +309,14 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
         channel.options[:poll_cutoff_date] = params[:poll_cutoff_date]
       end
 
+      # The edit form always sends contact_sync_form; unchecked boxes are
+      # simply absent, so their absence means off.
+      if params[:contact_sync_form].present?
+        boolean = ActiveModel::Type::Boolean.new
+        channel.options[:contact_import] = boolean.cast(params[:contact_import]) == true
+        channel.options[:contact_export] = boolean.cast(params[:contact_export]) == true
+      end
+
       if params[:phone_number].present?
         available = channel.options[:available_phone_numbers] || channel.options['available_phone_numbers'] || []
         selected  = params[:phone_number].to_s.strip
@@ -355,6 +364,33 @@ class Kc::RingcentralSmsChannelsController < ApplicationController
 
     url = rc.authorize_url(callback_url, state)
     render json: { authorize_url: url }
+  end
+
+  # POST /api/v1/kc/ringcentral_sms_channels/:id/sync_contacts
+  # Queues a contact sync for this channel (Kc::RingcentralContactSyncJob).
+  def sync_contacts
+    channel = Channel.find_by!(id: params[:id], area: CHANNEL_AREA)
+    options = channel.options.with_indifferent_access
+    boolean = ActiveModel::Type::Boolean.new
+
+    if !channel.active
+      render json: { error: 'Enable the account first.' }, status: :unprocessable_content
+      return
+    end
+
+    if boolean.cast(options[:contact_import]) != true && boolean.cast(options[:contact_export]) != true
+      render json: { error: 'Turn on contact import or export for this account first (Edit).' }, status: :unprocessable_content
+      return
+    end
+
+    job_class = 'Kc::RingcentralContactSyncJob'.safe_constantize
+    if job_class.nil?
+      render json: { error: 'Contact sync is not available.' }, status: :unprocessable_content
+      return
+    end
+
+    job_class.perform_later(channel.id)
+    render json: { queued: true }
   end
 
   # POST /api/v1/kc/ringcentral_sms_channels/:id/enable

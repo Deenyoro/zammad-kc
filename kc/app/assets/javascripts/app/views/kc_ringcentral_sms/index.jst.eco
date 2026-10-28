@@ -197,6 +197,38 @@
             <% end %>
           </div>
         </div>
+        <% sync = options.last_contact_sync %>
+        <div class="action-block" style="margin-top: 10px;">
+          <h3><%- @T('Contact Sync') %></h3>
+          <div>
+            <%- @T('Import from RingCentral') %>: <strong><% if options.contact_import is true or options.contact_import is 'true': %><%- @T('on') %><% else: %><%- @T('off') %><% end %></strong>
+            &middot;
+            <%- @T('Export directory numbers') %>: <strong><% if options.contact_export is true or options.contact_export is 'true': %><%- @T('on') %><% else: %><%- @T('off') %><% end %></strong>
+          </div>
+          <% if sync: %>
+            <div class="text-muted">
+              <%- @T('Last run') %>: <%= sync.finished_at || sync.started_at %> (<%= sync.status %>)
+            </div>
+            <% for part in ['import', 'export']: %>
+              <% counts = sync[part] %>
+              <% if counts: %>
+                <div class="text-muted">
+                  <% if part is 'import': %><%- @T('Import') %><% else: %><%- @T('Export') %><% end %>:
+                  <%- @T('created') %> <%= counts.created || 0 %>,
+                  <%- @T('updated') %> <%= counts.updated || 0 %>,
+                  <%- @T('unchanged') %> <%= counts.unchanged || 0 %>,
+                  <%- @T('skipped') %> <%= counts.skipped || 0 %>,
+                  <%- @T('errors') %> <%= counts.errors || 0 %>
+                </div>
+              <% end %>
+            <% end %>
+            <% if sync.last_error: %>
+              <div class="alert alert--warning" style="margin-top: 5px;"><%= sync.last_error %><% if sync.error_count > 1: %> (<%= sync.error_count %> <%- @T('problems') %>)<% end %></div>
+            <% end %>
+          <% else: %>
+            <div class="text-muted"><%- @T('Not run yet.') %></div>
+          <% end %>
+        </div>
         <div class="action-controls">
           <div class="btn btn--danger btn--secondary js-deleteAccount"><%- @T('Delete') %></div>
           <% if channel.active is true: %>
@@ -205,6 +237,9 @@
             <div class="btn btn--secondary js-enableAccount"><%- @T('Enable') %></div>
           <% end %>
           <div class="btn btn--secondary js-reauthenticate"><%- @T('Reauthenticate') %></div>
+          <% if channel.active is true and (options.contact_import is true or options.contact_import is 'true' or options.contact_export is true or options.contact_export is 'true'): %>
+            <div class="btn btn--secondary js-syncContacts"><%- @T('Sync contacts now') %></div>
+          <% end %>
           <div class="btn js-editAccount"><%- @T('Edit') %></div>
         </div>
       </div>

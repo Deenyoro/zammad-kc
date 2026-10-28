@@ -8,6 +8,7 @@
 #   - Enable / Disable / Delete accounts
 #   - Global settings (ticket title template, thread window, poll interval)
 #   - Phone number selection page (post-OAuth)
+#   - Contact sync status per account and a "Sync contacts now" button
 
 class KcRingcentralSms extends App.ControllerSubContent
   @requiredPermission: 'admin'
@@ -20,6 +21,7 @@ class KcRingcentralSms extends App.ControllerSubContent
     'click .js-enableAccount':          'enableAccount'
     'click .js-disableAccount':         'disableAccount'
     'click .js-reauthenticate':         'reauthenticateAccount'
+    'click .js-syncContacts':           'syncContacts'
     'click .js-saveSettings':           'saveSettings'
     'click .js-saveMissedCallSettings': 'saveMissedCallSettings'
     'click .js-saveCallHistorySettings': 'saveCallHistorySettings'
@@ -163,6 +165,20 @@ class KcRingcentralSms extends App.ControllerSubContent
       error: (xhr) =>
         data = xhr.responseJSON || {}
         @notify(type: 'error', msg: data.error || __('Failed to start reauthentication.'))
+    )
+
+  syncContacts: (e) =>
+    e.preventDefault()
+    id = $(e.currentTarget).closest('[data-id]').data('id')
+    @ajax(
+      id:   "kc_ringcentral_sms_sync_contacts_#{id}"
+      type: 'POST'
+      url:  "#{@apiPath}/kc/ringcentral_sms_channels/#{id}/sync_contacts"
+      success: =>
+        @notify(type: 'success', msg: __('Contact sync started. Reload this page in a few minutes to see the result.'))
+      error: (xhr) =>
+        data = xhr.responseJSON || {}
+        @notify(type: 'error', msg: data.error || __('Failed to start the contact sync.'))
     )
 
   saveSettings: (e) =>
