@@ -56,6 +56,52 @@ class Channel::Driver::KcMicrosoftTeamsChat
       return nil
     end
 
+    # The webhook job and the 30-second poll can pick up the same message at
+    # the same moment; both passed the check above and filed it twice (and on
+    # a chat's first message, opened two tickets). One chat is processed at a
+    # time, and the dedup check is repeated once the lock is held.
+    ActiveRecord::Base.transaction do
+      lock_chat!(message_data[:chat_id])
+      next nil if Ticket::Article.exists?(message_id: message_id)
+
+      process_message(message_data, channel, transaction_class, message_id)
+    end
+  end
+
+  # Deliver an outbound message to a Teams chat.
+  #
+  # @param options [Hash] channel options containing OAuth credentials
+  # @param attr [Hash] article attributes (:body, :chat_id, etc.)
+  # @param _notification [Boolean] ignored
+  # @return [Hash] Graph API response with created message data
+  def deliver(options, attr, _notification = false, channel: nil)
+    return if Setting.get('import_mode')
+
+    attr = attr.with_indifferent_access
+
+    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
+    raise 'KC Teams Chat: MicrosoftTeamsGraph class not found' if graph_class.nil?
+
+    # Look up channel if not passed (e.g. when called from Zammad's Channel#deliver)
+    if channel.nil?
+      channel = Channel.find_by(area: 'MicrosoftTeamsChat::Account', active: true)
+      raise 'KC Teams Chat: No Teams Chat channel found' if channel.nil?
+    end
+
+    graph = graph_class.with_channel_tokens(channel)
+
+    chat_id = attr[:chat_id]
+    raise 'Missing chat_id for Teams Chat delivery' if chat_id.blank?
+
+    body_content = attr[:body] || ''
+    content_type = attr[:content_type].to_s.include?('html') ? 'html' : 'text'
+
+    graph.send_chat_message(chat_id, body_content, content_type: content_type)
+  end
+
+  private
+
+  def process_message(message_data, channel, transaction_class, message_id)
     # Agent messages (sent from the Teams app, not Zammad): file on the chat's
     # open ticket however long it has been idle — the thread window decides
     # when a *customer* message starts a new ticket, not where an agent's
@@ -119,38 +165,12 @@ class Channel::Driver::KcMicrosoftTeamsChat
     end
   end
 
-  # Deliver an outbound message to a Teams chat.
-  #
-  # @param options [Hash] channel options containing OAuth credentials
-  # @param attr [Hash] article attributes (:body, :chat_id, etc.)
-  # @param _notification [Boolean] ignored
-  # @return [Hash] Graph API response with created message data
-  def deliver(options, attr, _notification = false, channel: nil)
-    return if Setting.get('import_mode')
-
-    attr = attr.with_indifferent_access
-
-    graph_class = 'Kc::MicrosoftTeamsGraph'.safe_constantize
-    raise 'KC Teams Chat: MicrosoftTeamsGraph class not found' if graph_class.nil?
-
-    # Look up channel if not passed (e.g. when called from Zammad's Channel#deliver)
-    if channel.nil?
-      channel = Channel.find_by(area: 'MicrosoftTeamsChat::Account', active: true)
-      raise 'KC Teams Chat: No Teams Chat channel found' if channel.nil?
-    end
-
-    graph = graph_class.with_channel_tokens(channel)
-
-    chat_id = attr[:chat_id]
-    raise 'Missing chat_id for Teams Chat delivery' if chat_id.blank?
-
-    body_content = attr[:body] || ''
-    content_type = attr[:content_type].to_s.include?('html') ? 'html' : 'text'
-
-    graph.send_chat_message(chat_id, body_content, content_type: content_type)
+  # Transaction-scoped Postgres advisory lock on the chat; released on
+  # commit or rollback.
+  def lock_chat!(chat_id)
+    sql = ActiveRecord::Base.sanitize_sql_array(['SELECT pg_advisory_xact_lock(hashtext(?))', "kc_teams_chat:#{chat_id}"])
+    ActiveRecord::Base.connection.execute(sql)
   end
-
-  private
 
   # Agent messages older than this are not captured by the live poll/webhook.
   AGENT_CAPTURE_MAX_AGE_HOURS = 24
@@ -521,6 +541,17 @@ class Channel::Driver::KcMicrosoftTeamsChat
           mime = mime_from_filename(filename)
         else
           next if content_type_att.blank?
+
+          # contentUrl comes from the message, so the sender controls it. Only
+          # Graph itself gets the account's bearer token; any other host is
+          # linked instead of fetched (no token leak, no request to internal
+          # addresses from the Zammad server).
+          if !graph_url?(content_url)
+            Rails.logger.info "KC Teams Chat: Linking attachment #{filename} on non-Graph host instead of downloading"
+            linked_files << { name: filename, size_mb: nil, url: content_url }
+            next
+          end
+
           response = UserAgent.get(
             content_url,
             {},
@@ -562,11 +593,18 @@ class Channel::Driver::KcMicrosoftTeamsChat
       links_html = linked_files.map do |f|
         escaped_url  = ERB::Util.html_escape(f[:url])
         escaped_name = ERB::Util.html_escape(f[:name])
-        "<li><a href=\"#{escaped_url}\" target=\"_blank\" rel=\"noopener noreferrer\">#{escaped_name}</a> (#{f[:size_mb]} MB)</li>"
+        "<li><a href=\"#{escaped_url}\" target=\"_blank\" rel=\"noopener noreferrer\">#{escaped_name}</a>#{" (#{f[:size_mb]} MB)" if f[:size_mb]}</li>"
       end.join
       suffix = "<br><br><strong>Large attachments (view in Teams/SharePoint):</strong><ul>#{links_html}</ul>"
       article.update!(body: article.body.to_s + suffix)
     end
+  end
+
+  def graph_url?(url)
+    uri = URI.parse(url.to_s)
+    uri.is_a?(URI::HTTPS) && uri.host.to_s.casecmp?('graph.microsoft.com')
+  rescue URI::InvalidURIError
+    false
   end
 
   def build_graph_client(channel)
