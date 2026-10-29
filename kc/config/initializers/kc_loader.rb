@@ -85,7 +85,26 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Channel::Driver::BaseEmailOutbound', 'Kc::EmailOutboundBcc')
   kc_prepend.call('Service::Ticket::Article::List', 'Kc::ChronologicalArticleList')
   kc_prepend.call('Store', 'Kc::StoreHeicConversion')
-  kc_prepend.call('Taskbar', 'Kc::TaskbarLegacyOnlyTabs')
+
+  # Taskbar.taskbar_entities is a class method: the KC conversation draft
+  # callbacks are added on the singleton class. This must happen before
+  # Gql::Types::Enum::TaskbarEntityType is loaded, which builds its values
+  # from that list once - to_prepare runs before eager loading.
+  begin
+    target  = 'Taskbar'.safe_constantize
+    concern = 'Kc::TaskbarConversationDraftEntities'.safe_constantize
+
+    if target.nil?
+      Rails.logger.warn "KC: SKIP prepend — target 'Taskbar' not found"
+    elsif concern.nil?
+      Rails.logger.warn "KC: SKIP prepend — concern 'Kc::TaskbarConversationDraftEntities' not found"
+    else
+      target.singleton_class.prepend(concern)
+      Rails.logger.info "KC: Prepended #{concern} into #{target}.singleton_class"
+    end
+  rescue => e
+    Rails.logger.error "KC: Failed to prepend Kc::TaskbarConversationDraftEntities into Taskbar: #{e.message}"
+  end
 
   # Channel::EmailBuild is a module with singleton methods (def self.xxx),
   # so the concern must be prepended onto its singleton_class.

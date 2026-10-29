@@ -65,4 +65,44 @@ RSpec.describe 'KC new conversations', type: :request do
     expect(response).to have_http_status(:ok)
     expect(json_response['groups'].pluck('id')).to eq([group_ok.id])
   end
+
+  describe 'GET /api/v1/kc/conversations/draft_state' do
+    let(:state) { { 'phone_number' => '+15555550111', 'body' => 'Draft text', 'skip_send' => false } }
+
+    def draft(user:, key: 'KcNewSmsScreen-42', app: 'desktop', callback: 'KcNewSmsConversationContent')
+      create(:taskbar, user_id: user.id, app: app, key: key, callback: callback, params: { id: '42' }, state: state)
+    end
+
+    it 'returns the stored form of an own draft', :aggregate_failures do
+      draft(user: agent)
+
+      get '/api/v1/kc/conversations/draft_state', params: { key: 'KcNewSmsScreen-42' }
+
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to eq('exists' => true, 'state' => state)
+    end
+
+    it 'answers an empty state for a draft that has not been stored yet' do
+      get '/api/v1/kc/conversations/draft_state', params: { key: 'KcNewTeamsScreen-1' }
+
+      expect(json_response).to eq('exists' => false, 'state' => {})
+    end
+
+    it 'never returns the draft of another user' do
+      draft(user: create(:agent))
+
+      get '/api/v1/kc/conversations/draft_state', params: { key: 'KcNewSmsScreen-42' }
+
+      expect(json_response).to eq('exists' => false, 'state' => {})
+    end
+
+    it 'refuses keys of other tasks', :aggregate_failures do
+      draft(user: agent, key: 'TicketCreateScreen-42', callback: 'TicketCreate')
+
+      get '/api/v1/kc/conversations/draft_state', params: { key: 'TicketCreateScreen-42' }
+
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(json_response).not_to have_key('state')
+    end
+  end
 end
