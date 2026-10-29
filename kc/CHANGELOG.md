@@ -3,6 +3,58 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.9 (2026-10-29)
+
+Zammad base: unchanged from 0.0.8 (upstream `develop` at 279d92b454).
+
+Every KC feature was audited in both desktop UIs (legacy and the new Vue
+UI) and in mobile; this release fixes what the audit found.
+
+- **Merge into closed tickets.** Both merge dialogs now list the
+  customer's closed tickets after the open ones (merged tickets and KC
+  merged shells are left out, since they cannot be targets). The target
+  keeps its state; a locked ticket stays locked. Discord bot 1.0.10 accepts
+  closed targets in `/merge` and never opens a thread for a closed ticket.
+- **New SMS / FreePBX SMS / Teams messages are draft tabs** in both
+  desktop UIs, like a new ticket: a pen tab in the left sidebar that keeps
+  what was typed across navigation and reloads, asks before closing a
+  filled draft, and closes after sending. Several drafts can be open at
+  once, and a draft started in one UI opens in the other.
+- **BCC works in the new desktop UI and mobile.** The field sat among the
+  ticket attributes and its value was thrown away; it is now in the reply
+  form after CC (desktop: "Add BCC" next to "Add CC"), and the
+  `kc_bcc_access` setting is enforced there. A plugin that crashed the
+  recipient field for users without BCC access is retired.
+- **BCC is hidden from customers.** The REST API returned an article's
+  Bcc to the customer of the ticket.
+- **Scheduled replies:**
+  - Attachments are copied into the scheduled reply when it is scheduled,
+    so new-UI replies keep their files (they were dropped), later uploads
+    in the same tab are not sent with it, and replies scheduled more than
+    30 days out no longer lose files to the upload-cache purge. Edit puts
+    the files back into the editor.
+  - BCC is now sent (it was dropped in both UIs).
+  - New UI: the time picker no longer blocks the next hours for agents
+    west of UTC; plain-text SMS/Teams replies keep their line breaks; Edit
+    only reopens a reply after it was really cancelled (no double send);
+    the sidebar tab shows a count of pending replies.
+- **Same behaviour in both UIs:**
+  - New-conversation pages start on "Default (channel group)" and list
+    only groups the agent can create tickets in (a new
+    `GET /api/v1/kc/conversations/groups`); the new UI pre-selects only an
+    active channel. The menu says "New Teams Message" in both.
+  - Bulk merge shows unless `kc_bulk_merge` is turned off, in both UIs.
+  - The new UI's article action is now "Send as email reply" on internal
+    notes only (the email-to-note copy is removed).
+  - Legacy shows icons and readable names for Teams/SMS article types;
+    mobile shows readable names (new small patch
+    `ArticleMetadataDialog-kc-types.patch`).
+- Type errors against the new upstream are fixed (vue-tsc is clean) and
+  the two drifting patches are re-anchored.
+
+Not in this release: the new UI's search results still have no bulk
+Merge button (needs a patch to upstream's search page).
+
 ## 0.0.8 (2026-10-29)
 
 Zammad base: upstream `develop` at 279d92b454 (synced 2026-10-29, 58
