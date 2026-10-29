@@ -11,6 +11,9 @@
 #   - 90-day max scheduling window
 #   - Rate limit: max 50 pending per ticket
 #   - Owner check on cancel (or admin override)
+#   - Attachments are copied from the form's UploadCache into storage owned
+#     by the scheduled reply at schedule time; "Edit" (DELETE with
+#     restore_form_id) copies them back into the compose form
 class Kc::ScheduledArticlesController < ApplicationController
   prepend_before_action :authenticate_and_authorize!
 
@@ -92,6 +95,10 @@ class Kc::ScheduledArticlesController < ApplicationController
 
     ticket_attrs = ticket_attrs_hash(params[:ticket_attributes])
 
+    # The form's files are copied into storage owned by the scheduled reply,
+    # so form_id itself is not kept (see Kc::ScheduledArticle).
+    form_id = article_hash.delete('form_id')
+
     scheduled = kc_model_class.new(
       ticket_id:         ticket.id,
       article_data:      article_hash,
@@ -101,7 +108,10 @@ class Kc::ScheduledArticlesController < ApplicationController
       created_by_id:     current_user.id,
       updated_by_id:     current_user.id,
     )
-    scheduled.save!
+    kc_model_class.transaction do
+      scheduled.save!
+      scheduled.store_attachments_from_form!(form_id, files: attachment_files_param, user_id: current_user.id)
+    end
 
     render json: { id: scheduled.id, scheduled_at: scheduled.scheduled_at }, status: :created
   rescue ActiveRecord::RecordInvalid => e
@@ -139,9 +149,16 @@ class Kc::ScheduledArticlesController < ApplicationController
       Rails.logger.info "KC: Admin #{current_user.id} (#{current_user.login}) cancelled scheduled article ##{scheduled.id} owned by user ##{scheduled.created_by_id}"
     end
 
-    scheduled.cancel!(cancelled_by_id: current_user.id)
+    # "Edit": put the reply's files back into the agent's compose form.
+    restore_form_id = params[:restore_form_id].to_s.presence
+    if restore_form_id && !restore_form_allowed?(restore_form_id)
+      render json: { error: __('Invalid form') }, status: :unprocessable_content
+      return
+    end
 
-    render json: { status: 'cancelled' }, status: :ok
+    restored = cancel_and_restore!(scheduled, restore_form_id)
+
+    render json: { status: 'cancelled', attachments: restored.map { |store| restored_attachment_json(store) } }, status: :ok
   end
 
   private
@@ -165,6 +182,41 @@ class Kc::ScheduledArticlesController < ApplicationController
 
     raw = param.respond_to?(:to_unsafe_h) ? param.to_unsafe_h : param.to_h
     raw.stringify_keys.slice(*PERMITTED_ARTICLE_KEYS)
+  end
+
+  def restore_form_allowed?(form_id)
+    form_id.match?(%r{\A[\w-]{1,64}\z}) && UploadCachePolicy.new(current_user, UploadCache.new(form_id)).add?
+  end
+
+  # Cancels the reply; with a form id its files are first copied into that
+  # form's upload cache. Returns the restored UploadCache items.
+  def cancel_and_restore!(scheduled, restore_form_id)
+    restored = []
+    kc_model_class.transaction do
+      restored = scheduled.restore_attachments_to_form!(restore_form_id, user_id: current_user.id) if restore_form_id
+      scheduled.cancel!(
+        cancelled_by_id:        current_user.id,
+        keep_legacy_form_cache: restore_form_id.present? && restore_form_id == scheduled.article_data&.dig('form_id').to_s,
+      )
+    end
+    restored
+  end
+
+  def restored_attachment_json(store)
+    { id: store.id, filename: store.filename, size: store.size, contentType: store.preferences['Content-Type'] }
+  end
+
+  # Files selected in the new UI's compose form ([{ name:, type: }]). nil
+  # when not sent (legacy UI): then every file of the form is taken.
+  def attachment_files_param
+    return nil if !params.key?(:attachments)
+
+    Array(params[:attachments]).filter_map do |file|
+      file = file.to_unsafe_h if file.respond_to?(:to_unsafe_h)
+      next if !file.is_a?(Hash)
+
+      { name: file['name'].to_s, type: file['type'].presence }
+    end
   end
 
   def ticket_attrs_hash(param)
