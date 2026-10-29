@@ -19,9 +19,21 @@ RSpec.describe Kc::ExecuteScheduledArticle do
     )
   end
 
+  # Kc::SendScheduledArticlesJob runs the service inside
+  # UserInfo.with_user_id(scheduled.created_by_id); the new article takes its
+  # created_by/updated_by from there, so the spec does the same.
   it 'sends while the agent still has change access', :aggregate_failures do
-    expect { described_class.new(scheduled).execute! }.to change { ticket.articles.count }.by(1)
+    expect { UserInfo.with_user_id(agent.id) { described_class.new(scheduled).execute! } }.to change { ticket.articles.count }.by(1)
     expect(scheduled.reload.status).to eq('sent')
+    expect(ticket.articles.last).to have_attributes(created_by_id: agent.id, updated_by_id: agent.id)
+  end
+
+  it 'sends a due reply through the scheduler job as the scheduling agent', :aggregate_failures do
+    scheduled.update!(scheduled_at: 1.minute.ago)
+
+    expect { Kc::SendScheduledArticlesJob.perform_now }.to change { ticket.articles.count }.by(1)
+    expect(scheduled.reload.status).to eq('sent')
+    expect(ticket.articles.last).to have_attributes(body: 'later', created_by_id: agent.id)
   end
 
   it 'does not send once the agent lost change access', :aggregate_failures do

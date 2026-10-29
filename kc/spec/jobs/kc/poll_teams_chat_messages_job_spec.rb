@@ -23,8 +23,8 @@ RSpec.describe Kc::PollTeamsChatMessagesJob do
   end
 
   describe '#active_chat_ids_for' do
-    let(:channel_a) { Channel.create!(area: 'MicrosoftTeamsChat::Account', active: true, options: { tenant_id: tenant_a }) }
-    let(:channel_b) { Channel.create!(area: 'MicrosoftTeamsChat::Account', active: true, options: { tenant_id: tenant_b }) }
+    let(:channel_a) { create(:channel, area: 'MicrosoftTeamsChat::Account', active: true, options: { tenant_id: tenant_a }) }
+    let(:channel_b) { create(:channel, area: 'MicrosoftTeamsChat::Account', active: true, options: { tenant_id: tenant_b }) }
 
     before do
       create(:ticket, state_name: 'open', preferences: { teams_chat: { chat_id: 'chat-a', tenant_id: tenant_a } })
