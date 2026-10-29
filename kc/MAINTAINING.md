@@ -185,6 +185,7 @@ Ticket::Article                      ← Kc::EnqueueCommunicateTeamsChatJob
 Ticket::Article                      ← Kc::EnqueueCommunicateRingcentralSmsJob
 Ticket::Article                      ← Kc::EnqueueCommunicateFreepbxSmsJob
 Ticket::Article                      ← Kc::FillArticleRecipient
+Ticket::Article                      ← Kc::HideBccFromCustomers
 Ticket::Article                      ← Kc::FixOriginBySenderOverride
 Ticket::Article                      ← Kc::EmailFromOriginByFix
 Ticket::Article                      ← Kc::ResetsWaitingForReplyState

@@ -64,6 +64,7 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateRingcentralSmsJob')
   kc_prepend.call('Ticket::Article', 'Kc::EnqueueCommunicateFreepbxSmsJob')
   kc_prepend.call('Ticket::Article', 'Kc::FillArticleRecipient')
+  kc_prepend.call('Ticket::Article', 'Kc::HideBccFromCustomers')
   kc_prepend.call('Ticket::Article', 'Kc::FixOriginBySenderOverride')
   kc_prepend.call('Ticket::Article', 'Kc::EmailFromOriginByFix')
   kc_prepend.call('Ticket::Article', 'Kc::ResetsWaitingForReplyState')
