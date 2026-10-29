@@ -46,7 +46,7 @@ has a bright and sustainable future, consider becoming a Zammad customer!
 - [Developer Manual](/doc/developer_manual/index.md)
 - [REST API](https://docs.zammad.org/en/latest/api/intro.html)
 - For reporting security vulnerabilities, please see [our security policy](SECURITY.md).
-- [Contributing](https://zammad.org/participate)
+- [Contributing](CONTRIBUTING.md)
 
 Thanks! ❤️ ❤️ ❤️
 
