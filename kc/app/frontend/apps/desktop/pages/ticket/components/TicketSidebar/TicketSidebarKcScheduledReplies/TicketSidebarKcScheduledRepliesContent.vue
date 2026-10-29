@@ -110,6 +110,7 @@ const getArticleFormData = (): Record<string, unknown> | null => {
     type: article.articleType || 'note',
     to: formatRecipient(article.to),
     cc: formatRecipient(article.cc),
+    bcc: formatRecipient(article.bcc),
     subject: article.subject,
     internal: article.internal ?? false,
     content_type: article.contentType || 'text/html',
@@ -232,6 +233,7 @@ const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => 
       }
       if (articleData.to) prefill.to = recipientToArray(articleData.to)
       if (articleData.cc) prefill.cc = recipientToArray(articleData.cc)
+      if (articleData.bcc) prefill.bcc = recipientToArray(articleData.bcc)
       if (articleData.subject) prefill.subject = articleData.subject
 
       articleNode.input(prefill)
@@ -288,6 +290,12 @@ const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => 
               class="mt-1 text-xs text-neutral-500"
             >
               {{ $t('CC') }}: {{ item.article_data.cc }}
+            </div>
+            <div
+              v-if="item.article_data?.bcc"
+              class="mt-1 text-xs text-neutral-500"
+            >
+              {{ $t('BCC') }}: {{ item.article_data.bcc }}
             </div>
             <div
               v-if="item.article_data?.body"
