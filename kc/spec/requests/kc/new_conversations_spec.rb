@@ -42,4 +42,27 @@ RSpec.describe 'KC new conversations', type: :request do
     end.to change(Ticket, :count).by(1)
     expect(Ticket.last.group_id).to eq(group_ok.id)
   end
+
+  it 'uses the channel group when no group is given', :aggregate_failures do
+    expect do
+      post '/api/v1/kc/conversations/sms',
+           params: { channel_id: channel.id, phone_number: '+15555550111', body: 'hi', group_id: '', skip_send: true },
+           as:     :json
+    end.to change(Ticket, :count).by(1)
+    expect(Ticket.last.group_id).to eq(group_ok.id)
+  end
+
+  it 'lists only the active groups the agent may create tickets in', :aggregate_failures do
+    inactive = create(:group, active: false)
+    agent.group_names_access_map = {
+      group_ok.name     => %w[read change create],
+      group_denied.name => %w[read change],
+      inactive.name     => %w[full],
+    }
+
+    get '/api/v1/kc/conversations/groups', as: :json
+
+    expect(response).to have_http_status(:ok)
+    expect(json_response['groups'].pluck('id')).to eq([group_ok.id])
+  end
 end

@@ -9,7 +9,7 @@ const route: RouteRecordRaw[] = [
     name: 'KcNewTeamsConversation',
     component: () => import('./views/KcNewTeamsConversation.vue'),
     meta: {
-      title: __('New Teams Chat'),
+      title: __('New Teams Message'),
       requiresAuth: true,
       requiredPermission: ['ticket.agent'],
       level: 2,

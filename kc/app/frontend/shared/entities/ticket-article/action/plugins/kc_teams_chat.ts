@@ -18,7 +18,7 @@ import type {
 } from './types.ts'
 
 const isTeamsChatTicket = (ticket: {
-  createArticleType?: { name?: string } | null
+  createArticleType?: { name?: string | null } | null
 }): boolean => {
   return ticket.createArticleType?.name === 'teams_chat_message'
 }

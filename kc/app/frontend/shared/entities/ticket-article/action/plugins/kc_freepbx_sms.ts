@@ -23,7 +23,7 @@ interface FreepbxSmsPreferences {
 }
 
 const isSmsTicket = (ticket: {
-  createArticleType?: { name?: string } | null
+  createArticleType?: { name?: string | null } | null
   preferences?: Record<string, unknown> | null
 }): boolean => {
   if (ticket.createArticleType?.name === 'freepbx_sms_message') return true

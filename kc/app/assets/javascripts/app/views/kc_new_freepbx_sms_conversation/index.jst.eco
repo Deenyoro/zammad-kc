@@ -36,8 +36,9 @@
       <div class="form-group">
         <label for="kc-fpbx-sms-group-<%= @uid %>"><%- @T('Group') %></label>
         <select id="kc-fpbx-sms-group-<%= @uid %>" class="form-control js-group" name="group_id">
+          <option value="" selected><%- @T('Default (channel group)') %></option>
           <% for group in @groups: %>
-            <option value="<%= group.id %>"<%= ' selected' if group.id is @defaultGroupId %>><%= group.displayName() %></option>
+            <option value="<%= group.id %>"><%= group.displayName() %></option>
           <% end %>
         </select>
       </div>

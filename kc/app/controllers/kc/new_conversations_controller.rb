@@ -484,6 +484,18 @@ class Kc::NewConversationsController < ApplicationController
     }
   end
 
+  # GET /api/v1/kc/conversations/groups
+  #
+  # Returns the active groups the agent may create tickets in (the same
+  # check the create actions enforce), for the "Group" selector of the new
+  # conversation pages. Leaving the group empty uses the channel's group.
+  def groups
+    groups = Group.where(id: current_user.group_ids_access('create'), active: true).reorder(:name)
+    render json: {
+      groups: groups.map { |g| { id: g.id, name: g.name, active: g.active } },
+    }
+  end
+
   # GET /api/v1/kc/conversations/sms_users?query=...
   #
   # Searches Zammad users by name, phone, or mobile for SMS recipient selection.

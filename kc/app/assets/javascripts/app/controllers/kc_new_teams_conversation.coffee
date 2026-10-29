@@ -25,12 +25,13 @@ class App.KcNewTeamsConversationContent extends App.Controller
     @render()
 
   render: ->
-    groups = App.Group.all().filter (g) -> g.active
-    defaultGroupId = groups[0]?.id
+    # only groups the agent may create tickets in (the backend refuses the
+    # rest); the empty "Default" option means the channel's group
+    creatableIds = App.User.current()?.allGroupIds('create') || []
+    groups = App.Group.all().filter (g) -> g.active && _.include(creatableIds, g.id.toString())
 
     @html App.view('kc_new_teams_conversation/index')(
       groups:         groups
-      defaultGroupId: defaultGroupId
       uid:            @taskKey
     )
 
