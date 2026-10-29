@@ -91,3 +91,11 @@ app/assets/javascripts/app/lib/app_post/utils.coffee::  @icon: (name, className 
 app/assets/javascripts/app/lib/app_post/i18n.coffee::  @setMap: (source, target) ->
 app/assets/javascripts/app/lib/app_post/i18n.coffee::App.Event.trigger('i18n:language:change')
 app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco::<%- @T(@article.type.name) %>
+
+# Kc::TaskbarConversationDraftEntities adds the KC draft callbacks to this list,
+# which the GraphQL enum, the new UI's tab list and its plugins/routes rely on
+app/models/taskbar.rb::def self.taskbar_entities
+app/graphql/gql/types/enum/taskbar_entity_type.rb::build_string_list_enum Taskbar.taskbar_entities
+app/policies/taskbar_policy/scope.rb::callback: Taskbar.taskbar_entities
+app/frontend/apps/desktop/components/UserTaskbarTabs/plugins/index.ts::import.meta.glob<UserTaskbarTabPlugin>(
+app/frontend/apps/desktop/entities/user/current/composables/useTaskbarTab.ts::export const useTaskbarTab = (context?: Ref<TaskbarTabContext>) => {

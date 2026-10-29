@@ -6,6 +6,7 @@
 #   - Start a new Teams chat conversation (creates ticket + sends Teams message)
 #   - Search Zammad users with phone numbers (for SMS recipient selection)
 #   - Search Teams directory contacts (for Teams recipient selection)
+#   - Read the stored form of a draft tab (#draft_state)
 #
 # All endpoints require ticket.agent permission (see policy).
 #
@@ -443,6 +444,28 @@ class Kc::NewConversationsController < ApplicationController
       enabled:        enabled,
       numbers:        enabled ? freepbx_number_list : [],
       default_number: normalize_phone_fallback(Setting.get('kc_freepbx_sms_default_number')).to_s,
+    }
+  end
+
+  # GET /api/v1/kc/conversations/draft_state?key=KcNewSmsScreen-<id>
+  #
+  # The stored form of one of the agent's own new-conversation drafts (a
+  # desktop taskbar task, see Kc::TaskbarConversationDraftEntities), so the
+  # new desktop UI can restore a draft and label its tab. The task state is
+  # what the legacy UI writes too, with the same field names. Keys of other
+  # tasks are refused - this is no general taskbar reader.
+  def draft_state
+    key = params[:key].to_s
+    if !Kc::TaskbarConversationDraftEntities.draft_key?(key)
+      render json: { error: __('Unknown draft.') }, status: :unprocessable_content
+      return
+    end
+
+    taskbar = Taskbar.find_by(user_id: current_user.id, app: 'desktop', key: key)
+
+    render json: {
+      exists: taskbar.present?,
+      state:  taskbar&.state.presence || {},
     }
   end
 
