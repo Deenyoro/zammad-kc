@@ -4,7 +4,7 @@
 // provides an openBulkMergeFlyout function that launches the merge flyout
 // with the currently selected ticket IDs.
 //
-// The kc_bulk_merge setting is checked to conditionally show the merge button.
+// The merge button shows unless the kc_bulk_merge setting is explicitly false.
 
 import { computed, inject, provide, type ComputedRef, type Ref } from 'vue'
 
@@ -34,8 +34,10 @@ export const useKcBulkMerge = (checkedTicketIds: Ref<Set<ID>>) => {
     Array.from(checkedTicketIds.value.keys()),
   )
 
+  // Enabled unless the setting is explicitly false (seeded as true), the
+  // same rule as the legacy UI.
   const bulkMergeActive = computed(
-    () => hasPermission('ticket.agent') && !!config.kc_bulk_merge,
+    () => hasPermission('ticket.agent') && config.kc_bulk_merge !== false,
   )
 
   let onSuccessCallback: (() => void) | undefined

@@ -1,0 +1,30 @@
+diff --git a/app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue b/app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue
+index f047eb5393..bf57859f9c 100644
+--- a/app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue
++++ b/app/frontend/apps/mobile/pages/ticket/components/TicketDetailView/ArticleMetadataDialog.vue
+@@ -11,6 +11,7 @@ import { useTicketAccountedTime } from '#shared/entities/ticket/composables/useT
+ import type { TicketArticle } from '#shared/entities/ticket/types.ts'
+ import { getArticleChannelIcon } from '#shared/entities/ticket-article/composables/getArticleChannelIcon.ts'
+ import { translateArticleSecurity } from '#shared/entities/ticket-article/composables/translateArticleSecurity.ts'
++import { kcArticleTypeDisplay } from '#shared/entities/ticket-article/kc_article_type_display.ts'
+ import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+ import { markup } from '#shared/utils/markup.ts'
+ 
+@@ -31,7 +32,7 @@ const props = defineProps<Props>()
+ 
+ const channelIcon = computed(() => {
+   const name = props.article.type?.name
+-  if (name) return getArticleChannelIcon(name)
++  if (name) return kcArticleTypeDisplay(name)?.icon ?? getArticleChannelIcon(name)
+   return undefined
+ })
+ 
+@@ -114,7 +115,7 @@ const activityTypeSentence = computed(() => formatAccountedTimeType(props.articl
+       <CommonSectionMenuItem v-if="article.type?.name" :label="__('Channel')">
+         <span class="inline-flex items-center gap-1">
+           <CommonIcon v-if="channelIcon" :name="channelIcon" size="tiny" class="inline" />
+-          {{ $t(article.type.name) }}
++          {{ $t(kcArticleTypeDisplay(article.type.name)?.label ?? article.type.name) }}
+         </span>
+         <div class="leading-3">
+           <CommonLink

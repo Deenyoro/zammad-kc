@@ -12,7 +12,7 @@ import {
 
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 
-import { kcApiFetch, zammadApiFetch } from '#shared/composables/useKcApi.ts'
+import { kcApiFetch } from '#shared/composables/useKcApi.ts'
 
 interface TeamsContact {
   id: string
@@ -82,8 +82,12 @@ const loadChannels = async () => {
       '/conversations/teams_channels',
     )
     channels.value = data?.channels ?? []
-    if (data?.default_channel_id) {
-      channelId.value = data.default_channel_id
+    // The configured default may point at a channel that is no longer active.
+    const preferred = channels.value.find(
+      (channel) => String(channel.id) === data?.default_channel_id,
+    )
+    if (preferred) {
+      channelId.value = String(preferred.id)
     } else if (channels.value.length > 0) {
       channelId.value = String(data.channels[0].id)
     }
@@ -98,8 +102,11 @@ const loadChannels = async () => {
 
 const loadGroups = async () => {
   try {
-    const data = await zammadApiFetch<ZammadGroup[]>('/groups')
-    groups.value = Array.isArray(data) ? data.filter((g) => g.active) : []
+    // Only groups the agent may create tickets in (others are refused).
+    const data = await kcApiFetch<{ groups: ZammadGroup[] }>(
+      '/conversations/groups',
+    )
+    groups.value = data?.groups ?? []
   } catch {
     // Groups are optional — the backend uses the channel default.
   }
@@ -206,7 +213,7 @@ watch(searchQuery, onSearchInput)
 <template>
   <LayoutContent
     :breadcrumb-items="[
-      { label: __('New Teams Chat'), route: '/kc/new-teams' },
+      { label: __('New Teams Message'), route: '/kc/new-teams' },
     ]"
     width="narrow"
   >
@@ -303,7 +310,7 @@ watch(searchQuery, onSearchInput)
           class="w-full rounded border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-600 dark:bg-neutral-800"
         >
           <option value="">
-            {{ $t('Default') }}
+            {{ $t('Default (channel group)') }}
           </option>
           <option
             v-for="group in groups"

@@ -13,7 +13,7 @@ import {
 
 import LayoutContent from '#desktop/components/layout/LayoutContent.vue'
 
-import { kcApiFetch, zammadApiFetch } from '#shared/composables/useKcApi.ts'
+import { kcApiFetch } from '#shared/composables/useKcApi.ts'
 
 interface SmsUser {
   id: number
@@ -108,8 +108,11 @@ const loadNumbers = async () => {
 
 const loadGroups = async () => {
   try {
-    const data = await zammadApiFetch<ZammadGroup[]>('/groups')
-    groups.value = Array.isArray(data) ? data.filter((g) => g.active) : []
+    // Only groups the agent may create tickets in (others are refused).
+    const data = await kcApiFetch<{ groups: ZammadGroup[] }>(
+      '/conversations/groups',
+    )
+    groups.value = data?.groups ?? []
   } catch {
     // Groups are optional — the backend uses the channel default.
   }
@@ -416,7 +419,7 @@ watch(searchQuery, onSearchInput)
           class="w-full rounded border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-600 dark:bg-neutral-800"
         >
           <option value="">
-            {{ $t('Default') }}
+            {{ $t('Default (channel group)') }}
           </option>
           <option
             v-for="group in groups"

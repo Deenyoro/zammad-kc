@@ -83,3 +83,11 @@ app/graphql/gql/queries/tickets/recent_by_customer.rb::def resolve(customer:, li
 # (closed tickets offered as merge/link targets in the legacy UI)
 app/controllers/tickets_controller.rb::def ticket_related
 app/controllers/tickets_controller.rb::ticket_ids_by_customer:   ticket_ids_by_customer,
+
+# kc_article_type_display.coffee wraps App.Utils.icon (icon alias for KC article
+# types) and adds the KC type labels with App.i18n.setMap on every language load;
+# the legacy article view renders the Channel row as @Icon/@T of the type name.
+app/assets/javascripts/app/lib/app_post/utils.coffee::  @icon: (name, className = '') ->
+app/assets/javascripts/app/lib/app_post/i18n.coffee::  @setMap: (source, target) ->
+app/assets/javascripts/app/lib/app_post/i18n.coffee::App.Event.trigger('i18n:language:change')
+app/assets/javascripts/app/views/ticket_zoom/article_view.jst.eco::<%- @T(@article.type.name) %>

@@ -1,79 +1,45 @@
-// KC: Convert between Note and Email Reply article types in the Vue 3
-// desktop-view.
+// KC: "Send as email reply" on an existing internal note in the Vue 3
+// frontends.
 //
-// Mirrors the logic of the legacy CoffeeScript plugin
-// (kc_convert_type.coffee) for the modern frontend, but uses a cleaner
-// architecture: instead of DOM-injected buttons and MutationObservers,
-// this uses the standard article action plugin system.
+// Opens a new email reply to the customer with the note's text, so an
+// internal draft written as a note can be sent to the customer without
+// copying it by hand. The reverse direction (email -> note) is not offered:
+// switching the type of the reply being written already keeps its text in
+// the reply form, which is what the legacy note/email toggle
+// (kc_convert_type.coffee) does there.
 //
-// Adds two actions:
-//   - "Convert to Email Reply" on note articles (when the group has email)
-//   - "Convert to Note" on email articles
-//
-// Body content is preserved during conversion. When converting to email,
-// the customer's email address is pre-filled as the recipient.
+// Only offered when the ticket's group has an email address.
 
 import type {
   TicketArticleAction,
   TicketArticleActionPlugin,
 } from './types.ts'
 
-interface ConversionTarget {
-  articleType: string
-  icon: string
-  label: string
-}
-
-const CONVERSIONS: Record<string, ConversionTarget> = {
-  note: {
-    articleType: 'email',
-    icon: 'mail',
-    label: __('Convert to Email Reply'),
-  },
-  email: {
-    articleType: 'note',
-    icon: 'note',
-    label: __('Convert to Note'),
-  },
-}
-
 const actionPlugin: TicketArticleActionPlugin = {
   // Priority 150 — between Note (100) and Email (200), same as legacy.
   order: 150,
 
   addActions(ticket, article) {
-    const typeName = article.type?.name
-    if (!typeName) return []
-
-    const target = CONVERSIONS[typeName]
-    if (!target) return []
-
-    // Note → Email: only available when the group has an email address.
-    if (typeName === 'note' && !ticket.group.emailAddress) return []
+    if (article.type?.name !== 'note' || !article.internal) return []
+    if (!ticket.group.emailAddress) return []
 
     const action: TicketArticleAction = {
       apps: ['mobile', 'desktop'],
-      label: target.label,
-      name: `kc-convert-to-${target.articleType}`,
-      icon: target.icon,
+      label: __('Send as email reply'),
+      name: 'kc-convert-to-email',
+      icon: 'mail',
       view: {
         agent: ['change'],
       },
       perform(ticket, article, { openReplyForm }) {
         const values: Record<string, unknown> = {
-          articleType: target.articleType,
+          articleType: 'email',
           body: article.bodyWithUrls || '',
+          subtype: 'reply',
         }
 
-        if (target.articleType === 'email') {
-          if (ticket.customer?.email) {
-            values.to = [ticket.customer.email]
-          }
-          values.subtype = 'reply'
-        }
-
-        if (target.articleType === 'note') {
-          values.internal = true
+        if (ticket.customer?.email) {
+          values.to = [ticket.customer.email]
         }
 
         openReplyForm(values)

@@ -77,5 +77,6 @@ Zammad::Application.routes.draw do
     get  'conversations/freepbx_sms_numbers', to: 'kc/new_conversations#freepbx_sms_numbers'
     get  'conversations/teams_contacts', to: 'kc/new_conversations#teams_contacts'
     get  'conversations/teams_channels', to: 'kc/new_conversations#teams_channels'
+    get  'conversations/groups',         to: 'kc/new_conversations#groups'
   end
 end

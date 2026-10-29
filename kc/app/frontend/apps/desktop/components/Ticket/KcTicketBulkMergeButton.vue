@@ -1,5 +1,5 @@
 <!-- KC: Bulk merge button — shown in the ticket overview header when
-     tickets are checked and kc_bulk_merge setting is enabled. -->
+     tickets are checked and kc_bulk_merge setting is not disabled. -->
 
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -22,8 +22,10 @@ defineEmits<{
 const { hasPermission } = useSessionStore()
 const { config } = useApplicationStore()
 
+// Same rule as the legacy UI: enabled unless the setting is explicitly
+// false (it is seeded as true).
 const isVisible = computed(
-  () => hasPermission('ticket.agent') && !!config.kc_bulk_merge,
+  () => hasPermission('ticket.agent') && config.kc_bulk_merge !== false,
 )
 </script>
 

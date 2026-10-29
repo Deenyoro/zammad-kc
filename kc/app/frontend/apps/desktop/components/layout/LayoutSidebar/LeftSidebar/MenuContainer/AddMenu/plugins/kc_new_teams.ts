@@ -1,4 +1,4 @@
-// KC: AddMenu plugin that adds a "New Teams Chat" item to the left
+// KC: AddMenu plugin that adds a "New Teams Message" item to the left
 // sidebar add menu in the Vue 3 desktop-view.
 //
 // Mirrors the legacy NavBarRight registration from
@@ -10,7 +10,7 @@ export default {
   key: 'kc-new-teams',
   permission: ['ticket.agent'],
   order: 300,
-  label: __('New Teams Chat'),
+  label: __('New Teams Message'),
   variant: 'secondary',
   icon: 'chat',
   link: '/kc/new-teams',
