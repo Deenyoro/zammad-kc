@@ -3,6 +3,23 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.7 (2026-10-28)
+
+Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
+
+- Tests only, no change for users. Four KC specs failed because of how
+  they set up their data, not because of a bug: two created channels
+  without the required "updated by" user, and the scheduled-reply spec
+  called the sending service outside the user context the scheduler job
+  provides. They are fixed, and a new example sends a due scheduled reply
+  through the scheduler job and checks it is created as the agent who
+  scheduled it. The whole KC suite passes (75 examples).
+- Four older KC migrations (FreePBX integration, escalation calls,
+  escalation call state, FreePBX call history) now skip a database that is
+  not set up yet, like the other KC migrations, so preparing a fresh test
+  database no longer fails. Databases that already ran them are not
+  affected.
+
 ## 0.0.6 (2026-10-28)
 
 Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
