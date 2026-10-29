@@ -8,9 +8,9 @@
   <div class="page-content">
     <form class="js-teamsForm">
       <div class="form-group">
-        <label for="kc-teams-contact"><%- @T('Contact') %> <span class="text-danger">*</span></label>
+        <label for="kc-teams-contact-<%= @uid %>"><%- @T('Contact') %> <span class="text-danger">*</span></label>
         <div class="controls" style="position:relative;">
-          <input id="kc-teams-contact" type="text" class="form-control js-contactSearch" placeholder="<%- @Ti('Search Teams directory by name...') %>" autocomplete="off">
+          <input id="kc-teams-contact-<%= @uid %>" type="text" class="form-control js-contactSearch" placeholder="<%- @Ti('Search Teams directory by name...') %>" autocomplete="off">
           <div class="js-contactResults" style="display:none; border:1px solid var(--border); max-height:200px; overflow-y:auto; position:absolute; z-index:100; background:var(--background-primary); color:var(--text-normal); width:100%; border-radius:3px; box-shadow:0 6px 12px rgba(0,0,0,.175);"></div>
         </div>
       </div>
@@ -25,15 +25,15 @@
       </div>
 
       <div class="form-group">
-        <label for="kc-teams-from"><%- @T('From Account') %> <span class="text-danger">*</span></label>
-        <select id="kc-teams-from" class="form-control js-fromAccount" name="channel_id">
+        <label for="kc-teams-from-<%= @uid %>"><%- @T('From Account') %> <span class="text-danger">*</span></label>
+        <select id="kc-teams-from-<%= @uid %>" class="form-control js-fromAccount" name="channel_id">
           <option value=""><%- @T('Loading...') %></option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="kc-teams-group"><%- @T('Group') %></label>
-        <select id="kc-teams-group" class="form-control js-group" name="group_id">
+        <label for="kc-teams-group-<%= @uid %>"><%- @T('Group') %></label>
+        <select id="kc-teams-group-<%= @uid %>" class="form-control js-group" name="group_id">
           <% for group in @groups: %>
             <option value="<%= group.id %>"<%= ' selected' if group.id is @defaultGroupId %>><%= group.displayName() %></option>
           <% end %>
@@ -41,8 +41,8 @@
       </div>
 
       <div class="form-group">
-        <label for="kc-teams-body"><%- @T('Message') %> <span class="text-danger">*</span></label>
-        <textarea id="kc-teams-body" class="form-control js-body" name="body" rows="5" placeholder="<%- @Ti('Type your Teams message...') %>" required></textarea>
+        <label for="kc-teams-body-<%= @uid %>"><%- @T('Message') %> <span class="text-danger">*</span></label>
+        <textarea id="kc-teams-body-<%= @uid %>" class="form-control js-body" name="body" rows="5" placeholder="<%- @Ti('Type your Teams message...') %>" required></textarea>
       </div>
 
       <div class="form-group">
