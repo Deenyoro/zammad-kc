@@ -141,6 +141,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
       # Update group chat ticket title if needed
       maybe_update_group_chat_title(ticket, message_data)
+      remember_chat_audience(ticket, channel, message_data)
 
       transaction_class.execute(reset_user_id: true, context: 'teams_chat') do
         user = find_or_create_user(message_data)
@@ -157,12 +158,41 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
         # Update group chat ticket title if needed (for existing tickets)
         maybe_update_group_chat_title(ticket, message_data)
+        remember_chat_audience(ticket, channel, message_data)
 
         article = create_article(ticket, channel, message_data, user, message_id)
         download_and_attach_files(article, channel, message_data)
         { ticket: ticket, article: article }
       end
     end
+  end
+
+  # Keeps ticket.preferences[:teams_chat][:audience] (chat type, topic and
+  # member names) current, so Kc::ArticleRecipients can say who an article
+  # went to. Written with update_columns: it is bookkeeping and must not
+  # fire ticket triggers. Skipped when Graph returned no chat details.
+  def remember_chat_audience(ticket, channel, message_data)
+    service = 'Kc::ArticleRecipients'.safe_constantize
+    return if service.nil? || ticket.nil?
+    return if message_data[:chat_type].blank? && Array(message_data[:chat_members]).empty?
+
+    audience = service.audience_for(
+      chat_type:       message_data[:chat_type],
+      topic:           message_data[:chat_topic],
+      members:         message_data[:chat_members],
+      account_user_id: channel.options.with_indifferent_access[:user_id],
+    )
+    prefs = (ticket.preferences || {}).deep_dup
+    chat  = (prefs[:teams_chat] || prefs['teams_chat'] || {}).to_h.with_indifferent_access
+    return if chat[:audience].to_h.with_indifferent_access == audience.with_indifferent_access
+
+    chat[:audience] = audience
+    prefs.delete('teams_chat')
+    prefs[:teams_chat] = chat.to_h.deep_symbolize_keys
+    ticket.preferences = prefs
+    ticket.update_columns(preferences: ticket.preferences) # rubocop:disable Rails/SkipsModelValidations
+  rescue => e
+    Rails.logger.warn "KC Teams Chat: could not store the chat audience on ticket #{ticket&.id}: #{e.message}"
   end
 
   # Transaction-scoped Postgres advisory lock on the chat; released on

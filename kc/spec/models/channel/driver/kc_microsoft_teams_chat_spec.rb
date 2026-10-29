@@ -42,4 +42,44 @@ RSpec.describe Channel::Driver::KcMicrosoftTeamsChat do
       expect(article.reload.body).to include('https://attacker.example/x.png')
     end
   end
+
+  describe '#process recipients' do
+    let(:channel) do
+      Channel.create!(area: 'MicrosoftTeamsChat::Account', group: Group.first, active: true,
+                      options: { user_id: 'me', tenant_id: 't1' }, created_by_id: 1, updated_by_id: 1)
+    end
+    let(:members) do
+      [{ 'userId' => 'me', 'displayName' => 'KawaConnect Support' },
+       { 'userId' => 'u1', 'displayName' => 'Ann Lee' },
+       { 'userId' => 'u2', 'displayName' => 'Bob Ray' }]
+    end
+
+    def message(id, chat_type:, topic: nil)
+      { chat_id: '19:chat', message_id: id, from_user_id: 'u1', from_display_name: 'Ann Lee',
+        from_email: 'ann@example.com', body_content: 'hello', body_content_type: 'text',
+        created_at: Time.current.iso8601, tenant_id: 't1', chat_type: chat_type, chat_topic: topic,
+        chat_members: members, attachments: [], hosted_contents: [] }
+    end
+
+    before do
+      Ticket::Article::Type.lookup(name: 'teams_chat_message') || create(:ticket_article_type, name: 'teams_chat_message')
+      allow(driver).to receive(:add_context_note)
+      allow(driver).to receive(:download_and_attach_files)
+    end
+
+    it 'stores the chat audience and names the group chat as the recipient', :aggregate_failures do
+      result = driver.process(channel.options, message('m1', chat_type: 'group', topic: 'Office move'), channel)
+
+      audience = result[:ticket].reload.preferences.dig(:teams_chat, :audience)
+      expect(audience.to_h.with_indifferent_access).to include(chat_type: 'group', members: ['Ann Lee', 'Bob Ray'])
+      expect(result[:article].to).to eq('Group chat "Office move" (Ann Lee, Bob Ray)')
+    end
+
+    it 'names our account as the recipient of a one-on-one message' do
+      members.pop
+      result = driver.process(channel.options, message('m2', chat_type: 'oneOnOne'), channel)
+
+      expect(result[:article].to).to eq('KawaConnect Support')
+    end
+  end
 end
