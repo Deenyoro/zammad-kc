@@ -3,6 +3,31 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.8 (2026-10-29)
+
+Zammad base: upstream `develop` at 279d92b454 (synced 2026-10-29, 58
+upstream commits since 0.0.7, including Ruby 3.4.12). All 8 frontend
+patches apply, the sync-safety check is clean, and the KC suite plus
+upstream's article specs pass on the new base (323 examples).
+
+- Every Teams, SMS and missed-call article now records who it went to in
+  its "To" field. Before, inbound texts and Teams messages had no
+  recipient, and an agent's reply kept whatever the reply form held (one
+  number of a group text, or nothing for Teams) while the delivery jobs
+  sent to every participant.
+  - SMS (RingCentral and FreePBX): contact name and number of every
+    recipient, resolved the same way the delivery jobs pick them, e.g.
+    "Jane Smith (+14125550100), +14125550111".
+  - Teams: the other person in a one-on-one chat, our Teams account for
+    incoming messages, and 'Group chat "Topic" (Ann Lee, Bob Ray)' for
+    group chats. The Teams driver now keeps the chat type, topic and
+    member names on the ticket (`preferences.teams_chat.audience`); older
+    tickets fall back to the customer's name until the next message.
+  - Missed calls: the number that was dialed.
+  - Email is unchanged.
+  The Discord bot (1.0.9) shows this line at the top of each message.
+  Existing articles are not rewritten.
+
 ## 0.0.7 (2026-10-28)
 
 Zammad base: unchanged from 0.0.1 (upstream `develop` at 0f1f86bbc2).
