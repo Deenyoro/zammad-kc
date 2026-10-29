@@ -7,23 +7,16 @@
 #
 # Mirrors kc_new_sms_conversation.coffee (RingCentral); the sender is one of
 # the PBX numbers the connector reports instead of a RingCentral account.
-
-class KcNewFreepbxSmsConversation extends App.ControllerPermanent
-  @requiredPermission: ['ticket.agent']
-
-  constructor: (params) ->
-    super
-    @authenticateCheckRedirect()
-
-    App.TaskManager.execute(
-      key:        'KcNewFreepbxSmsConversation'
-      controller: 'KcNewFreepbxSmsConversationContent'
-      params:     params
-      show:       true
-      persistent: true
-    )
+# Like there, every new text is a draft tab in the taskbar
+# (App.KcConversationDraft).
 
 class App.KcNewFreepbxSmsConversationContent extends App.Controller
+  @include App.KcConversationDraft
+
+  draftRoute: 'kc/new_freepbx_sms'
+  draftLabel: __('SMS (FreePBX)')
+  draftForm:  '.js-smsForm'
+
   events:
     'submit .js-smsForm':        'onSubmit'
     'input .js-recipientSearch': 'onRecipientSearch'
@@ -42,32 +35,67 @@ class App.KcNewFreepbxSmsConversationContent extends App.Controller
     @html App.view('kc_new_freepbx_sms_conversation/index')(
       groups:         groups
       defaultGroupId: defaultGroupId
+      uid:            @taskKey
     )
 
     @searchTimer = null
     @recipientResults = @el.find('.js-recipientResults')
+    @draftRestore()
     @loadNumbers()
 
+    @outsideClickEvent = "click.kcFreepbxSmsRecipient#{@controllerId}"
     @outsideClickHandler = (e) =>
       return if $(e.target).closest('.js-recipientResults, .js-recipientSearch').length
       @recipientResults.hide().empty()
-    $(document).on('click.kcFreepbxSmsRecipient', @outsideClickHandler)
+    $(document).on(@outsideClickEvent, @outsideClickHandler)
+
+  draftCollect: ->
+    phone_number: @el.find('.js-phoneNumber').val() || ''
+    customer_id:  @el.find('.js-customerId').val() || ''
+    from_number:  @el.find('.js-fromNumber').val() || @draftFromNumber || ''
+    group_id:     @el.find('.js-group').val() || ''
+    body:         @el.find('.js-body').val() || ''
+    skip_send:    @el.find('.js-skipSend').is(':checked')
+
+  draftApply: (state) ->
+    @el.find('.js-phoneNumber').val(state.phone_number || '')
+    @el.find('.js-customerId').val(state.customer_id || '')
+    @el.find('.js-clearRecipient').toggle(!!state.phone_number)
+    if state.group_id && @el.find(".js-group option[value='#{state.group_id}']").get(0)
+      @el.find('.js-group').val(state.group_id)
+    @el.find('.js-body').val(state.body || '')
+    @el.find('.js-skipSend').prop('checked', !!state.skip_send)
+    @updateSubmitLabel()
+    @updateRecipientHint()
+
+    # the sender options arrive later (loadNumbers)
+    @draftFromNumber = state.from_number
+
+  draftDetail: (state) ->
+    (state.phone_number || '').trim()
+
+  draftHasContent: (state) ->
+    !!((state.phone_number || '').trim() || (state.body || '').trim())
 
   release: ->
     clearTimeout(@searchTimer) if @searchTimer
-    $(document).off('click.kcFreepbxSmsRecipient')
+    $(document).off(@outsideClickEvent) if @outsideClickEvent
     super
 
   loadNumbers: ->
     @ajax(
-      id:   'kc-freepbx-sms-numbers'
+      id:   "kc-freepbx-sms-numbers-#{@taskKey}"
       type: 'GET'
       url:  "#{App.Config.get('api_path')}/kc/conversations/freepbx_sms_numbers"
       success: (data) =>
         select = @el.find('.js-fromNumber')
         select.empty()
         numbers = data.numbers || []
+        # a restored draft keeps its sender, if the PBX still reports it
         defaultNumber = (data.default_number || '').toString()
+        draftNumber   = (@draftFromNumber || '').toString()
+        if draftNumber && _.find(numbers, (entry) -> entry.number is draftNumber)
+          defaultNumber = draftNumber
         for entry in numbers
           option = $('<option>').val(entry.number).text(entry.label || entry.number)
           option.prop('selected', true) if defaultNumber && entry.number is defaultNumber
@@ -96,7 +124,7 @@ class App.KcNewFreepbxSmsConversationContent extends App.Controller
 
   searchUsers: (query) ->
     @ajax(
-      id:   'kc-freepbx-sms-user-search'
+      id:   "kc-freepbx-sms-user-search-#{@taskKey}"
       type: 'GET'
       url:  "#{App.Config.get('api_path')}/kc/conversations/sms_users?query=#{encodeURIComponent(query)}"
       success: (data) =>
@@ -176,6 +204,7 @@ class App.KcNewFreepbxSmsConversationContent extends App.Controller
     @el.find('.js-recipientSearch').val('')
     @el.find('.js-clearRecipient').show()
     @updateRecipientHint()
+    @draftSave()
 
   updateRecipientHint: ->
     phones = @parsePhones(@el.find('.js-phoneNumber').val()) || []
@@ -192,12 +221,16 @@ class App.KcNewFreepbxSmsConversationContent extends App.Controller
     @el.find('.js-recipientSearch').val('').focus()
     @el.find('.js-clearRecipient').hide()
     @updateRecipientHint()
+    @draftSave()
 
   onPhoneInput: ->
     @updateRecipientHint()
 
-  onSkipSendToggle: (e) ->
-    if $(e.currentTarget).is(':checked')
+  onSkipSendToggle: ->
+    @updateSubmitLabel()
+
+  updateSubmitLabel: ->
+    if @el.find('.js-skipSend').is(':checked')
       @el.find('.js-submit').text(App.i18n.translateInline('Create Ticket'))
     else
       @el.find('.js-submit').text(App.i18n.translateInline('Send SMS'))
@@ -232,7 +265,7 @@ class App.KcNewFreepbxSmsConversationContent extends App.Controller
     @el.find('.js-loadingText').text(loadingText)
 
     @ajax(
-      id:   'kc-new-freepbx-sms-conversation'
+      id:   "kc-new-freepbx-sms-conversation-#{@taskKey}"
       type: 'POST'
       url:  "#{App.Config.get('api_path')}/kc/conversations/freepbx_sms"
       data: JSON.stringify(
@@ -248,6 +281,8 @@ class App.KcNewFreepbxSmsConversationContent extends App.Controller
       success: (data) =>
         @el.find('.js-submit').prop('disabled', false)
         @el.find('.js-loading').hide()
+        # Close the draft tab and navigate to the created ticket
+        @draftClose()
         @navigate "#ticket/zoom/#{data.id}"
       error: (xhr) =>
         @el.find('.js-submit').prop('disabled', false)
@@ -265,7 +300,9 @@ class App.KcNewFreepbxSmsConversationContent extends App.Controller
   hideError: ->
     @el.find('.js-error').hide()
 
+KcNewFreepbxSmsConversation = App.KcConversationDraftRouter('kc/new_freepbx_sms', 'KcNewFreepbxSmsScreen', 'KcNewFreepbxSmsConversationContent')
 App.Config.set('kc/new_freepbx_sms', KcNewFreepbxSmsConversation, 'Routes')
+App.Config.set('kc/new_freepbx_sms/id/:id', KcNewFreepbxSmsConversation, 'Routes')
 App.Config.set('KcNewFreepbxSms', {
   prio:       8006
   parent:     '#new'

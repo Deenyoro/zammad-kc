@@ -3,23 +3,18 @@
 # Adds "New SMS" to the "+" dropdown in the top nav bar.
 # Provides a form to search Zammad users by phone, enter a phone number,
 # compose a message, and send it — creating a ticket + outbound SMS.
-
-class KcNewSmsConversation extends App.ControllerPermanent
-  @requiredPermission: ['ticket.agent']
-
-  constructor: (params) ->
-    super
-    @authenticateCheckRedirect()
-
-    App.TaskManager.execute(
-      key:        'KcNewSmsConversation'
-      controller: 'KcNewSmsConversationContent'
-      params:     params
-      show:       true
-      persistent: true
-    )
+#
+# Every new SMS is a draft tab in the taskbar (like "New Ticket"), see
+# App.KcConversationDraft: the form is kept while the agent works elsewhere,
+# survives a reload, and the tab closes once the SMS has been sent.
 
 class App.KcNewSmsConversationContent extends App.Controller
+  @include App.KcConversationDraft
+
+  draftRoute: 'kc/new_rcsms'
+  draftLabel: __('SMS')
+  draftForm:  '.js-smsForm'
+
   events:
     'submit .js-smsForm':        'onSubmit'
     'input .js-recipientSearch': 'onRecipientSearch'
@@ -38,33 +33,69 @@ class App.KcNewSmsConversationContent extends App.Controller
     @html App.view('kc_new_sms_conversation/index')(
       groups:         groups
       defaultGroupId: defaultGroupId
+      uid:            @taskKey
     )
 
     @searchTimer = null
     @recipientResults = @el.find('.js-recipientResults')
+    @draftRestore()
     @loadChannels()
 
-    # Close dropdown when clicking outside
+    # Close dropdown when clicking outside (namespaced per draft, several
+    # drafts can be open at once)
+    @outsideClickEvent = "click.kcSmsRecipient#{@controllerId}"
     @outsideClickHandler = (e) =>
       return if $(e.target).closest('.js-recipientResults, .js-recipientSearch').length
       @recipientResults.hide().empty()
-    $(document).on('click.kcSmsRecipient', @outsideClickHandler)
+    $(document).on(@outsideClickEvent, @outsideClickHandler)
+
+  draftCollect: ->
+    phone_number: @el.find('.js-phoneNumber').val() || ''
+    customer_id:  @el.find('.js-customerId').val() || ''
+    channel_id:   @el.find('.js-fromNumber').val() || @draftChannelId || ''
+    group_id:     @el.find('.js-group').val() || ''
+    body:         @el.find('.js-body').val() || ''
+    skip_send:    @el.find('.js-skipSend').is(':checked')
+
+  draftApply: (state) ->
+    @el.find('.js-phoneNumber').val(state.phone_number || '')
+    @el.find('.js-customerId').val(state.customer_id || '')
+    @el.find('.js-clearRecipient').toggle(!!state.phone_number)
+    if state.group_id && @el.find(".js-group option[value='#{state.group_id}']").get(0)
+      @el.find('.js-group').val(state.group_id)
+    @el.find('.js-body').val(state.body || '')
+    @el.find('.js-skipSend').prop('checked', !!state.skip_send)
+    @updateSubmitLabel()
+    @updateRecipientHint()
+
+    # the sender options arrive later (loadChannels)
+    @draftChannelId = state.channel_id
+
+  draftDetail: (state) ->
+    (state.phone_number || '').trim()
+
+  draftHasContent: (state) ->
+    !!((state.phone_number || '').trim() || (state.body || '').trim())
 
   release: ->
     clearTimeout(@searchTimer) if @searchTimer
-    $(document).off('click.kcSmsRecipient')
+    $(document).off(@outsideClickEvent) if @outsideClickEvent
     super
 
   loadChannels: ->
     @ajax(
-      id:   'kc-sms-channels'
+      id:   "kc-sms-channels-#{@taskKey}"
       type: 'GET'
       url:  "#{App.Config.get('api_path')}/kc/conversations/sms_channels"
       success: (data) =>
         select = @el.find('.js-fromNumber')
         select.empty()
         channels = data.channels || []
+        # a restored draft keeps its sender, if it still exists
         defaultId = (data.default_channel_id || '').toString()
+        draftId   = (@draftChannelId || '').toString()
+        if draftId && _.find(channels, (ch) -> ch.id.toString() is draftId)
+          defaultId = draftId
         for ch in channels
           label = ch.phone_number || "Channel #{ch.id}"
           option = $('<option>').val(ch.id).text(label)
@@ -90,7 +121,7 @@ class App.KcNewSmsConversationContent extends App.Controller
 
   searchUsers: (query) ->
     @ajax(
-      id:   'kc-sms-user-search'
+      id:   "kc-sms-user-search-#{@taskKey}"
       type: 'GET'
       url:  "#{App.Config.get('api_path')}/kc/conversations/sms_users?query=#{encodeURIComponent(query)}"
       success: (data) =>
@@ -180,6 +211,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     @el.find('.js-recipientSearch').val('')
     @el.find('.js-clearRecipient').show()
     @updateRecipientHint()
+    @draftSave()
 
   updateRecipientHint: ->
     phones = @parsePhones(@el.find('.js-phoneNumber').val()) || []
@@ -196,13 +228,16 @@ class App.KcNewSmsConversationContent extends App.Controller
     @el.find('.js-recipientSearch').val('').focus()
     @el.find('.js-clearRecipient').hide()
     @updateRecipientHint()
+    @draftSave()
 
   onPhoneInput: ->
     @updateRecipientHint()
 
-  onSkipSendToggle: (e) ->
-    skipSend = $(e.currentTarget).is(':checked')
-    if skipSend
+  onSkipSendToggle: ->
+    @updateSubmitLabel()
+
+  updateSubmitLabel: ->
+    if @el.find('.js-skipSend').is(':checked')
       @el.find('.js-submit').text(App.i18n.translateInline('Create Ticket'))
     else
       @el.find('.js-submit').text(App.i18n.translateInline('Send SMS'))
@@ -240,7 +275,7 @@ class App.KcNewSmsConversationContent extends App.Controller
     @el.find('.js-loadingText').text(loadingText)
 
     @ajax(
-      id:   'kc-new-sms-conversation'
+      id:   "kc-new-sms-conversation-#{@taskKey}"
       type: 'POST'
       url:  "#{App.Config.get('api_path')}/kc/conversations/sms"
       data: JSON.stringify(
@@ -256,7 +291,8 @@ class App.KcNewSmsConversationContent extends App.Controller
       success: (data) =>
         @el.find('.js-submit').prop('disabled', false)
         @el.find('.js-loading').hide()
-        # Navigate to the created ticket
+        # Close the draft tab and navigate to the created ticket
+        @draftClose()
         @navigate "#ticket/zoom/#{data.id}"
       error: (xhr) =>
         @el.find('.js-submit').prop('disabled', false)
@@ -274,5 +310,7 @@ class App.KcNewSmsConversationContent extends App.Controller
   hideError: ->
     @el.find('.js-error').hide()
 
+KcNewSmsConversation = App.KcConversationDraftRouter('kc/new_rcsms', 'KcNewSmsScreen', 'KcNewSmsConversationContent')
 App.Config.set('kc/new_rcsms', KcNewSmsConversation, 'Routes')
+App.Config.set('kc/new_rcsms/id/:id', KcNewSmsConversation, 'Routes')
 App.Config.set('KcNewSms', { prio: 8004, parent: '#new', name: __('New SMS Message (RingCentral)'), translate: true, target: '#kc/new_rcsms', permission: ['ticket.agent'] }, 'NavBarRight')

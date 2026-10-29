@@ -3,23 +3,17 @@
 # Adds "New Teams Message" to the "+" dropdown in the top nav bar.
 # Provides a form to search the Azure AD directory for contacts,
 # compose a message, and send it — creating a ticket + Teams chat message.
-
-class KcNewTeamsConversation extends App.ControllerPermanent
-  @requiredPermission: ['ticket.agent']
-
-  constructor: (params) ->
-    super
-    @authenticateCheckRedirect()
-
-    App.TaskManager.execute(
-      key:        'KcNewTeamsConversation'
-      controller: 'KcNewTeamsConversationContent'
-      params:     params
-      show:       true
-      persistent: true
-    )
+#
+# Every new message is a draft tab in the taskbar (like "New Ticket"), see
+# App.KcConversationDraft.
 
 class App.KcNewTeamsConversationContent extends App.Controller
+  @include App.KcConversationDraft
+
+  draftRoute: 'kc/new_teams'
+  draftLabel: __('Teams Message')
+  draftForm:  '.js-teamsForm'
+
   events:
     'submit .js-teamsForm':      'onSubmit'
     'input .js-contactSearch':   'onContactSearch'
@@ -37,11 +31,40 @@ class App.KcNewTeamsConversationContent extends App.Controller
     @html App.view('kc_new_teams_conversation/index')(
       groups:         groups
       defaultGroupId: defaultGroupId
+      uid:            @taskKey
     )
 
     @searchTimer = null
     @contactResults = @el.find('.js-contactResults')
+    @draftRestore()
     @loadChannels()
+
+  draftCollect: ->
+    teams_user_id: @el.find('.js-teamsUserId').val() || ''
+    display_name:  @el.find('.js-displayName').val() || ''
+    email:         @el.find('.js-email').val() || ''
+    channel_id:    @el.find('.js-fromAccount').val() || @draftChannelId || ''
+    group_id:      @el.find('.js-group').val() || ''
+    body:          @el.find('.js-body').val() || ''
+    skip_send:     @el.find('.js-skipSend').is(':checked')
+
+  draftApply: (state) ->
+    if state.teams_user_id
+      @selectContact(state.teams_user_id, state.display_name || '', state.email || '')
+    if state.group_id && @el.find(".js-group option[value='#{state.group_id}']").get(0)
+      @el.find('.js-group').val(state.group_id)
+    @el.find('.js-body').val(state.body || '')
+    @el.find('.js-skipSend').prop('checked', !!state.skip_send)
+    @updateSubmitLabel()
+
+    # the sender options arrive later (loadChannels)
+    @draftChannelId = state.channel_id
+
+  draftDetail: (state) ->
+    (state.display_name || '').trim()
+
+  draftHasContent: (state) ->
+    !!(state.teams_user_id || (state.body || '').trim())
 
   release: ->
     clearTimeout(@searchTimer) if @searchTimer
@@ -49,14 +72,18 @@ class App.KcNewTeamsConversationContent extends App.Controller
 
   loadChannels: ->
     @ajax(
-      id:   'kc-teams-channels'
+      id:   "kc-teams-channels-#{@taskKey}"
       type: 'GET'
       url:  "#{App.Config.get('api_path')}/kc/conversations/teams_channels"
       success: (data) =>
         select = @el.find('.js-fromAccount')
         select.empty()
         channels = data.channels || []
+        # a restored draft keeps its sender, if it still exists
         defaultId = (data.default_channel_id || '').toString()
+        draftId   = (@draftChannelId || '').toString()
+        if draftId && _.find(channels, (ch) -> ch.id.toString() is draftId)
+          defaultId = draftId
         for ch in channels
           label = ch.label || "Channel #{ch.id}"
           option = $('<option>').val(ch.id).text(label)
@@ -82,7 +109,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
 
   searchContacts: (query) ->
     @ajax(
-      id:   'kc-teams-contact-search'
+      id:   "kc-teams-contact-search-#{@taskKey}"
       type: 'GET'
       url:  "#{App.Config.get('api_path')}/kc/conversations/teams_contacts?query=#{encodeURIComponent(query)}&channel_id=#{encodeURIComponent(@el.find('.js-fromAccount').val() || '')}"
       success: (data) =>
@@ -129,6 +156,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
     @el.find('.js-selectedContact').show()
     @el.find('.js-contactSearch').val('').prop('disabled', true)
     @contactResults.hide().empty()
+    @draftSave()
 
   onClearContact: (e) ->
     e.preventDefault()
@@ -137,6 +165,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
     @el.find('.js-email').val('')
     @el.find('.js-selectedContact').hide()
     @el.find('.js-contactSearch').val('').prop('disabled', false).focus()
+    @draftSave()
 
   onSubmit: (e) ->
     e.preventDefault()
@@ -162,7 +191,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
     @el.find('.js-loading').show()
 
     @ajax(
-      id:   'kc-new-teams-conversation'
+      id:   "kc-new-teams-conversation-#{@taskKey}"
       type: 'POST'
       url:  "#{App.Config.get('api_path')}/kc/conversations/teams"
       data: JSON.stringify(
@@ -178,7 +207,8 @@ class App.KcNewTeamsConversationContent extends App.Controller
       success: (data) =>
         @el.find('.js-submit').prop('disabled', false)
         @el.find('.js-loading').hide()
-        # Navigate to the created ticket
+        # Close the draft tab and navigate to the created ticket
+        @draftClose()
         @navigate "#ticket/zoom/#{data.id}"
       error: (xhr) =>
         @el.find('.js-submit').prop('disabled', false)
@@ -190,8 +220,11 @@ class App.KcNewTeamsConversationContent extends App.Controller
         @showError(msg)
     )
 
-  onSkipSendToggle: (e) ->
-    if $(e.currentTarget).is(':checked')
+  onSkipSendToggle: ->
+    @updateSubmitLabel()
+
+  updateSubmitLabel: ->
+    if @el.find('.js-skipSend').is(':checked')
       @el.find('.js-submit').text(App.i18n.translateInline('Create Ticket'))
     else
       @el.find('.js-submit').text(App.i18n.translateInline('Send Teams Message'))
@@ -202,5 +235,7 @@ class App.KcNewTeamsConversationContent extends App.Controller
   hideError: ->
     @el.find('.js-error').hide()
 
+KcNewTeamsConversation = App.KcConversationDraftRouter('kc/new_teams', 'KcNewTeamsScreen', 'KcNewTeamsConversationContent')
 App.Config.set('kc/new_teams', KcNewTeamsConversation, 'Routes')
+App.Config.set('kc/new_teams/id/:id', KcNewTeamsConversation, 'Routes')
 App.Config.set('KcNewTeams', { prio: 8005, parent: '#new', name: __('New Teams Message'), translate: true, target: '#kc/new_teams', permission: ['ticket.agent'] }, 'NavBarRight')
