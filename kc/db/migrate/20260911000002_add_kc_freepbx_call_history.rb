@@ -9,6 +9,8 @@
 # Safety: idempotent via create_if_not_exists.
 class AddKcFreepbxCallHistory < ActiveRecord::Migration[7.0]
   def up
+    return if !Setting.exists?(name: 'system_init_done')
+
     Setting.create_if_not_exists(
       title:       'KC FreePBX — Import Call History as Closed Tickets',
       name:        'kc_freepbx_call_history_ticket',

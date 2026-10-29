@@ -16,8 +16,8 @@ RSpec.describe 'KC new conversations', type: :request do
     user
   end
   let(:channel) do
-    Channel.create!(area: 'RingCentralSms::Account', active: true, group_id: group_ok.id,
-                    options: { phone_number: '+15555550100' })
+    create(:channel, area: 'RingCentralSms::Account', active: true, group: group_ok,
+                     options: { phone_number: '+15555550100' })
   end
 
   before do

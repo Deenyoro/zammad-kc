@@ -9,6 +9,8 @@
 # Safety: idempotent via create_if_not_exists.
 class AddKcEscalationCalls < ActiveRecord::Migration[7.0]
   def up
+    return if !Setting.exists?(name: 'system_init_done')
+
     Setting.create_if_not_exists(
       title:       'KC Escalation Calls — Enabled',
       name:        'kc_escalation_call_enabled',
