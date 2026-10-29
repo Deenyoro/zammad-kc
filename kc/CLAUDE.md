@@ -170,6 +170,7 @@ The `kc/` directory is deleted from the final image.
 - **New Conversation Initiators** — Agent-facing UI for starting SMS and Teams conversations from scratch.
 - **Note/Email Reply Conversion** — Toggle between note and email reply article types preserving message body.
 - **Multi-Tab Support** — Disables Zammad's default single-tab enforcement.
+- **Article Recipients** — Teams, SMS and missed-call articles get a `to` naming who the message went to (contact name and number, the Teams person, or the group chat and its members). `Kc::ArticleRecipients` builds it; `Kc::FillArticleRecipient` sets it on create. The Discord bot shows it at the top of each message.
 - **HEIC Conversion** — iPhone HEIC/HEIF images are converted to JPEG when stored (detected by file signature, so mislabelled `.jpeg` files are caught), making them render in the browser and in integrations. `Kc::ConvertHeicAttachmentsJob.new.perform(dry_run:, days:, store_ids:)` converts attachments stored earlier.
 
 ### Current Concern Prepends (kc_loader.rb)
@@ -180,6 +181,7 @@ Ticket::TimeAccounting               ← Kc::TimeAccountingAgent
 Ticket::Article                      ← Kc::EnqueueCommunicateTeamsChatJob
 Ticket::Article                      ← Kc::EnqueueCommunicateRingcentralSmsJob
 Ticket::Article                      ← Kc::EnqueueCommunicateFreepbxSmsJob
+Ticket::Article                      ← Kc::FillArticleRecipient
 Ticket::Article                      ← Kc::FixOriginBySenderOverride
 Ticket::Article                      ← Kc::EmailFromOriginByFix
 Ticket::Article                      ← Kc::ResetsWaitingForReplyState
