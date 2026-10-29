@@ -1,31 +1,113 @@
 diff --git a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
-index 03d57f733f..c632f5fcc2 100644
+index 03d57f733f..fa17de2bd3 100644
 --- a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
 +++ b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
-@@ -87,7 +87,7 @@ export const useTicketEditForm = (
+@@ -23,6 +23,7 @@ import type {
+ import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
+ import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
+ import { useApplicationStore } from '#shared/stores/application.ts'
++import { useSessionStore } from '#shared/stores/session.ts'
+ 
+ import type { FormKitNode } from '@formkit/core'
+ import type { Ref } from 'vue'
+@@ -87,7 +88,15 @@ export const useTicketEditForm = (
      }
    })
  
 -  const articleTypeFields = ['to', 'cc', 'subject', 'body', 'attachments', 'security'] as const
-+  const articleTypeFields = ['to', 'cc', 'bcc', 'subject', 'body', 'attachments', 'security'] as const
++  const articleTypeFields = [
++    'to',
++    'cc',
++    'bcc',
++    'subject',
++    'body',
++    'attachments',
++    'security',
++  ] as const
  
    const articleTypeFieldProps = articleTypeFields.reduce((acc, field) => {
      acc[field] = {
-@@ -155,6 +155,17 @@ export const useTicketEditForm = (
-         type: 'hidden',
-         name: 'shared_draft_id',
-       },
-+      {
-+        if: '$currentArticleType.fields.bcc',
-+        name: 'bcc',
-+        label: __('BCC'),
-+        type: 'recipient',
-+        validation: articleTypeFieldProps.bcc.validation,
-+        props: {
-+          contact: recipientContact,
-+          multiple: true,
-+        },
+@@ -121,12 +130,34 @@ export const useTicketEditForm = (
+     return Array.isArray(cc) ? cc.length > 0 : Boolean(cc)
+   })
+ 
++  // KC: BCC mirrors CC: hidden behind an "Add BCC" link on the CC row on desktop, revealed once
++  //  clicked or when BCC already has content; always visible on mobile. The kc_bcc_access setting
++  //  ('all' | 'admin' | 'disabled') decides whether BCC is offered at all.
++  const bccLinkActivated = ref(false)
++
++  const showBcc = computed(() => {
++    if (isMobileApp || bccLinkActivated.value) return true
++    const bcc = (form.value?.values?.article as { bcc?: unknown })?.bcc
++    return Array.isArray(bcc) ? bcc.length > 0 : Boolean(bcc)
++  })
++
+   // Reset the reveal when the reply form is closed (the article type is cleared).
+   watch(currentArticleType, (type) => {
+-    if (!type) ccLinkActivated.value = false
++    if (!type) {
++      ccLinkActivated.value = false
++      bccLinkActivated.value = false
++    }
+   })
+ 
+   const application = useApplicationStore()
++  const session = useSessionStore()
++
++  const bccAllowed = computed(() => {
++    const bccAccess = (application.config.kc_bcc_access as string | undefined) ?? 'all'
++    if (bccAccess === 'disabled') return false
++    if (bccAccess === 'admin') return session.hasPermission('admin')
++    return true
++  })
+ 
+   const additionalAddArticleNotes = computed(
+     () => (application.config.ui_ticket_add_article_hint as Record<string, string>) || {},
+@@ -284,6 +315,47 @@ export const useTicketEditForm = (
+         classes: { outer: '@md:col-span-1' },
+         contact: recipientContact,
+         multiple: true,
++        // KC: Desktop reveals the BCC field via an "Add BCC" link on the CC row.
++        ...(isMobileApp
++          ? {}
++          : {
++              link: computed(() =>
++                showCc.value &&
++                !showBcc.value &&
++                bccAllowed.value &&
++                currentArticleType.value?.fields?.bcc
++                  ? '#'
++                  : undefined,
++              ),
++              linkIcon: 'plus',
++              linkLabel: __('Add BCC'),
++              showLinkLabel: true,
++              linkSize: 'medium',
++              onLinkClick: (e: MouseEvent) => {
++                e.preventDefault()
++                bccLinkActivated.value = true
++                nextTick(() => {
++                  const bccFieldId = form.value?.getNodeByName('bcc')?.context?.id
++                  if (bccFieldId) document.getElementById(bccFieldId)?.focus()
++                })
++              },
++            }),
 +      },
-       {
-         screen: 'edit',
-         object: EnumObjectManagerObjects.Ticket,
++    },
++    {
++      // KC: BCC sits in the article group right after CC (same as CC), so the value reaches
++      //  formData.article.bcc and is sent with the article. Hidden on desktop until revealed via
++      //  the CC row's "Add BCC" link; kept mounted so an existing value is preserved.
++      if: '$currentArticleType.fields.bcc',
++      hidden: computed(() => !showBcc.value || !bccAllowed.value),
++      name: 'bcc',
++      label: __('BCC'),
++      type: 'recipient',
++      validation: articleTypeFieldProps.bcc.validation,
++      props: {
++        classes: { outer: 'col-span-full' },
++        contact: recipientContact,
++        multiple: true,
+       },
+     },
+     {

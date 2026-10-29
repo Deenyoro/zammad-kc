@@ -19,6 +19,7 @@ export interface KcScheduledArticle {
     type?: string
     to?: string
     cc?: string
+    bcc?: string
     subject?: string
     internal?: boolean
     content_type?: string

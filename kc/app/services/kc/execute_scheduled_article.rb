@@ -20,7 +20,7 @@ class Kc::ExecuteScheduledArticle
 
   # Only these keys are permitted from user-submitted article_data.
   ALLOWED_ARTICLE_KEYS = %i[
-    body type type_id sender sender_id to cc subject internal
+    body type type_id sender sender_id to cc bcc subject internal
     content_type form_id preferences subtype
   ].freeze
 

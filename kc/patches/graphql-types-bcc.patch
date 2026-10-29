@@ -1,8 +1,8 @@
 diff --git a/app/frontend/shared/graphql/schema-types.ts b/app/frontend/shared/graphql/schema-types.ts
-index 848d306a7e..00e2aa8984 100644
+index 16f2829879..b6b80ec7ba 100644
 --- a/app/frontend/shared/graphql/schema-types.ts
 +++ b/app/frontend/shared/graphql/schema-types.ts
-@@ -5550,6 +5550,8 @@ export type TicketArticleInput = {
+@@ -5558,6 +5558,8 @@ export type TicketArticleInput = {
    body?: InputMaybe<Scalars['String']['input']>;
    /** The article CC address. */
    cc?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -11,3 +11,32 @@ index 848d306a7e..00e2aa8984 100644
    /** The article content type. */
    contentType?: InputMaybe<Scalars['String']['input']>;
    /** The article sender address. */
+diff --git a/app/graphql/graphql_introspection.json b/app/graphql/graphql_introspection.json
+index 4d940e452a..ed1193fa01 100644
+--- a/app/graphql/graphql_introspection.json
++++ b/app/graphql/graphql_introspection.json
+@@ -30249,6 +30249,24 @@
+               },
+               "defaultValue": null
+             },
++            {
++              "name": "bcc",
++              "description": "The article BCC address.",
++              "type": {
++                "kind": "LIST",
++                "name": null,
++                "ofType": {
++                  "kind": "NON_NULL",
++                  "name": null,
++                  "ofType": {
++                    "kind": "SCALAR",
++                    "name": "String",
++                    "ofType": null
++                  }
++                }
++              },
++              "defaultValue": null
++            },
+             {
+               "name": "contentType",
+               "description": "The article content type.",
