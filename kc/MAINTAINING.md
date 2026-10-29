@@ -187,6 +187,8 @@ Ticket::Article                      ← Kc::EmailFromOriginByFix
 Ticket::Article                      ← Kc::ResetsWaitingForReplyState
 Ticket                               ← Kc::PreventsLockedTicketReopen
 Ticket                               ← Kc::MergeToClosedState
+Gql::Queries::Tickets::RecentByCustomer ← Kc::RecentCustomerTicketsWithClosed
+TicketsController                    ← Kc::TicketRelatedWithClosed
 Transaction::Notification            ← Kc::SuppressInternalNoteNotifications
 AI::Agent::Type::TicketTitleRewriter ← Kc::TicketTitleRewriterLanguage
 MicrosoftGraph                       ← Kc::MicrosoftGraphErrorHandling
