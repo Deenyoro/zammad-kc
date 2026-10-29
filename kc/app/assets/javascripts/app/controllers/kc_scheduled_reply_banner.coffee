@@ -197,13 +197,17 @@ class KcScheduledReplyBanner extends App.Controller
         @notify(type: 'error', msg: __('Could not load scheduled reply data'))
         return
 
-      # Cancel the scheduled article first
+      # Cancel the scheduled article first. restore_form_id makes the server
+      # copy the reply's attachments into the composer's upload cache.
+      formId = App.TaskManager.worker("Ticket-#{ticketId}")?.form_id
+      url = "#{@apiPath}/kc/tickets/#{ticketId}/scheduled_articles/#{scheduledId}"
+      url += "?restore_form_id=#{encodeURIComponent(formId)}" if formId
       @ajax(
         id:      "kc_edit_cancel_#{scheduledId}"
         type:    'DELETE'
-        url:     "#{@apiPath}/kc/tickets/#{ticketId}/scheduled_articles/#{scheduledId}"
+        url:     url
         timeout: 10000
-        success: =>
+        success: (data) =>
           bannerEl.fadeOut(300, ->
             bannerEl.remove()
             if containerEl.find('.kc-scheduled-reply').length is 0
@@ -212,7 +216,7 @@ class KcScheduledReplyBanner extends App.Controller
           App.Event.trigger('kc::scheduled_reply::changed', { ticket_id: ticketId })
 
           # Load the content into the composer
-          @loadIntoComposer(ticketId, articleData)
+          @loadIntoComposer(ticketId, articleData, formId, data?.attachments)
 
         error: (xhr) =>
           errorMsg = xhr.responseJSON?.error || __('Failed to cancel scheduled reply')
@@ -221,7 +225,7 @@ class KcScheduledReplyBanner extends App.Controller
     catch e
       console.warn '[KC] onEditClick failed', e
 
-  loadIntoComposer: (ticketId, articleData) =>
+  loadIntoComposer: (ticketId, articleData, formId, attachments) =>
     try
       taskKey = "Ticket-#{ticketId}"
       controller = App.TaskManager.worker(taskKey)
@@ -253,6 +257,13 @@ class KcScheduledReplyBanner extends App.Controller
           ticket:  App.Ticket.find(ticketId)
           type:    App.TicketArticleType.findByAttribute('name', 'note')
           article: articleNew
+        })
+
+      if !_.isEmpty(attachments)
+        App.Event.trigger('ui::ticket::addArticleAttachment', {
+          ticket:      { id: ticketId }
+          form_id:     formId
+          attachments: attachments
         })
 
       # Scroll to the compose area

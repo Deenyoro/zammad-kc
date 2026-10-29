@@ -3,12 +3,16 @@
      scheduling the current article compose form for future delivery. -->
 
 <script lang="ts" setup>
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, useId } from 'vue'
 
 import {
   NotificationTypes,
   useNotifications,
 } from '#shared/components/CommonNotifications/index.ts'
+import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/utils.ts'
+import type { FileUploaded } from '#shared/components/Form/fields/FieldFile/types.ts'
+import { getNodeByName } from '#shared/components/Form/utils.ts'
+import { convertToGraphQLId } from '#shared/graphql/utils.ts'
 import { i18n } from '#shared/i18n/index.ts'
 import type { ObjectLike } from '#shared/types/utils.ts'
 
@@ -18,34 +22,55 @@ import { useTicketInformation } from '#desktop/pages/ticket/composables/useTicke
 import type { TicketSidebarContentProps } from '#desktop/pages/ticket/types/sidebar.ts'
 
 import {
-  useKcScheduledReplies,
   articleTypeLabel,
+  toLocalDateTimeInputValue,
+  type KcRestoredAttachment,
+  type KcScheduledReplies,
 } from './useKcScheduledReplies.ts'
 
-const props = defineProps<TicketSidebarContentProps>()
+interface Props extends TicketSidebarContentProps {
+  // Owned by the sidebar wrapper (it also drives the tab badge).
+  replies: KcScheduledReplies
+}
+
+const props = defineProps<Props>()
 
 const persistentStates = defineModel<ObjectLike>({ required: true })
 
 const { notify } = useNotifications()
-const { ticketInternalId, isTicketEditable, newTicketArticlePresent, form } =
-  useTicketInformation()
+const { isTicketEditable, newTicketArticlePresent, form } = useTicketInformation()
 
-const {
-  scheduledArticles,
-  loading,
-  createScheduledArticle,
-  cancelScheduledArticle,
-} = useKcScheduledReplies(ticketInternalId)
+const { scheduledArticles, loading, createScheduledArticle, cancelScheduledArticle } = props.replies
 
 const scheduledAt = ref('')
+const scheduledAtLabelId = useId()
 const scheduling = ref(false)
 
 const isEditable = computed(() => isTicketEditable.value)
 
+// <input type="datetime-local"> works in the browser's local time, so min/max
+// must be local "YYYY-MM-DDTHH:mm" strings (toISOString() would be UTC and
+// block or allow the wrong hours). The picked value has no zone either:
+// new Date(value) parses it as local time and toISOString() then sends the
+// correct UTC instant - the same as the legacy datetime picker.
+// Refreshed whenever the picker gets focus, so the limits do not go stale
+// while the sidebar stays open.
+const now = ref(new Date())
+const refreshNow = () => {
+  now.value = new Date()
+}
+
 const minDateTime = computed(() => {
-  const now = new Date()
-  now.setMinutes(now.getMinutes() + 1)
-  return now.toISOString().slice(0, 16)
+  const min = new Date(now.value.getTime())
+  min.setMinutes(min.getMinutes() + 1)
+  return toLocalDateTimeInputValue(min)
+})
+
+// Server limit: 90 days ahead.
+const maxDateTime = computed(() => {
+  const max = new Date(now.value.getTime())
+  max.setDate(max.getDate() + 90)
+  return toLocalDateTimeInputValue(max)
 })
 
 const formatDateTime = (isoString: string): string => {
@@ -76,7 +101,10 @@ const truncate = (text: string, maxLength = 200): string => {
 const recipientToArray = (value: unknown): string[] => {
   if (Array.isArray(value)) return value.filter((v): v is string => typeof v === 'string')
   if (typeof value === 'string') {
-    return value.split(',').map((s) => s.trim()).filter(Boolean)
+    return value
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
   }
   return []
 }
@@ -85,25 +113,42 @@ const formatRecipient = (value: unknown): string | undefined => {
   if (!value) return undefined
   if (typeof value === 'string') return value
   if (Array.isArray(value)) {
-    return value
-      .filter((v): v is string => typeof v === 'string')
-      .join(', ')
+    return value.filter((v): v is string => typeof v === 'string').join(', ')
   }
   return undefined
+}
+
+const isBodyEmpty = (body: string, contentType: string): boolean => {
+  if (contentType !== 'text/html') return !body.trim()
+  if (/<img\b/i.test(body)) return false
+  return !stripHtml(body)
 }
 
 // Read article form data from the FormRef (context.form.values), NOT from
 // context.formValues which only has customer_id/organization_id.
 // The form values are structured as { article: { body, articleType, ... } }.
-const getArticleFormData = (): Record<string, unknown> | null => {
+// Body and content type are processed like upstream's processArticle
+// (useTicketEdit): the content type comes from the reply editor (text/plain
+// for SMS/Teams, text/html otherwise) and HTML goes through
+// transformEditorHtml. Signatures are part of the editor content; inline
+// images (data URIs) are extracted by the server when the reply is sent.
+const getArticleFormData = (): {
+  articleData: Record<string, unknown>
+  attachments: { name: string; type?: string | null }[]
+} | null => {
   const formRef = props.context.form
   if (!formRef?.values) return null
 
   const formValues = formRef.values as Record<string, unknown>
   const article = (formValues.article as Record<string, unknown>) || {}
 
-  const body = article.body || ''
-  if (!body) return null
+  const contentType =
+    (getNodeByName(formRef.formId, 'body')?.context?.contentType as string | undefined) ||
+    'text/html'
+
+  let body = typeof article.body === 'string' ? article.body : ''
+  if (isBodyEmpty(body, contentType)) return null
+  if (contentType === 'text/html') body = transformEditorHtml(body)
 
   const data: Record<string, unknown> = {
     body,
@@ -113,16 +158,22 @@ const getArticleFormData = (): Record<string, unknown> | null => {
     bcc: formatRecipient(article.bcc),
     subject: article.subject,
     internal: article.internal ?? false,
-    content_type: article.contentType || 'text/html',
+    content_type: contentType,
   }
 
-  // Include form_id so the backend can transfer cached attachments
-  // (UploadCache) to the scheduled article when it fires.
+  // The server copies the selected files from this form's upload cache into
+  // storage owned by the scheduled reply. The form id is kept per tab, so
+  // only the files listed here are taken - never files added later.
   if (formRef.formId) {
     data.form_id = formRef.formId
   }
 
-  return data
+  const files = (article.attachments as FileUploaded[] | undefined) || []
+
+  return {
+    articleData: data,
+    attachments: files.map((file) => ({ name: file.name, type: file.type })),
+  }
 }
 
 const canSchedule = computed(() => {
@@ -169,8 +220,8 @@ const getTicketAttributes = (): Record<string, unknown> | undefined => {
 const handleSchedule = async () => {
   if (!canSchedule.value || scheduling.value) return
 
-  const articleData = getArticleFormData()
-  if (!articleData) {
+  const formData = getArticleFormData()
+  if (!formData) {
     notify({
       id: 'kc-scheduled-empty-body',
       type: NotificationTypes.Error,
@@ -183,7 +234,8 @@ const handleSchedule = async () => {
   try {
     const ticketAttributes = getTicketAttributes()
     await createScheduledArticle({
-      article_data: articleData,
+      article_data: formData.articleData,
+      attachments: formData.attachments,
       ticket_attributes: ticketAttributes,
       scheduled_at: new Date(scheduledAt.value).toISOString(),
     })
@@ -199,18 +251,37 @@ const handleSchedule = async () => {
 const handleCancel = async (articleId: number) => {
   // Confirm before canceling (matching legacy App.ControllerConfirm behavior)
   if (!window.confirm(i18n.t('Cancel this scheduled reply?'))) return
-  await cancelScheduledArticle(articleId)
+  try {
+    await cancelScheduledArticle(articleId)
+  } catch {
+    // error notification handled by composable
+  }
 }
+
+const toFormAttachment = (file: KcRestoredAttachment): FileUploaded => ({
+  id: convertToGraphQLId('Store', file.id),
+  name: file.filename,
+  size: Number(file.size) || 0,
+  type: file.contentType || 'application/octet-stream',
+})
 
 const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => {
   const articleData = item.article_data
   if (!articleData) return
 
-  // Cancel the scheduled article
+  // Cancel the scheduled reply first. Only when that succeeded is it loaded
+  // into the editor - otherwise it would still go out and the edited copy
+  // would be a duplicate. The server copies the reply's attachments back
+  // into this form's upload cache.
+  let restoredAttachments: KcRestoredAttachment[] = []
   try {
-    await cancelScheduledArticle(item.id)
+    const response = await cancelScheduledArticle(item.id, {
+      restoreFormId: props.context.form?.formId,
+      successMessage: __('Scheduled reply cancelled and loaded into the editor.'),
+    })
+    restoredAttachments = response.attachments || []
   } catch {
-    return // notification handled by composable
+    return // error notification handled by composable
   }
 
   // Open the compose area and pre-fill with scheduled article data
@@ -229,12 +300,18 @@ const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => 
         body: articleData.body || '',
         articleType: articleData.type || 'note',
         internal: articleData.internal ?? false,
-        contentType: articleData.content_type || 'text/html',
       }
       if (articleData.to) prefill.to = recipientToArray(articleData.to)
       if (articleData.cc) prefill.cc = recipientToArray(articleData.cc)
       if (articleData.bcc) prefill.bcc = recipientToArray(articleData.bcc)
       if (articleData.subject) prefill.subject = articleData.subject
+      if (restoredAttachments.length) {
+        const current =
+          ((articleNode.value as Record<string, unknown> | undefined)?.attachments as
+            | FileUploaded[]
+            | undefined) || []
+        prefill.attachments = [...current, ...restoredAttachments.map(toFormAttachment)]
+      }
 
       articleNode.input(prefill)
     }
@@ -270,25 +347,17 @@ const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => 
             class="rounded border border-neutral-200 p-2 dark:border-neutral-700"
           >
             <div class="flex items-center justify-between">
-              <span class="text-xs font-medium">{{
-                formatDateTime(item.scheduled_at)
-              }}</span>
+              <span class="text-xs font-medium">{{ formatDateTime(item.scheduled_at) }}</span>
               <span
                 class="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-800 dark:bg-blue-900/40 dark:text-blue-200"
               >
                 {{ articleTypeLabel(item.article_data?.type) }}
               </span>
             </div>
-            <div
-              v-if="item.article_data?.to"
-              class="mt-1 text-xs text-neutral-500"
-            >
+            <div v-if="item.article_data?.to" class="mt-1 text-xs text-neutral-500">
               {{ $t('To') }}: {{ item.article_data.to }}
             </div>
-            <div
-              v-if="item.article_data?.cc"
-              class="mt-1 text-xs text-neutral-500"
-            >
+            <div v-if="item.article_data?.cc" class="mt-1 text-xs text-neutral-500">
               {{ $t('CC') }}: {{ item.article_data.cc }}
             </div>
             <div
@@ -331,15 +400,18 @@ const handleEdit = async (item: (typeof scheduledArticles)['value'][number]) => 
           v-if="isEditable && newTicketArticlePresent"
           class="border-t border-neutral-200 pt-3 dark:border-neutral-700"
         >
-          <label class="mb-2 block text-xs font-medium">{{
-            $t('Schedule Current Reply')
-          }}</label>
+          <div :id="scheduledAtLabelId" class="mb-2 text-xs font-medium">
+            {{ $t('Schedule Current Reply') }}
+          </div>
           <div class="space-y-2">
             <input
               v-model="scheduledAt"
+              :aria-labelledby="scheduledAtLabelId"
               type="datetime-local"
               :min="minDateTime"
+              :max="maxDateTime"
               class="w-full rounded border border-neutral-300 bg-white px-2 py-1 text-sm dark:border-neutral-600 dark:bg-neutral-800"
+              @focus="refreshNow"
             />
             <button
               type="button"

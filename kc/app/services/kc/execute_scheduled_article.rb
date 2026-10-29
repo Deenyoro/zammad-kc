@@ -14,8 +14,8 @@
 #   - Wraps article + ticket + status in a database transaction
 #   - Enriches article preferences with channel routing from ticket
 #   - Validates channel routing exists for Teams/SMS before creating article
-#   - Handles attachment transfer from UploadCache
-#   - Safe form_id numeric validation
+#   - Sends the attachment copies stored with the scheduled reply
+#   - Legacy records: attachment transfer from UploadCache, numeric form_id only
 class Kc::ExecuteScheduledArticle
 
   # Only these keys are permitted from user-submitted article_data.
@@ -103,7 +103,18 @@ class Kc::ExecuteScheduledArticle
       end
     end
 
-    # Transfer attachments from UploadCache if form_id was stored
+    # Attachments copied into storage owned by the scheduled reply when it
+    # was scheduled (see Kc::ScheduledArticle; removed again once sent).
+    @scheduled.stored_attachments.each do |att|
+      attachments << {
+        data:        att.content,
+        filename:    att.filename,
+        preferences: att.preferences,
+      }
+    end
+
+    # Replies scheduled before stored copies existed: transfer attachments
+    # from the legacy UploadCache if a numeric form_id was stored.
     safe_form_id = validated_form_id(form_id)
     if safe_form_id
       cache = UploadCache.new(safe_form_id)
@@ -165,6 +176,8 @@ class Kc::ExecuteScheduledArticle
   end
 
   # Validates form_id is numeric and returns integer, or nil if invalid/blank.
+  # Only legacy records keep a form_id; new ones store their own copies, so
+  # UUID form ids (new UI, one per tab) are deliberately never read here.
   def validated_form_id(form_id)
     return nil if form_id.blank?
     return nil unless form_id.to_s.match?(/\A\d+\z/)
