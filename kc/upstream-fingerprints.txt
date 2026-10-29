@@ -74,3 +74,12 @@ app/jobs/concerns/has_active_job_lock.rb::def lock_key
 lib/user_agent.rb::def self.put(
 lib/user_agent.rb::header:  response.each_header.to_h,
 app/models/role.rb::def self.signup_role_ids
+
+# Kc::RecentCustomerTicketsWithClosed replaces this resolver's result
+# (closed tickets offered as merge/link targets in the new desktop UI)
+app/graphql/gql/queries/tickets/recent_by_customer.rb::def resolve(customer:, limit: 6, except_ticket_internal_id: nil)
+
+# Kc::TicketRelatedWithClosed rewrites the customer list in this action's JSON
+# (closed tickets offered as merge/link targets in the legacy UI)
+app/controllers/tickets_controller.rb::def ticket_related
+app/controllers/tickets_controller.rb::ticket_ids_by_customer:   ticket_ids_by_customer,

@@ -69,6 +69,8 @@ Rails.application.config.to_prepare do
   kc_prepend.call('Ticket::Article', 'Kc::ResetsWaitingForReplyState')
   kc_prepend.call('Ticket', 'Kc::PreventsLockedTicketReopen')
   kc_prepend.call('Ticket', 'Kc::MergeToClosedState')
+  kc_prepend.call('Gql::Queries::Tickets::RecentByCustomer', 'Kc::RecentCustomerTicketsWithClosed')
+  kc_prepend.call('TicketsController', 'Kc::TicketRelatedWithClosed')
   kc_prepend.call('Transaction::Notification', 'Kc::SuppressInternalNoteNotifications')
   kc_prepend.call('AI::Agent::Type::TicketTitleRewriter', 'Kc::TicketTitleRewriterLanguage')
   # MicrosoftGraphApiErrorTypeSafety removed — upstream fixed the type-safety
