@@ -285,6 +285,62 @@ RSpec.describe 'Popover', type: :system do
       response_gate&.close
     end
 
+    # Moves the pointer away while the content of the tip is still loading, and lets the response
+    #   arrive while the tip still waits to hide. The real hide delay of 100 ms leaves too little
+    #   room for that, so it is stretched.
+    def leave_while_loading
+      response_gate = Queue.new
+      request_entered = Queue.new
+
+      allow_any_instance_of(Ticket::PopoverController).to receive(:show).and_wrap_original do |method, *args|
+        requests << method.receiver.params[:id]
+        request_entered << true
+        response_gate.pop(timeout: 10)
+        method.call(*args)
+      end
+
+      trigger = within(:active_content) do
+        trigger_popover(popover_trigger, text: ticket.title)
+        find(popover_trigger, text: ticket.title)
+      end
+
+      expect(page).to have_css('.popover')
+      request_entered.pop(timeout: 10)
+
+      trigger.execute_script("$(this).data('bs.popover').options.delay = { show: 100, hide: 1000 }")
+
+      find('.menu').hover
+      response_gate.close
+      wait.until { page.evaluate_script('$.active').zero? }
+    ensure
+      response_gate&.close
+    end
+
+    it 'keeps the tip closed when its response arrives after the pointer left', :aggregate_failures do
+      leave_while_loading
+
+      expect(page).to have_no_css('.popover')
+
+      # Only a response that was handled instead of aborted on hide is cached for the next tip.
+      within :active_content do
+        trigger_popover(popover_trigger, text: ticket.title)
+      end
+
+      expect(page).to have_css('.popover', text: %r{latest article}i)
+      expect(requests).to eq([ticket.id.to_s])
+    end
+
+    it 'shows the loaded content when the pointer returns before the tip hid', :aggregate_failures do
+      leave_while_loading
+
+      within :active_content do
+        find(popover_trigger, text: ticket.title).hover
+      end
+
+      expect(page).to have_css('.popover', text: %r{latest article}i)
+      expect(requests).to eq([ticket.id.to_s])
+    end
+
     it 'opens no ticket on hover and keeps the row link working', :aggregate_failures do
       within :active_content do
         trigger_popover(popover_trigger, text: ticket.title)
@@ -477,6 +533,58 @@ RSpec.describe 'Popover', type: :system do
 
         expect(requests).to be_empty
       end
+    end
+  end
+
+  context 'when a ticket has no customer' do
+    let(:group)  { Group.find_by(name: 'Users') }
+    let(:ticket) { create(:ticket, group:, customer: User.find(1)) }
+
+    shared_examples 'showing the customer cell without popover' do
+      it 'shows the customer cell without popover' do
+        row = find("tr.item[data-id='#{ticket.id}']")
+        cell = row.find('td', exact_text: '-')
+
+        expect(row).to have_no_css('.user-popover')
+
+        cell.hover
+        expect(page).to have_no_css('.popover')
+      end
+    end
+
+    context 'when shown in an overview' do
+      before do
+        ticket
+
+        visit '#ticket/view/all_unassigned'
+      end
+
+      it 'keeps the popover on the customer cell of other tickets' do
+        within :active_content do
+          expect(page).to have_css("tr.item[data-id='#{Ticket.first.id}'] .user-popover[data-id='#{Ticket.first.customer_id}']")
+        end
+      end
+
+      it_behaves_like 'showing the customer cell without popover'
+    end
+
+    context 'when shown in a ticket list' do
+      let(:source_ticket) { create(:ticket, group:, customer: User.find(1)) }
+
+      before do
+        ticket
+
+        visit "#ticket/zoom/#{source_ticket.id}"
+
+        within :active_content do
+          find('[data-tab="ticket"] .js-actions').click
+          click('[data-type="ticket-merge"]')
+        end
+
+        modal_ready
+      end
+
+      it_behaves_like 'showing the customer cell without popover'
     end
   end
 
