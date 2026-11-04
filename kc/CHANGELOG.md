@@ -3,6 +3,17 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.10 (2026-11-04)
+
+- Incoming RingCentral SMS, FreePBX SMS and Teams messages reopen the same
+  conversation ticket when received within 15 minutes of its latest closure.
+  The message and attachments are appended through the existing article flow.
+  Existing open conversations take precedence; locked and merged tickets are
+  not reopened. SMS numbers, participant groups and channels, and Teams chats
+  remain separate. Messages outside the window create a new ticket as before.
+- Add isolated database regression tests for all three drivers and the shared
+  reopen logic, required by GitLab CI before building the image.
+
 ## 0.0.9 (2026-10-29)
 
 Zammad base: unchanged from 0.0.8 (upstream `develop` at 279d92b454).

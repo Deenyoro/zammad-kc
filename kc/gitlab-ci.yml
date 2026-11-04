@@ -49,9 +49,17 @@ verify-patches:
       fi
     - echo "All patches apply exactly."
 
+test-conversation-reopen:
+  stage: test
+  tags: [linux]
+  image: ruby:3.4-slim
+  script:
+    - gem install activerecord:8.1.4 sqlite3:2.10.2 rspec:3.13.2 --no-document
+    - ruby kc/test/recent_conversation_reopen_test.rb
+
 build:
   extends: .docker-build
-  needs: [verify-patches]
+  needs: [verify-patches, test-conversation-reopen]
   variables:
     IMAGE: zammad-kc
     CONTEXT: .

@@ -296,6 +296,12 @@ class Channel::Driver::KcMicrosoftTeamsChat
     if conversation_key.present?
       existing = find_existing_ticket(conversation_key, thread_window)
       return existing if existing
+
+      recent = Kc::RecentConversationReopen.call(
+        preferences_key: :teams_chat, conversation_key: conversation_key,
+        message_time: message_data[:created_at], user_id: user.id,
+      )
+      return recent if recent
     end
 
     # Create new ticket
