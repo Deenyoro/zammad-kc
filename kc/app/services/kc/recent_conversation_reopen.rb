@@ -27,6 +27,7 @@ class Kc::RecentConversationReopen
         prefs = (ticket.preferences || {}).with_indifferent_access[preferences_key]&.with_indifferent_access
         next unless prefs && prefs[:conversation_key].to_s == conversation_key
         next if channel_id && prefs[:channel_id].to_s != channel_id.to_s
+        next if ticket.respond_to?(:kc_merged_shell?) && ticket.kc_merged_shell?
 
         closed_at = ticket.last_close_at || ticket.close_at
         next unless closed_at && closed_at.between?(received_at - WINDOW, received_at)

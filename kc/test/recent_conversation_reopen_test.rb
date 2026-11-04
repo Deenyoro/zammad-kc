@@ -33,6 +33,10 @@ module Kc; end
 class Ticket < ActiveRecord::Base
   serialize :preferences, coder: YAML
   belongs_to :state, class_name: 'Ticket::State'
+  # The full application supplies this through Kc::MergeToClosedState.
+  def kc_merged_shell?
+    false
+  end
   class StateType < ActiveRecord::Base; end
   class State < ActiveRecord::Base
     belongs_to :state_type, class_name: 'Ticket::StateType'
@@ -167,6 +171,21 @@ RSpec.describe Kc::RecentConversationReopen do
     merged = Ticket::State.create!(name: 'merged', state_type: Ticket::StateType.create!(name: 'merged'))
     conversation(state: merged)
     expect(reopen).to be_nil
+  end
+
+  it 'does not reopen a merged-away KC ticket whose state was changed to closed' do
+    ticket
+    allow_any_instance_of(Ticket).to receive(:kc_merged_shell?).and_return(true)
+    expect(reopen).to be_nil
+    expect(ticket.reload.state).to eq(closed_state)
+  end
+
+  it 'skips a newer merged shell and reuses the matching real conversation' do
+    ticket
+    shell = conversation(closed_at: 1.minute.ago)
+    allow_any_instance_of(Ticket).to receive(:kc_merged_shell?) { |t| t.id == shell.id }
+    expect(reopen.id).to eq(ticket.id)
+    expect(shell.reload.state).to eq(closed_state)
   end
 
   it 'ignores a record with no closure timestamp' do
