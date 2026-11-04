@@ -2,6 +2,12 @@
 
 Custom code overlay for extending Zammad without modifying upstream source files.
 
+Incoming RingCentral SMS, FreePBX SMS and Teams customer messages reuse and
+reopen the same conversation ticket for 15 minutes after its latest closure.
+Existing open conversations take precedence. Locked and merged tickets stay
+closed; a reply outside the window starts a new ticket. SMS channels and full
+participant sets, and Teams tenant/chat identities, are matched separately.
+
 ---
 
 ## Table of Contents

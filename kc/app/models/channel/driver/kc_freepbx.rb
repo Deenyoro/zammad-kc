@@ -302,6 +302,13 @@ class Channel::Driver::KcFreepbx
     if candidates.any?
       existing = find_existing_ticket(candidates, thread_window_hours(channel))
       return existing if existing
+
+      recent = Kc::RecentConversationReopen.call(
+        preferences_key: PREFS_KEY,
+        conversation_key: conversation_key(our_phone, *others),
+        message_time: message_data[:created_at], user_id: user.id, channel_id: channel.id,
+      )
+      return recent if recent
     end
 
     group = Group.find_by(id: channel.group_id) || Group.first

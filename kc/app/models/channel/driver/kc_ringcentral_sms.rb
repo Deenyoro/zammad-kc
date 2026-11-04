@@ -337,6 +337,13 @@ class Channel::Driver::KcRingcentralSms
     if candidates.any?
       existing = find_existing_ticket(candidates, thread_window)
       return existing if existing
+
+      recent = Kc::RecentConversationReopen.call(
+        preferences_key: :ringcentral_sms,
+        conversation_key: conversation_key(our_phone, *others),
+        message_time: message_data[:created_at], user_id: user.id, channel_id: channel.id,
+      )
+      return recent if recent
     end
 
     # Create new ticket
