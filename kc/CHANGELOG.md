@@ -3,6 +3,12 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.11 (2026-11-04)
+
+- Preserve KC merged-away tickets that are displayed as closed. Incoming
+  replies skip those shells and reuse the actual conversation ticket.
+  Add regression coverage for closed merge shells and candidate ordering.
+
 ## 0.0.10 (2026-11-04)
 
 - Incoming RingCentral SMS, FreePBX SMS and Teams messages reopen the same
