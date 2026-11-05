@@ -69,6 +69,7 @@ class KcRingcentralSms extends App.ControllerSubContent
       channels: channels
       numbers:  @availableNumbers || []
       settings:
+        blocked_numbers:              @setting('kc_sms_ticket_blocked_numbers', '')
         ticket_title_template:        @setting('kc_ringcentral_sms_ticket_title_template', 'SMS from {phone}')
         thread_window_hours:          @setting('kc_ringcentral_sms_thread_window_hours', 24)
         context_messages:             @setting('kc_ringcentral_sms_context_messages', 5)
@@ -186,6 +187,7 @@ class KcRingcentralSms extends App.ControllerSubContent
     form = $(e.currentTarget).closest('.kc-ringcentral-settings')
 
     settings =
+      kc_sms_ticket_blocked_numbers:             form.find('[name=blocked_numbers]').val() || ''
       kc_ringcentral_sms_ticket_title_template: form.find('[name=ticket_title_template]').val() || 'SMS from {phone}'
       kc_ringcentral_sms_thread_window_hours:   parseInt(form.find('[name=thread_window_hours]').val()) || 24
       kc_ringcentral_sms_context_messages:      Math.max(0, parseInt(form.find('[name=context_messages]').val()) || 0)
