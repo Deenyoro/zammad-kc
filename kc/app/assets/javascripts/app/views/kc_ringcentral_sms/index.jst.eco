@@ -65,6 +65,15 @@
           </select>
         </td>
       </tr>
+      <tr>
+        <td>
+          <label for="kc-sms-blocked-numbers"><%- @T('SMS ticket blocked numbers') %></label>
+          <p class="text-muted" style="margin: 2px 0 0;"><%- @T('One number per line. Use +country code for international numbers. Conversations with these numbers are excluded from RingCentral and FreePBX SMS ticket imports, including backfills. Messages remain in the phone provider. Existing tickets and voice calls are unchanged.') %></p>
+        </td>
+        <td>
+          <textarea id="kc-sms-blocked-numbers" name="blocked_numbers" class="form-control" rows="4" style="width: 300px;"><%= @settings.blocked_numbers %></textarea>
+        </td>
+      </tr>
     </table>
     <button class="btn btn--primary js-saveSettings" style="margin-top: 10px;"><%- @T('Save Settings') %></button>
 
