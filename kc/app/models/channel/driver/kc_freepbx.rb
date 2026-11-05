@@ -53,6 +53,7 @@ class Channel::Driver::KcFreepbx
   # @return [Hash, nil] { ticket:, article: } or nil when already known
   def process(_adapter_options, message_data, channel)
     message_data = message_data.with_indifferent_access
+    return nil if Kc::SmsTicketBlocklist.blocked_message?(message_data)
 
     dedup_key = dedup_key_for(message_data[:message_id])
     return nil if dedup_key.present? && Ticket::Article.exists?(message_id: dedup_key)
@@ -115,6 +116,7 @@ class Channel::Driver::KcFreepbx
   # Decides what #process_outbound would do without writing.
   def outbound_capture_plan(channel, message_data, mode: :live)
     message_data = message_data.with_indifferent_access
+    return { action: :skip_blocked_number } if Kc::SmsTicketBlocklist.blocked_message?(message_data)
     dedup_key    = dedup_key_for(message_data[:message_id])
 
     if dedup_key.present?
@@ -372,6 +374,7 @@ class Channel::Driver::KcFreepbx
 
     messages = records.map(&:with_indifferent_access).select do |m|
       next false if exclude_id.present? && m[:id].to_s == exclude_id.to_s
+      next false if Kc::SmsTicketBlocklist.blocked?(m[:from], m[:to])
 
       at = parse_time(m[:created_at])
       next false if at.nil? || at >= before_at

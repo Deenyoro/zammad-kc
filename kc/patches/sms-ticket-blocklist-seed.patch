@@ -1,0 +1,10 @@
+--- a/db/seeds/settings.rb
++++ b/db/seeds/settings.rb
+@@ -1,4 +1,6 @@
+ # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
++
++load Rails.root.join('db', 'seeds', 'kc_sms_ticket_blocklist.rb')
+-
++
+ Setting.create_if_not_exists(
+   title:       __('Application secret'),
