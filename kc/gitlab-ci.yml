@@ -57,9 +57,17 @@ test-conversation-reopen:
     - gem install activerecord:8.1.4 sqlite3:2.10.2 rspec:3.13.2 --no-document
     - ruby kc/test/recent_conversation_reopen_test.rb
 
+verify-sms-blocklist:
+  stage: test
+  tags: [linux]
+  image: ruby:3.4-slim
+  script:
+    - gem install --no-document rspec:3.13.2 activesupport:8.1.4
+    - ruby -S rspec --options /dev/null kc/spec/unit/sms_ticket_blocklist_spec.rb
+
 build:
   extends: .docker-build
-  needs: [verify-patches, test-conversation-reopen]
+  needs: [verify-patches, test-conversation-reopen, verify-sms-blocklist]
   variables:
     IMAGE: zammad-kc
     CONTEXT: .

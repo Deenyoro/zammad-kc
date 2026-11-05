@@ -55,6 +55,7 @@ class Channel::Driver::KcRingcentralSms
   # @return [Hash, nil] { ticket:, article: } or nil if duplicate
   def process(_adapter_options, message_data, channel)
     message_data = message_data.with_indifferent_access
+    return nil if Kc::SmsTicketBlocklist.blocked_message?(message_data)
 
     # Dedup: skip if we already have an article with this RC message ID.
     rc_message_id = message_data[:message_id].to_s
@@ -130,6 +131,7 @@ class Channel::Driver::KcRingcentralSms
   # Returns { action: :skip_*|:attach|:create, ... }.
   def outbound_capture_plan(channel, message_data, mode: :live)
     message_data  = message_data.with_indifferent_access
+    return { action: :skip_blocked_number } if Kc::SmsTicketBlocklist.blocked_message?(message_data)
     rc_message_id = message_data[:message_id].to_s
     dedup_key     = "rc_sms:#{rc_message_id}"
 
@@ -413,6 +415,7 @@ class Channel::Driver::KcRingcentralSms
     messages = records.map { |r| r.with_indifferent_access }.select do |m|
       next false if exclude_id.present? && m[:id].to_s == exclude_id.to_s
       next false unless %w[SMS Pager].include?(m[:type].to_s)
+      next false if Kc::SmsTicketBlocklist.blocked?(m.dig(:from, :phoneNumber), Array(m[:to]).map { |to| to[:phoneNumber] })
 
       participants = ([m.dig(:from, :phoneNumber)] + Array(m[:to]).map { |t| t[:phoneNumber] }).map { |n| normalize_phone(n) }.compact.uniq
       # Same conversation: everyone in the message is one of ours/theirs and
