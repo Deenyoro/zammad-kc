@@ -427,6 +427,8 @@ The page will appear in Zammad's navigation automatically based on the `meta` pr
 
 8. **Prefix KC methods with `kc_`** when adding methods to upstream models via concerns. This avoids collisions with future upstream methods. For example: `kc_full_display_name`, not `full_display_name`.
 
+9. **Legacy UI CoffeeScript must not use `lib/app_post` classes at load time.** `app/assets/javascripts/app/index.coffee` loads `lib/app_init`, `lib/mixins`, `config`, `models`, `controllers`, `views` and only then `lib/app_post`. So `App.Event`, `App.Utils`, `App.i18n`, `App.Ajax`, `App.WebSocket` and the rest of `app_post` do not exist while a KC controller file is evaluated. Top-level statements, top-level `if`/`try` blocks and class bodies run at load time; method bodies run later. At load time, use only `App.Config.set`, models, `App.Controller` and mixins. Anything else goes in a method, or in an init that waits until the class exists (see `kc_article_type_display.coffee`). One uncaught load-time error leaves the whole UI on "Loading..." for everyone (2026-11-05/06, about 34 hours). CI enforces this rule twice: `verify-frontend-load-order` blocks the build, and `boot-test-legacy-ui` boots the compiled bundle from the built image. **Deploy only image digests whose pipeline passed `boot-test-legacy-ui`.** Run the check locally with `python3 kc/script/check-frontend-load-order.py .`.
+
 ---
 
 ## Verification and Debugging
