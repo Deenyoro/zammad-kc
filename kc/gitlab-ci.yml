@@ -65,9 +65,19 @@ verify-sms-blocklist:
     - gem install --no-document rspec:3.13.2 activesupport:8.1.4
     - ruby -S rspec --options /dev/null kc/spec/unit/sms_ticket_blocklist_spec.rb
 
+# KC legacy-UI CoffeeScript must not use classes from lib/app_post (App.Event,
+# App.Utils, App.i18n, ...) at load time: they are defined after controllers, and
+# one load-time error leaves the whole UI on "Loading..." (2026-11-06).
+verify-frontend-load-order:
+  stage: test
+  tags: [linux]
+  image: python:3.12-alpine
+  script:
+    - python3 kc/script/check-frontend-load-order.py .
+
 build:
   extends: .docker-build
-  needs: [verify-patches, test-conversation-reopen, verify-sms-blocklist]
+  needs: [verify-patches, test-conversation-reopen, verify-sms-blocklist, verify-frontend-load-order]
   variables:
     IMAGE: zammad-kc
     CONTEXT: .
@@ -78,3 +88,28 @@ build:
     KUBERNETES_MEMORY_LIMIT: 32Gi
     KUBERNETES_EPHEMERAL_STORAGE_LIMIT: 120Gi
   timeout: 2h
+
+# Boot the compiled legacy UI bundle from the image just built in headless
+# Chromium; fails on any error thrown while it loads. Deploy only digests whose
+# pipeline passed this job.
+boot-test-legacy-ui:
+  stage: release
+  tags: [linux]
+  image: mcr.microsoft.com/playwright:v1.59.1-noble
+  needs: [build]
+  variables:
+    GIT_DEPTH: "1"
+    CRANE_VERSION: v0.22.1
+    CRANE_SHA256: 0ab7a1d6932a213aed964ce97666c3077fe691c8606413674a8b3e0b9ec4cda0
+  script:
+    - curl -fsSL -o /tmp/crane.tgz "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz"
+    - echo "${CRANE_SHA256}  /tmp/crane.tgz" | sha256sum -c -
+    - tar -xzf /tmp/crane.tgz -C /usr/local/bin crane
+    - crane auth login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - IMG="$CI_REGISTRY_IMAGE/zammad-kc:sha-${CI_COMMIT_SHORT_SHA}"
+    - mkdir -p /tmp/img
+    - crane export "$IMG" - | tar -x -C /tmp/img --wildcards 'opt/zammad/public/assets/application-*.js'
+    - BUNDLE=$(ls /tmp/img/opt/zammad/public/assets/application-*.js | grep -E '/application-[0-9a-f]{64}\.js$' | head -1)
+    - test -n "$BUNDLE" || { echo "no compiled application bundle in $IMG"; exit 1; }
+    - npm install --no-save --no-audit --no-fund --prefix /tmp/pw playwright-core@1.59.1 >/dev/null
+    - PLAYWRIGHT_CORE=/tmp/pw/node_modules/playwright-core node kc/script/boot-test-bundle.js "$BUNDLE"

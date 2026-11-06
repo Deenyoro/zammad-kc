@@ -3,6 +3,19 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.12 (2026-11-06)
+
+- Fix the legacy UI staying on "Loading..." for everyone since 2026-11-05:
+  `kc_article_type_display.coffee` called `App.Event.bind` while the bundle was
+  still loading, before `App.Event` exists. Its setup now waits for `App.Event`,
+  `App.Utils` and `App.i18n`.
+- CI guards so this cannot ship again: `verify-frontend-load-order`
+  (`kc/script/check-frontend-load-order.py`) fails the build when KC CoffeeScript
+  uses a `lib/app_post` class at load time; `boot-test-legacy-ui`
+  (`kc/script/boot-test-bundle.js`) boots the compiled bundle from the new image
+  in headless Chromium and fails on any load-time error. Deploy only digests
+  whose pipeline passed it.
+
 ## 0.0.11 (2026-11-04)
 
 - Preserve KC merged-away tickets that are displayed as closed. Incoming
