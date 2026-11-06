@@ -19,15 +19,19 @@ KC_ARTICLE_TYPES =
   ringcentral_sms_message: { icon: 'sms',  label: __('RingCentral SMS') }
   freepbx_sms_message:     { icon: 'sms',  label: __('FreePBX SMS') }
 
-try
-  if App.Utils?.icon && !App.Utils.kcArticleTypeIcon
-    kcOriginalIcon = App.Utils.icon
-    App.Utils.kcArticleTypeIcon = true
-    App.Utils.icon = (name, className = '') ->
-      name = KC_ARTICLE_TYPES[name].icon if name && KC_ARTICLE_TYPES.hasOwnProperty(name)
-      kcOriginalIcon.call(App.Utils, name, className)
-catch e
-  console.warn '[KC] article type icon mapping failed', e
+# This file loads with the asset bundle, before App.Event / App.Utils exist.
+# Calling App.Event.bind at load time threw "Cannot read properties of
+# undefined (reading 'bind')" and stopped the whole app from booting
+# (stuck on "Loading..."). So wait until both exist, and never let a
+# failure here escape.
+
+kcMapArticleTypeIcons = ->
+  return if App.Utils.kcArticleTypeIcon
+  kcOriginalIcon = App.Utils.icon
+  App.Utils.kcArticleTypeIcon = true
+  App.Utils.icon = (name, className = '') ->
+    name = KC_ARTICLE_TYPES[name].icon if name && KC_ARTICLE_TYPES.hasOwnProperty(name)
+    kcOriginalIcon.call(App.Utils, name, className)
 
 kcApplyArticleTypeLabels = ->
   try
@@ -36,5 +40,19 @@ kcApplyArticleTypeLabels = ->
   catch e
     console.warn '[KC] article type label mapping failed', e
 
-App.Event.bind('i18n:language:change', kcApplyArticleTypeLabels, 'kc-article-type-display')
-kcApplyArticleTypeLabels()
+kcArticleTypeDisplayInit = (attempt = 0) ->
+  ready = window.App?.Event?.bind && App.Utils?.icon && App.i18n?.setMap
+  if !ready
+    setTimeout((-> kcArticleTypeDisplayInit(attempt + 1)), 50) if attempt < 600
+    return
+  try
+    kcMapArticleTypeIcons()
+  catch e
+    console.warn '[KC] article type icon mapping failed', e
+  try
+    App.Event.bind('i18n:language:change', kcApplyArticleTypeLabels, 'kc-article-type-display')
+  catch e
+    console.warn '[KC] article type label event failed', e
+  kcApplyArticleTypeLabels()
+
+kcArticleTypeDisplayInit()
