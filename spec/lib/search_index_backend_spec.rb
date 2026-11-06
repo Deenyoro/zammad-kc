@@ -457,11 +457,54 @@ RSpec.describe SearchIndexBackend do
     end
   end
 
+  describe '.update_inline', searchindex: true do
+    let(:record) { create(:group, name: 'Searchable Group') }
+
+    before do
+      allow(described_class).to receive(:make_request).and_call_original
+    end
+
+    it 'makes the record searchable right away' do
+      described_class.update_inline('Group', record.search_index_attribute_lookup)
+
+      result = described_class.search_by_index('Searchable', 'Group')
+      expect(result).to eq([{ id: record.id.to_s, type: 'Group' }])
+    end
+
+    it 'uses the inline timeout profile' do
+      described_class.update_inline('Group', record.search_index_attribute_lookup)
+
+      expect(described_class).to have_received(:make_request).with(anything, hash_including(request_type: :inline))
+    end
+
+    it 'retries on version conflicts with the background job' do
+      described_class.update_inline('Group', record.search_index_attribute_lookup)
+
+      expect(described_class).to have_received(:make_request).with(a_string_including('retry_on_conflict=3'), anything)
+    end
+
+    context 'with an organization and its members' do
+      let(:record) { create(:organization) }
+      let(:member) { create(:agent, organization: record) }
+
+      before do
+        member
+        described_class.add('Organization', record.search_index_attribute_lookup)
+      end
+
+      it 'keeps attributes which are not part of the update' do
+        described_class.update_inline('Organization', record.search_index_attribute_lookup(include_references: false))
+
+        expect(described_class.get('Organization', record.id)['_source']['members']).to include(hash_including('id' => member.id))
+      end
+    end
+  end
+
   describe '.remove', searchindex: true do
 
     context 'record gets deleted' do
 
-      let(:record_type) { 'Ticket'.freeze }
+      let(:record_type)    { 'Ticket'.freeze }
       let(:deleted_record) { create(:ticket) }
 
       before do
@@ -492,6 +535,56 @@ RSpec.describe SearchIndexBackend do
 
           result = described_class.search(other_record.number, record_type, sort_by: ['updated_at'], order_by: ['desc'])
           expect(result).to eq([{ id: other_record.id.to_s, type: record_type }])
+        end
+      end
+    end
+  end
+
+  describe '.search_by_index with raise_on_failure', searchindex: true do
+    it 'finds nothing without raising, by default, where the index is missing' do
+      expect(described_class.search_by_index('test', 'MissingIndex')).to eq([])
+    end
+
+    it 'raises where the index is missing' do
+      expect { described_class.search_by_index('test', 'MissingIndex', raise_on_failure: true) }
+        .to raise_error(described_class::SearchFailedError)
+    end
+
+    it 'raises where Elasticsearch refuses the query' do
+      expect { described_class.search_by_index('laptop / email', 'Ticket', raise_on_failure: true) }
+        .to raise_error(described_class::SearchFailedError)
+    end
+
+    it 'raises where Elasticsearch cannot be reached' do
+      Setting.set('es_url', 'http://127.0.0.1:1')
+
+      expect { described_class.search_by_index('test', 'Ticket', raise_on_failure: true) }
+        .to raise_error(described_class::SearchFailedError)
+    end
+
+    it 'finds nothing without raising where the search ran' do
+      expect(described_class.search_by_index('nothing-matches-this', 'Ticket', raise_on_failure: true)).to eq([])
+    end
+
+    context 'when Elasticsearch answers with an incomplete search' do
+      {
+        'a timeout'      => { 'timed_out' => true, '_shards' => { 'failed' => 0 } },
+        'a failed shard' => { 'timed_out' => false, '_shards' => { 'failed' => 1 } },
+      }.each do |name, status|
+        context "with #{name}" do
+          before do
+            response = UserAgent::Result.new(success: true, code: 200, data: status.merge('hits' => { 'hits' => [] }))
+            allow(described_class).to receive(:make_request).and_return(response)
+          end
+
+          it 'raises' do
+            expect { described_class.search_by_index('test', 'Ticket', raise_on_failure: true) }
+              .to raise_error(described_class::SearchFailedError, include('did not complete'))
+          end
+
+          it 'finds what it got without raising, by default' do
+            expect(described_class.search_by_index('test', 'Ticket')).to eq([])
+          end
         end
       end
     end

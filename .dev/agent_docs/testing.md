@@ -4,7 +4,7 @@
 
 - Test at the **lowest level** possible — unit over request over E2E
 - Focus on the object under test, mock dependencies where it makes sense
-- Only important user stories get E2E/system tests (Capybara + Playwright)
+- Only important user stories get E2E/system tests (Playwright; legacy app via Capybara)
 - Service specs cover behavior, GraphQL specs only the GraphQL layer —
   see `.dev/agent_docs/testing_services_and_graphql.md`
 
@@ -57,6 +57,10 @@ devcontainer) is always headless and needs neither.
 TEST_BROWSER_HEADLESS=1 RAILS_ENV=test VITE_TEST_MODE=1 bundle exec rspec spec/system/path/to/file_spec.rb
 ```
 
+To prove a flaky system spec stable, loop it in CI with the push option
+`-o ci.variable="BROWSER_TEST_FILTER=spec/system/path/to/file_spec.rb"`
+(see `doc/developer_manual/cookbook/how-to-run-filtered-ci-pipelines.md`).
+
 ### Stale legacy assets
 
 System specs for the legacy (CoffeeScript) app run against the compiled
@@ -78,20 +82,46 @@ includes changes that arrived with a pull or rebase, not only your own.
 
 ### Ports of a test run
 
-The suite serves Capybara on `CAPYBARA_PORT` (default `3001`) and its websocket
-server on `WS_PORT` (default `6043`) — next to, never on, the ports of the
-development stack, so a run does not collide with a stack of the same checkout.
-Set both to run two suites side by side; they still share the `test` database,
+The suite serves Capybara on `CAPYBARA_PORT` (default `3001`), Playwright specs
+on `TEST_APP_PORT` (default `3002`) and the websocket server on `WS_PORT`
+(default `6043`) — next to, never on, the ports of the development stack, so a
+run does not collide with a stack of the same checkout. Set them to run two
+suites side by side; they still share the `test` database,
 the Redis keys and the Elasticsearch indices, so those (`DATABASE_URL`,
 `REDIS_URL`, `ES_INDEX`) need separating as well.
 
 ```bash
-CAPYBARA_PORT=3101 WS_PORT=6143 bundle exec rspec spec/system/path/to/file_spec.rb
+CAPYBARA_PORT=3101 TEST_APP_PORT=3102 WS_PORT=6143 bundle exec rspec spec/system/path/to/file_spec.rb
 ```
 
-### Capybara form helpers (new frontend stack)
+### Playwright specs (desktop view and mobile app)
 
-System tests for the Vue frontend use custom helpers to interact
+New system specs for the desktop view and the mobile app use
+`type: :playwright`: Playwright directly, without Capybara. A spec ported from
+Capybara replaces its Capybara version, never keep both.
+
+- Find elements by role and accessible name, form fields by their label —
+  `page.get_by_role('button', name: 'Create', exact: true)`. No CSS classes,
+  ids or `data-test-id`; a missing accessible name is an app bug.
+- Open the app with `open_desktop(route)` or `open_mobile(route)`; another tab
+  with `open_tab`, the helpers act on it inside `on_tab(tab) { … }`.
+- Page areas: `main_content`, `page_navigation`, `main_sidebar`,
+  `content_sidebar`, `flyout(title)`, `notification(text)`, `table_rows(caption)`.
+- Forms: `fill_field`, `select_option`, `search_for_option` (autocomplete and
+  tree select), `selected_options`, all with `within:`. They wait for the form
+  updater themselves — never count form updater calls. `sign_in` fills the
+  login form for `authenticated_as: false`.
+- `have_text` is the whole text, `contain_text` a part; negations are
+  `not_contain_text` etc. Compare plain Ruby arrays with `eq([])`, Playwright's
+  matchers take over `be_empty`.
+- Regular expressions anchor with `^`/`$`, not `\A`/`\z`.
+
+Support code: `spec/support/playwright/`. Full reference:
+`doc/developer_manual/cookbook/how-to-test-with-playwright.md`
+
+### Capybara form helpers (legacy specs)
+
+System tests still on Capybara use custom helpers to interact
 with FormKit-based fields:
 
 ```ruby
@@ -149,9 +179,35 @@ GraphQL requests are mocked via the auto mocker. Activate it by
 importing `#tests/graphql/builders/mocks.ts` or by importing a
 `.mocks.ts` file next to a GraphQL operation.
 
-Cypress is only used when pure Node.js testing is not possible
-(e.g. the editor). See
-`doc/developer_manual/cookbook/how-to-test-with-vitest-and-cypress.md`.
+### Browser specs (Vitest browser mode)
+
+`*.browser.spec.ts` files run in Chromium through Vitest's Playwright
+provider, not in jsdom. `vitest.config.mjs` defines both suites as projects:
+`unit` (jsdom, `pnpm test`) and `browser` (`pnpm test:browser`). The browser always runs
+in a Playwright server container, also locally, so that reference
+screenshots (`__screenshots__/`) are the same for everyone:
+
+```bash
+pnpm playwright:server                                # once, does not exit
+pnpm test:browser --run app/frontend/path/to/file.browser.spec.ts
+```
+
+`PLAYWRIGHT_SERVER_URL` points to another server (CI, the `with-playwright`
+devcontainer). A missing reference screenshot is created and fails the test;
+`--update` records changed ones again. Mount with
+`#tests/browser/utils.ts` and find elements through `page` from
+`vitest/browser`. Pass `config` and `permissions` to `mountComponent` before
+mounting, and answer HTTP requests with a fixture from
+`tests/browser/fixtures/` via `routeRequest` (it unroutes after the test), or
+fail them with `{ networkError: true }`.
+GraphQL operations are automocked as in the unit specs: the generated
+`*.mocks.ts` helpers (`mockXQuery`, `waitForXQueryCalls`,
+`getXSubscriptionHandler`) work in both projects.
+
+To prove a flaky browser spec stable, loop it in CI with the push option
+`-o ci.variable="VITEST_BROWSER_TEST_FILTER=file.browser.spec.ts"`, and
+optionally `VITEST_BROWSER_TEST_NAME_PATTERN` for `-t` (see
+`doc/developer_manual/cookbook/how-to-run-filtered-ci-pipelines.md`).
 
 ### Vitest utils
 

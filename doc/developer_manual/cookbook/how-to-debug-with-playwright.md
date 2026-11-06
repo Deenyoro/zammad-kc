@@ -28,10 +28,11 @@ pnpm exec playwright install firefox
 ### In the Devcontainer
 
 The `with-playwright` stack runs a Playwright browser server next to the devcontainer and points the tests at it via
-`PLAYWRIGHT_SERVER_URL`, so nothing has to be installed there. Its browsers are always headless.
+`PLAYWRIGHT_SERVER_URL`, so nothing has to be installed there. Its browsers are always headless, and the stack also comes
+with built-in debugging tools, so it's not needed to run the commands above.
 
-In the other stacks the browser is launched inside the devcontainer itself, so the download above is needed there as
-well. The devcontainer image does not ship Chromium's shared libraries, and `playwright install` refuses to continue
+However, in the other stacks the browser is launched inside the devcontainer itself, so the download above is needed there
+as well. The devcontainer image does not ship Chromium's shared libraries, and `playwright install` refuses to continue
 without them:
 
 ```text
@@ -44,7 +45,7 @@ Please install them with the following command:
 Install them once, then download the browser:
 
 ```sh
-sudo "$(pnpm bin)/playwright" install-deps chromium
+sudo env PATH="$PATH" pnpm playwright install-deps chrome-for-testing
 pnpm playwright:install
 ```
 
@@ -125,6 +126,19 @@ described above.
 
 CI does not use the local browsers - it talks to the `zammad-playwright` service container via `PLAYWRIGHT_SERVER_URL`.
 
+## Remote Debugging via Chromium DevTools
+
+The devcontainer Playwright stack also provides an out-of-the-box live view of the headless browser via DevTools. Headless
+Chromium can stream its screen to Chrome DevTools without any X server. The debugging port is automatically forwarded at
+`9222` to the host. On your host open `chrome://inspect`, add `localhost:9222` under "Configure...", and click "inspect"
+on the page. You get a live screencast and can interact with it. Pause the spec with `binding.pry` or a `sleep` to look
+around. The devcontainer sets `PLAYWRIGHT_REMOTE_DEBUGGING_PORT=9222` for this; set it yourself to get the same outside
+of it.
+
+Chromium binds that port on `127.0.0.1` and, once that is taken, on `::1` if IPv6 is available. When neither is free, the
+launch of the next browser hangs until it times out. Run a single spec file at a time, and unset the variable for specs
+that open more browser sessions (`using_session`).
+
 ## Version Lockstep
 
 The `playwright` npm package, the `PLAYWRIGHT_VERSION` CI variable and the `playwright-ruby-client` gem have to be on
@@ -142,7 +156,8 @@ Bumping the gem therefore also means bumping `package.json` and the CI variable 
 
 | File | Purpose |
 | --- | --- |
-| `spec/support/capybara/playwright_driver.rb` | Driver registration, browser and context options, version check |
+| `spec/support/playwright/browser.rb` | Browser launch and server connection, launch options, version check |
+| `spec/support/capybara/playwright_driver.rb` | Driver registration, context options |
 | `spec/support/capybara/playwright_traces.rb` | Trace recording and the keep-on-failure logic |
 | `spec/support/capybara/playwright_driver_patches.rb` | Compensations for gaps in `capybara-playwright-driver` |
 

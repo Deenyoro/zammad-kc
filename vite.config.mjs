@@ -1,10 +1,8 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-/// <reference types="vitest/config" />
-
 import { createRequire } from 'module'
 import { readFileSync } from 'node:fs'
-import { resolve, dirname, join } from 'node:path'
+import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { homedir } from 'os'
 
@@ -41,7 +39,7 @@ const hmrClientOptions = () => {
 }
 
 export default defineConfig(async ({ mode, command }) => {
-  const isTesting = ['test', 'cypress'].includes(mode)
+  const isTesting = mode === 'test'
   const isBuild = command === 'build'
 
   const require = createRequire(import.meta.url)
@@ -127,7 +125,6 @@ export default defineConfig(async ({ mode, command }) => {
             const manualChunksMap = {
               lodash: ['lodash-es'],
               vue: ['vue', 'vue-router', 'pinia'],
-              datepicker: ['@vuepic/vue-datepicker'],
               linkifyjs: ['linkifyjs', 'linkify-string'],
               graphql: [
                 'graphql',
@@ -138,6 +135,7 @@ export default defineConfig(async ({ mode, command }) => {
                 'graphql-tag',
                 '@apollo/client',
                 '@vue/apollo-composable',
+                'rxjs',
                 '@rails/actioncable',
               ],
               formkit: [
@@ -201,55 +199,6 @@ export default defineConfig(async ({ mode, command }) => {
     define: {
       VITE_TEST_MODE:
         isEnvBooleanSet(process.env.VITEST) || isEnvBooleanSet(process.env.VITE_TEST_MODE),
-    },
-    test: {
-      globals: true,
-      // narrowing down test folder speeds up fast-glob in Vitest
-      root: './app/frontend',
-      setupFiles: ['./tests/vitest.setup.ts'],
-      environment: 'jsdom',
-      pool: 'vmForks',
-      env: {
-        SA11Y_RULESET: 'full',
-      },
-      clearMocks: true,
-      css: false,
-      testTimeout: isEnvBooleanSet(process.env.CI) ? 30_000 : 5_000,
-      unstubGlobals: true,
-      // Persistent cache between reruns, invalidates if any dependency is updated.
-      // Vitest doesn't cache files with `import.meta.glob` inside, so it might be a good
-      // idea to put them all inside as few files as possible just for a small perf boost.
-      // The perf difference is noticeable when running a single/few tests, but has
-      // negligible impact when running the whole suite due to parallelisation.
-      fsModuleCache: true,
-      // Node v25+ enables experimental webstorage by default (stability: release candidate).
-      // Without --localstorage-file, Node provides localStorage as an empty object (no methods).
-      // This conflicts with jsdom's full localStorage implementation needed for tests.
-      ...(parseInt(process.versions.node, 10) >= 25
-        ? { execArgv: ['--no-experimental-webstorage'] }
-        : {}),
-      onConsoleLog(log) {
-        if (
-          log.includes('Not implemented: navigation') ||
-          log.includes('<Suspense> is an experimental feature')
-        )
-          return false
-      },
-      // perf improvements
-      server: {
-        deps: {
-          // vue-datepicker imports from date-fns and we don't want it to import ES version
-          inline: ['@vuepic/vue-datepicker'],
-        },
-      },
-      alias: [
-        // ESM version of date-fns exports a lot of extra files which takes 500ms to load on M4 Mac
-        // CJS version takes ~175ms which is also a lot, but not as much
-        {
-          find: /^date-fns$/,
-          replacement: join(dirname(require.resolve('date-fns/package.json')), 'index.cjs'),
-        },
-      ],
     },
     plugins,
   }

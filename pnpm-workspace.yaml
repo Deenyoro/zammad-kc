@@ -7,10 +7,15 @@ minimumReleaseAgeExclude:
   - '@vitest/mocker@5.0.0'
   - '@vitest/spy@5.0.0'
   - vitest@5.0.0
+  - '@vue/apollo-composable@5.0.0-beta.1'
 overrides:
-  '@sa11y/vitest>vitest': ^5.0.5
+  '@sa11y/vitest>vitest': ^5.1.0
   'lightningcss': ^1.33.0
 permissions:
   fallow:
     skills: false
 verifyDepsBeforeRun: false
+peerDependencyRules:
+  allowedVersions:
+    # @vue/apollo-composable 5.0.0-beta.1 declares @vueuse/core ^14; the repo is on 15.
+    '@vue/apollo-composable>@vueuse/core': '15'
