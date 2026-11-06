@@ -1,9 +1,13 @@
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { NetworkStatus } from '@apollo/client/core'
-import { useLazyQuery, useQuery } from '@vue/apollo-composable'
+import { ApolloClient, ApolloLink, InMemoryCache, NetworkStatus } from '@apollo/client'
+import { relayStylePagination } from '@apollo/client/utilities'
+import { provideApolloClient, useLazyQuery, useQuery } from '@vue/apollo-composable/compat'
+import gql from 'graphql-tag'
 import { createMockSubscription } from 'mock-apollo-client'
-import { effectScope } from 'vue'
+import { Observable } from 'rxjs'
+import { onTestFinished } from 'vitest'
+import { effectScope, ref } from 'vue'
 
 import {
   SampleTypedQueryDocument,
@@ -22,8 +26,10 @@ import { GraphQLErrorTypes } from '#shared/types/error.ts'
 
 import QueryHandler from '../QueryHandler.ts'
 
-import type { ApolloError, ApolloQueryResult } from '@apollo/client/core'
+import type { ErrorLike } from '@apollo/client'
+import type { ApolloQueryResultV4 } from '@vue/apollo-composable/compat'
 import type { IMockSubscription } from 'mock-apollo-client'
+import type { Mock } from 'vitest'
 
 const queryFunctionCallSpy = vi.fn()
 
@@ -85,7 +91,7 @@ const mockClient = (error = false, errorType = 'GraphQL') => {
 }
 
 const waitFirstResult = (queryHandler: QueryHandler<any, any>) =>
-  new Promise<ApolloQueryResult<any> | ApolloError>((resolve) => {
+  new Promise<ApolloQueryResultV4<any> | ErrorLike>((resolve) => {
     queryHandler.onResult((res) => {
       if (res.data) {
         resolve(res)
@@ -174,20 +180,25 @@ describe('QueryHandler', () => {
 
     it('supports lazy queries', async () => {
       await scope.run(async () => {
-        expect.assertions(3)
+        expect.assertions(4)
 
         const queryHandlerObject = new QueryHandler(sampleLazyQuery({ id: 1 }))
 
         expect(queryHandlerObject.loading().value).toBe(false)
+
+        handlerCallSpy.mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              setTimeout(() => resolve({ data: querySampleResult }), 10)
+            }),
+        )
 
         queryHandlerObject.load()
         await waitForNextTick()
 
         expect(queryHandlerObject.loading().value).toBe(true)
 
-        await queryHandlerObject.query()
-
-        expect(queryHandlerObject.loading().value).toBe(false)
+        await vi.waitFor(() => expect(queryHandlerObject.loading().value).toBe(false))
       })
     })
   })
@@ -270,6 +281,91 @@ describe('QueryHandler', () => {
         await waitForNextTick()
 
         expect(resultCallbackSpy).toHaveBeenCalledTimes(callbackCountBeforeOff)
+      })
+    })
+
+    it('does not call the onResult callback when a refetch fails', async () => {
+      onTestFinished(() => useNotifications().clearAllNotifications())
+
+      await scope.run(async () => {
+        const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }))
+        const resultCallbackSpy = vi.fn()
+
+        queryHandlerObject.onResult((result) => resultCallbackSpy(result))
+
+        await waitFirstResult(queryHandlerObject)
+
+        expect(resultCallbackSpy).toHaveBeenCalledTimes(1)
+
+        handlerCallSpy.mockImplementation(() => Promise.resolve(querySampleErrorResult))
+
+        await queryHandlerObject.refetch()
+        await waitForNextTick()
+
+        expect(resultCallbackSpy).toHaveBeenCalledTimes(1)
+        expect(queryHandlerObject.operationError().value).toBeTruthy()
+      })
+    })
+
+    it('does not call the onResult callback before the first data arrives', async () => {
+      await scope.run(async () => {
+        handlerCallSpy.mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              setTimeout(() => resolve({ data: querySampleResult }), 10)
+            }),
+        )
+
+        const queryHandlerObject = new QueryHandler(sampleLazyQuery({ id: 1 }))
+        const resultCallbackSpy = vi.fn()
+
+        queryHandlerObject.onResult((result) => resultCallbackSpy(result))
+
+        queryHandlerObject.load()
+        await waitForNextTick()
+
+        expect(queryHandlerObject.loading().value).toBe(true)
+        expect(resultCallbackSpy).not.toHaveBeenCalled()
+
+        await vi.waitFor(() => expect(resultCallbackSpy).toHaveBeenCalledTimes(1))
+      })
+    })
+
+    it('does not repeat the previous result while a refetch is loading', async () => {
+      await scope.run(async () => {
+        const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }))
+        const resultCallbackSpy = vi.fn()
+
+        queryHandlerObject.onResult((result) => resultCallbackSpy(result))
+
+        await waitFirstResult(queryHandlerObject)
+
+        expect(resultCallbackSpy).toHaveBeenCalledTimes(1)
+
+        const refetchedSampleResult = {
+          Sample: { ...querySampleResult.Sample, title: 'Refetched Title' },
+        }
+
+        handlerCallSpy.mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              setTimeout(() => resolve({ data: refetchedSampleResult }), 10)
+            }),
+        )
+
+        const refetch = queryHandlerObject.refetch()
+        await waitForNextTick()
+
+        expect(queryHandlerObject.loading().value).toBe(true)
+        expect(resultCallbackSpy).toHaveBeenCalledTimes(1)
+
+        await refetch
+        await waitForNextTick()
+
+        expect(resultCallbackSpy).toHaveBeenCalledTimes(2)
+        expect(resultCallbackSpy).toHaveBeenLastCalledWith(
+          expect.objectContaining({ data: refetchedSampleResult }),
+        )
       })
     })
 
@@ -356,23 +452,71 @@ describe('QueryHandler', () => {
         })
       })
 
-      it('refetch with error', async () => {
+      it('refetch with error resolves with the error instead of rejecting', async () => {
         await scope.run(async () => {
-          expect.assertions(1)
           const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }))
-
-          const errorCallbackSpy = vi.fn()
 
           await waitFirstResult(queryHandlerObject)
 
           // Refetch after first load again.
-          await queryHandlerObject.refetch().catch((error) => {
-            errorCallbackSpy(error)
-          })
+          const { data, error } = await queryHandlerObject.refetch()
 
-          expect(errorCallbackSpy).toHaveBeenCalled()
+          expect(data).toBeNull()
+          expect(error).toBe(queryHandlerObject.operationError().value)
+          expect(error).toBeTruthy()
         })
       })
+
+      it('reports a failed lazy load without an unhandled rejection', async () => {
+        await scope.run(async () => {
+          const queryHandlerObject = new QueryHandler(sampleLazyQuery({ id: 1 }))
+
+          queryHandlerObject.load()
+
+          await vi.waitFor(() => expect(queryHandlerObject.operationError().value).toBeTruthy())
+        })
+      })
+    })
+
+    describe('fetchMore and refetch after a successful first page', () => {
+      beforeEach(() => {
+        mockClient()
+      })
+
+      it.each([
+        ['fetchMore', 'GraphQL', GraphQLErrorTypes.UnknownError],
+        ['fetchMore', 'NetworkError', GraphQLErrorTypes.NetworkError],
+        ['refetch', 'GraphQL', GraphQLErrorTypes.UnknownError],
+        ['refetch', 'NetworkError', GraphQLErrorTypes.NetworkError],
+      ] as const)(
+        'reports a failed %s with a %s error once and resolves with it',
+        async (method, errorType, expectedType) => {
+          await scope.run(async () => {
+            const errorCallback = vi.fn()
+            const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }), { errorCallback })
+
+            await waitFirstResult(queryHandlerObject)
+
+            handlerCallSpy.mockImplementation(() =>
+              errorType === 'GraphQL'
+                ? Promise.resolve(querySampleErrorResult)
+                : Promise.reject(querySampleNetworkErrorResult),
+            )
+
+            const { data, error } =
+              method === 'fetchMore'
+                ? await queryHandlerObject.fetchMore({})
+                : await queryHandlerObject.refetch()
+
+            expect(data).toBeNull()
+            expect(error).toBeTruthy()
+            expect(errorCallback).toHaveBeenCalledOnce()
+            expect(errorCallback).toHaveBeenCalledWith(
+              expect.objectContaining({ type: expectedType }),
+            )
+          })
+        },
+      )
     })
 
     describe('Network errors', () => {
@@ -414,7 +558,102 @@ describe('QueryHandler', () => {
       await scope.run(async () => {
         const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }))
 
-        await expect(queryHandlerObject.fetchMore({})).resolves.toEqual(querySampleResult)
+        await expect(queryHandlerObject.fetchMore({})).resolves.toEqual({ data: querySampleResult })
+      })
+    })
+  })
+
+  describe('fetchMore with a pagination field policy', () => {
+    const ItemsDocument = gql`
+      query items($pageSize: Int!, $cursor: String) {
+        items(first: $pageSize, after: $cursor) {
+          edges {
+            cursor
+            node {
+              id
+            }
+          }
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+        }
+      }
+    `
+
+    const itemsPage = (cursor?: string) => {
+      const start = Number(cursor ?? 0)
+
+      return {
+        items: {
+          __typename: 'ItemConnection',
+          edges: Array.from({ length: 10 }, (_, index) => ({
+            __typename: 'ItemEdge',
+            cursor: String(start + index + 1),
+            node: { __typename: 'Item', id: String(start + index + 1) },
+          })),
+          pageInfo: {
+            __typename: 'PageInfo',
+            endCursor: String(start + 10),
+            hasNextPage: start === 0,
+          },
+        },
+      }
+    }
+
+    // Answers like the server, a macrotask later, so the merged page reaches the query the way it
+    //   does in the browser.
+    const requestedCursors: unknown[] = []
+
+    beforeEach(() => {
+      requestedCursors.length = 0
+
+      provideApolloClient(
+        new ApolloClient({
+          link: new ApolloLink(
+            (operation) =>
+              new Observable((observer) => {
+                requestedCursors.push(operation.variables.cursor)
+
+                setTimeout(() => {
+                  observer.next({ data: itemsPage(operation.variables.cursor) })
+                  observer.complete()
+                })
+              }),
+          ),
+          cache: new InMemoryCache({
+            typePolicies: { Query: { fields: { items: relayStylePagination() } } },
+          }),
+          devtools: { enabled: false },
+        }),
+      )
+    })
+
+    // An infinite scroll asks for the next page as soon as the previous one resolved, and still
+    //   sitting at the bottom is all it goes by. Resolving ahead of the merged page made it ask for
+    //   the same page over and over, each request dropping the page before.
+    it('resolves once the merged page is in the result', async () => {
+      await scope.run(async () => {
+        const queryHandlerObject = new QueryHandler(
+          useQuery<ReturnType<typeof itemsPage>, { pageSize: number; cursor?: string }>(
+            ItemsDocument,
+            { pageSize: 10 },
+            { fetchPolicy: 'cache-first' },
+          ),
+        )
+
+        await vi.waitFor(() =>
+          expect(queryHandlerObject.result().value?.items.edges).toHaveLength(10),
+        )
+
+        await queryHandlerObject.fetchMore({ variables: { cursor: '10' } })
+
+        expect(queryHandlerObject.result().value?.items.edges).toHaveLength(20)
+
+        await queryHandlerObject.fetchMore({ variables: { cursor: '20' } })
+
+        expect(queryHandlerObject.result().value?.items.edges).toHaveLength(30)
+        expect(requestedCursors).toEqual([undefined, '10', '20'])
       })
     })
   })
@@ -422,24 +661,19 @@ describe('QueryHandler', () => {
   describe('subscribeToMore', () => {
     let mockSubscription: IMockSubscription
 
+    // Records how often, and with which variables, a subscription was opened.
+    let subscriptionHandlerSpy: Mock<(variables: unknown) => IMockSubscription>
+
     // Every example gets its own scope, so that the subscription of one does not
     //  receive the error of the next one.
     let subscriptionScope: ReturnType<typeof effectScope>
 
-    // Apollo only logs an unhandled subscription error when its development
-    //  diagnostics are on, which the test setup switches off globally. Turn them
-    //  on for the error itself only - a client constructed with them on would
-    //  schedule the devtools suggestion timer (see 'tests/vitest.setup.ts').
+    // Apollo logs an unhandled subscription error itself; capture it instead of
+    //  letting it fail the test.
     const withDevelopmentDiagnostics = (emitError: () => void) => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-      ;(globalThis as any).__DEV__ = true
-
-      try {
-        emitError()
-      } finally {
-        ;(globalThis as any).__DEV__ = false
-      }
+      emitError()
 
       return consoleErrorSpy
     }
@@ -459,15 +693,41 @@ describe('QueryHandler', () => {
       ...options,
     })
 
+    // Each opened subscription gets its own mock, so that an emission can be
+    //  routed to a specific one of them.
+    const trackOpenedSubscriptions = () => {
+      const openedSubscriptions: IMockSubscription[] = []
+
+      subscriptionHandlerSpy.mockImplementation(() => {
+        const subscription = createMockSubscription()
+        openedSubscriptions.push(subscription)
+        return subscription
+      })
+
+      return openedSubscriptions
+    }
+
+    const sampleUpdatedResult = {
+      data: {
+        sampleUpdated: {
+          __typename: 'Sample',
+          id: 1,
+          title: 'Updated Title',
+          text: 'Updated Text',
+        },
+      },
+    }
+
     beforeEach(() => {
       mockSubscription = createMockSubscription()
+      subscriptionHandlerSpy = vi.fn(() => mockSubscription)
 
       mockClient()
 
       createMockClient([
         {
           operationDocument: SampleTypedSubscriptionDocument,
-          handler: () => mockSubscription,
+          handler: subscriptionHandlerSpy,
         },
       ])
 
@@ -601,6 +861,116 @@ describe('QueryHandler', () => {
           message: 'Authentication required',
         })
         expect(newNotifications()).toBe(0)
+      })
+    })
+
+    it('re-subscribes with the new options when the reactive options change', async () => {
+      await subscriptionScope.run(async () => {
+        const openedSubscriptions = trackOpenedSubscriptions()
+
+        const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }))
+
+        const subscriptionId = ref(1)
+        const updateQuerySpy = vi.fn()
+
+        queryHandlerObject.subscribeToMore<SampleUpdatedSubscriptionVariables>(() =>
+          subscribeToMoreOptions({
+            variables: { id: subscriptionId.value },
+            updateQuery: updateQuerySpy,
+          }),
+        )
+
+        expect(subscriptionHandlerSpy).toHaveBeenCalledTimes(1)
+        expect(subscriptionHandlerSpy).toHaveBeenLastCalledWith({ id: 1 })
+
+        subscriptionId.value = 2
+        await waitForNextTick()
+
+        expect(subscriptionHandlerSpy).toHaveBeenCalledTimes(2)
+        expect(subscriptionHandlerSpy).toHaveBeenLastCalledWith({ id: 2 })
+
+        openedSubscriptions[0].next(sampleUpdatedResult)
+
+        expect(updateQuerySpy).not.toHaveBeenCalled()
+
+        openedSubscriptions[1].next(sampleUpdatedResult)
+
+        expect(updateQuerySpy).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    it('subscribes a lazy query only once it was loaded', async () => {
+      await subscriptionScope.run(async () => {
+        const queryHandlerObject = new QueryHandler(sampleLazyQuery({ id: 1 }))
+
+        queryHandlerObject.subscribeToMore<SampleUpdatedSubscriptionVariables>(
+          subscribeToMoreOptions(),
+        )
+
+        expect(subscriptionHandlerSpy).not.toHaveBeenCalled()
+
+        queryHandlerObject.load()
+        await waitForNextTick()
+
+        expect(subscriptionHandlerSpy).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    it('re-subscribes when the query is restarted', async () => {
+      await subscriptionScope.run(async () => {
+        const openedSubscriptions = trackOpenedSubscriptions()
+
+        const queryHandlerObject = new QueryHandler(sampleQuery({ id: 1 }))
+
+        const updateQuerySpy = vi.fn()
+
+        queryHandlerObject.subscribeToMore<SampleUpdatedSubscriptionVariables>(
+          subscribeToMoreOptions({ updateQuery: updateQuerySpy }),
+        )
+
+        expect(subscriptionHandlerSpy).toHaveBeenCalledTimes(1)
+
+        queryHandlerObject.stop()
+        queryHandlerObject.start()
+        await waitForNextTick()
+
+        expect(subscriptionHandlerSpy).toHaveBeenCalledTimes(2)
+
+        openedSubscriptions[0].next(sampleUpdatedResult)
+
+        expect(updateQuerySpy).not.toHaveBeenCalled()
+
+        openedSubscriptions[1].next(sampleUpdatedResult)
+
+        expect(updateQuerySpy).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    it('hands null to updateQuery while the cache holds no result yet', async () => {
+      await subscriptionScope.run(async () => {
+        handlerCallSpy.mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              setTimeout(() => resolve({ data: querySampleResult }), 10)
+            }),
+        )
+
+        const queryHandlerObject = new QueryHandler(sampleQuery({ id: 4711 }))
+        const updateQuerySpy = vi.fn()
+
+        queryHandlerObject.subscribeToMore<SampleUpdatedSubscriptionVariables>(
+          subscribeToMoreOptions({ updateQuery: updateQuerySpy }),
+        )
+
+        mockSubscription.next(sampleUpdatedResult)
+
+        // Apollo Client 3 passed an empty object here.
+        expect(updateQuerySpy).toHaveBeenCalledWith(
+          null,
+          expect.objectContaining({ complete: false, previousData: null }),
+        )
+
+        await vi.waitFor(() => expect(queryHandlerObject.result().value).toBeTruthy())
       })
     })
   })

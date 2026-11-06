@@ -395,6 +395,25 @@ RSpec.describe 'Settings', type: :request do
       expect(response).to have_http_status(:forbidden)
     end
 
+    context 'when the SSO setting is updated', authenticated_as: :admin do
+      let(:setting) { Setting.find_by(name: 'auth_sso') }
+
+      it 'updates the setting' do
+        expect { put "/api/v1/settings/#{setting.id}", params: { id: setting.id, state_current: { value: true } }, as: :json }
+          .to change { Setting.get('auth_sso') }.to(true)
+      end
+
+      context 'when running as an online service' do
+        before { Setting.set('system_online_service', true) }
+
+        it 'can not update the setting', :aggregate_failures do
+          expect { put "/api/v1/settings/#{setting.id}", params: { id: setting.id, state_current: { value: true } }, as: :json }
+            .not_to change { Setting.get('auth_sso') }
+          expect(response).to have_http_status(:forbidden)
+        end
+      end
+    end
+
     context 'when reset is used', authenticated_as: :admin do
       it 'can not reset protected setting', :aggregate_failures do
         setting = Setting.find_by(name: 'application_secret')
@@ -414,6 +433,35 @@ RSpec.describe 'Settings', type: :request do
         expect(json_response).to be_a(Hash)
         expect(json_response['state_current']).to eq(setting[:state_initial])
       end
+    end
+  end
+
+  describe 'MCP server switch' do
+    let(:setting) { Setting.find_by(name: 'api_mcp_access') }
+    let(:admin_branding) do
+      role = create(:role)
+      role.permission_grant('admin.branding')
+
+      create(:admin_only, roles: [role])
+    end
+
+    def switch_on
+      put "/api/v1/settings/#{setting.id}", params: { state_current: { value: true } }, as: :json
+    end
+
+    it 'is changed with the API permission', authenticated_as: :admin_api do
+      expect { switch_on }.to change { Setting.get('api_mcp_access') }.from(false).to(true)
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'is not changed with another admin permission', authenticated_as: :admin_branding do
+      expect { switch_on }.not_to change { Setting.get('api_mcp_access') }
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it 'is not changed by an agent', authenticated_as: :agent do
+      expect { switch_on }.not_to change { Setting.get('api_mcp_access') }
+      expect(response).to have_http_status(:forbidden)
     end
   end
 

@@ -1,6 +1,9 @@
 # Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class SearchIndexBackend
+  # Raised by a search that asks for it with :raise_on_failure, where Elasticsearch did not run it: a missing index, a
+  #   query it cannot parse, no answer. Without the option, such a search logs the error and finds nothing.
+  class SearchFailedError < StandardError; end
 
   SUPPORTED_ES_VERSION_MINIMUM   = '8.15.0'.freeze
   SUPPORTED_ES_VERSION_LESS_THAN = '10'.freeze
@@ -163,6 +166,22 @@ add new object to search index
     return if url.blank?
 
     make_request_and_validate(url, data: data, method: :post)
+  end
+
+=begin
+
+update the given attributes of an object in the search index right away, the object is
+searchable when the call returns and attributes which are not given stay as they are
+
+  SearchIndexBackend.update_inline('Ticket', some_data_object)
+
+=end
+
+  def self.update_inline(type, data)
+    url = build_url(type: type, action: '_update', object_id: data['id'], with_pipeline: false, with_document_type: false, url_params: { refresh: 'wait_for', retry_on_conflict: 3 })
+    return if url.blank?
+
+    make_request_and_validate(url, data: { doc: data, doc_as_upsert: true }, method: :post, request_type: :inline)
   end
 
 =begin
@@ -441,14 +460,19 @@ remove whole data from index
     data = if response.success?
              Array.wrap(response.data&.dig('hits', 'hits'))
            else
-             Rails.logger.error humanized_error(
+             error = humanized_error(
                verb:     'GET',
                url:      url,
                payload:  query_data,
                response: response,
              )
+             raise SearchFailedError, error if options[:raise_on_failure]
+
+             Rails.logger.error error
              []
            end
+
+    raise_incomplete_search(response, url) if options[:raise_on_failure]
 
     data.map! do |item|
       Rails.logger.debug { "... #{item['_type']} #{item['_id']}" }
@@ -827,7 +851,7 @@ helper method for making HTTP calls
 @param url [String] url
 @option params [Hash] :data is a payload hash
 @option params [Symbol] :method is a HTTP method
-@option params [Symbol] :request_type selects the timeout profile; use `:reindex` for long-running reindex operations
+@option params [Symbol] :request_type selects the timeout profile; use `:reindex` for long-running reindex operations and `:inline` for index writes inside request paths
 
 @return UserAgent response
 
@@ -857,12 +881,27 @@ helper method for making HTTP calls
     response
   end
 
+  # Elasticsearch answers a search that timed out or failed on a shard with success and the hits it got, which may be
+  #   none at all.
+  def self.raise_incomplete_search(response, url)
+    timed_out     = response.data&.dig('timed_out') == true
+    failed_shards = response.data&.dig('_shards', 'failed').to_i
+    return if !timed_out && failed_shards.zero?
+
+    raise SearchFailedError, "Elasticsearch did not complete the search at #{url}: timed out #{timed_out}, failed shards #{failed_shards}."
+  end
+
   def self.timeouts_for(request_type)
     case request_type
     when :reindex
       [
         ENV.fetch('ZAMMAD_HTTP_ELASTICSEARCH_REINDEX_READ_TIMEOUT', 600).to_i,
         ENV.fetch('ZAMMAD_HTTP_ELASTICSEARCH_REINDEX_TOTAL_TIMEOUT', 600).to_i,
+      ]
+    when :inline
+      [
+        ENV.fetch('ZAMMAD_HTTP_ELASTICSEARCH_INLINE_READ_TIMEOUT', 3).to_i,
+        ENV.fetch('ZAMMAD_HTTP_ELASTICSEARCH_INLINE_TOTAL_TIMEOUT', 3).to_i,
       ]
     else
       [

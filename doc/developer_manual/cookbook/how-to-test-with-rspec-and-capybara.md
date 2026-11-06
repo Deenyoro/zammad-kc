@@ -48,6 +48,9 @@ bundle exec rspec --only-failures spec/system/ticket/zoom_spec.rb
 The browsers are driven by Playwright, which needs a one-time browser download and records a trace of every example to
 debug a failing browser test. See [How to debug system tests with Playwright](how-to-debug-with-playwright.md).
 
+To check whether a flaky system test is stable, loop it in CI, see
+[How to run filtered CI pipelines](how-to-run-filtered-ci-pipelines.md#loop-a-system-test).
+
 ## Ports Used by a Test Run
 
 A run claims two ports, both taken from the environment. Their defaults sit
@@ -310,8 +313,8 @@ find_radio('articleSenderType').select_choice('Outbound Call')
 
 find_datepicker('Date Picker').select_date(Date.tomorrow)
 find_datepicker('Pending till').select_datetime('2023-01-01T09:00:00.000Z')
-find_datepicker('Date').type_date(Date.today)
-find_datepicker('Date Time').type_datetime(DateTime.now)
+find_datepicker('Date').type_date(Date.today) # desktop view only
+find_datepicker('Date Time').type_datetime(DateTime.now) # desktop view only
 
 find_select('Owner').select_option('Test Admin Agent')
 find_select('Multi Select').select_options(['Option 1', 'Option 2'])

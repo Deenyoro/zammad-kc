@@ -396,6 +396,11 @@ RSpec.describe 'Sessions endpoints', type: :request do
         before { Setting.set('maintenance_mode', true) }
 
         include_examples 'refusing the login with 403 Forbidden'
+
+        it 'does not update the last login' do
+          expect { get '/auth/sso', as: :json, headers: { 'X-Forwarded-User' => login } }
+            .not_to change { user.reload.last_login }
+        end
       end
 
       context 'in Import Mode' do
@@ -446,6 +451,22 @@ RSpec.describe 'Sessions endpoints', type: :request do
         it 'sets the :user_id session parameter on the client' do
           expect { get '/auth/sso', as: :json, headers: headers }
             .to change { request&.session&.fetch(:user_id) }.to(user.id)
+        end
+
+        it 'updates the last login' do
+          freeze_time
+
+          expect { get '/auth/sso', as: :json, headers: headers }
+            .to change { user.reload.last_login }.from(nil).to(Time.zone.now)
+        end
+
+        context 'with failed logins before' do
+          let(:user) { create(:agent, login_failed: 2) }
+
+          it 'resets the failed logins' do
+            expect { get '/auth/sso', as: :json, headers: headers }
+              .to change { user.reload.login_failed }.from(2).to(0)
+          end
         end
       end
     end
@@ -635,6 +656,52 @@ RSpec.describe 'Sessions endpoints', type: :request do
       it 'falls back to the SessionHelper.cleanup_expired cap' do
         expect { get '/auth/github/callback' }
           .to change { request && request.env['rack.session.options'][:expire_after] }.to(SessionHelper::MAX_SESSION_LIFETIME)
+      end
+    end
+
+    # The cookie expiry is refreshed on every request, so an actively used session keeps its cookie
+    # alive together with the ping-based server-side timeout instead of expiring a fixed time after
+    # login. See https://github.com/zammad/zammad/issues/6495
+    context 'with a follow-up request after the login' do
+      before do
+        Setting.set('session_timeout', { 'default' => '0', 'ticket.agent' => 1.week.seconds.to_s })
+        get '/auth/github/callback'
+      end
+
+      it 'refreshes the browser cookie lifetime' do
+        get '/api/v1/signshow', params: { fingerprint: 'fingerprint-6495' }, as: :json
+
+        expect(request.env['rack.session.options'][:expire_after]).to eq(1.week)
+      end
+
+      it 'sends the refreshed cookie to the browser' do
+        get '/api/v1/signshow', params: { fingerprint: 'fingerprint-6495' }, as: :json
+
+        expect(response.headers['Set-Cookie']).to include('expires=')
+      end
+
+      it 'looks up the session timeout only once' do
+        allow(SessionTimeoutJob::Session).to receive(:timeout_for).and_call_original
+
+        get '/api/v1/signshow', params: { fingerprint: 'fingerprint-6495' }, as: :json
+        get '/api/v1/signshow', params: { fingerprint: 'fingerprint-6495' }, as: :json
+
+        expect(SessionTimeoutJob::Session).not_to have_received(:timeout_for)
+      end
+    end
+
+    context 'with a follow-up request after a password login' do
+      let(:user) { create(:agent, password: 'dummy') }
+
+      before do
+        Setting.set('session_timeout', { 'default' => '0', 'ticket.agent' => 1.week.seconds.to_s })
+        post '/api/v1/signin', params: { username: user.login, password: 'dummy' }, as: :json
+      end
+
+      it 'leaves the browser cookie session-only' do
+        get '/api/v1/signshow', params: { fingerprint: 'fingerprint-6495' }, as: :json
+
+        expect(request.env['rack.session.options'][:expire_after]).to be_nil
       end
     end
   end

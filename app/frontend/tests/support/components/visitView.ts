@@ -2,7 +2,7 @@
 
 // Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
-import { useApolloClient } from '@vue/apollo-composable'
+import { useApolloClient } from '@vue/apollo-composable/compat'
 import { random } from 'lodash-es'
 
 // import authenticationGuard from '#shared/router/guards/before/authentication.ts'
@@ -30,16 +30,10 @@ const isDesktop = await vi.hoisted(async () => {
   return getTestAppName() === 'desktop'
 })
 
-vi.mock('#shared/server/apollo/client.ts', async () => {
-  if (isDesktop) {
-    const { mockedApolloClient } = await import('#tests/graphql/builders/mocks.ts')
-    return {
-      clearApolloClientStore: async () => {
-        await mockedApolloClient.clearStore()
-      },
-      getApolloClient: () => mockedApolloClient,
-    }
-  }
+vi.mock('#shared/server/apollo/client.ts', async (importOriginal) => {
+  // The desktop specs get the automocked client through `setApolloClient`. Importing the mocker
+  //   here instead would wait on it while it is still importing this very module.
+  if (isDesktop) return importOriginal()
   return {
     clearApolloClientStore: () => {
       return Promise.resolve()
