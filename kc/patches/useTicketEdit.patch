@@ -1,5 +1,5 @@
 diff --git a/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts b/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts
-index 69a25e9478..c5d85f261e 100644
+index 00319915c6..6b41a22880 100644
 --- a/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts
 +++ b/app/frontend/shared/entities/ticket/composables/useTicketEdit.ts
 @@ -7,6 +7,7 @@ import { transformEditorHtml } from '#shared/components/Form/fields/FieldEditor/
@@ -7,8 +7,8 @@ index 69a25e9478..c5d85f261e 100644
  import { getNodeByName } from '#shared/components/Form/utils.ts'
  import { useCheckBodyAttachmentReference } from '#shared/composables/form/useCheckBodyAttachmentReference.ts'
 +import { useKcPreserveTextColor } from '#shared/composables/useKcPreserveTextColor.ts'
- import { useObjectAttributeFormData } from '#shared/entities/object-attributes/composables/useObjectAttributeFormData.ts'
- import { useObjectAttributes } from '#shared/entities/object-attributes/composables/useObjectAttributes.ts'
+ import { useEntityAttributeFormData } from '#shared/entities/core/attributes/composables/useEntityAttributeFormData.ts'
+ import { useEntityAttributes } from '#shared/entities/core/attributes/composables/useEntityAttributes.ts'
  import { useTicketUpdateMutation } from '#shared/entities/ticket/graphql/mutations/update.api.ts'
 @@ -124,18 +125,32 @@ export const useTicketEdit = (
      EnumObjectManagerObjects.Ticket,
@@ -70,4 +70,4 @@ index 69a25e9478..c5d85f261e 100644
 +    const article = processArticle(form.value.formId, formArticle, shouldPreserveTextColor)
  
      const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-       useObjectAttributeFormData(
+       useEntityAttributeFormData(
