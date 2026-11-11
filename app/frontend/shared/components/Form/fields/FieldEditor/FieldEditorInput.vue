@@ -6,6 +6,7 @@ import { type Editor } from '@tiptap/vue-3'
 import { useEventListener } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, toRef, useTemplateRef, watch } from 'vue'
 
+import { getButtonGroup } from '#shared/components/EntityAttributes/attributes/AttributeRichtext/initializeRichtextButtons.ts'
 import useValue from '#shared/components/Form/composables/useValue.ts'
 import { useAttachments } from '#shared/components/Form/fields/FieldEditor/composables/useAttachments.ts'
 import { useSignatureHandling } from '#shared/components/Form/fields/FieldEditor/composables/useSignatureHandling.ts'
@@ -32,7 +33,6 @@ import {
   getEditorComponents,
 } from '#shared/components/Form/initializeFieldEditor.ts'
 import type { FormFieldContext } from '#shared/components/Form/types/field.ts'
-import { getButtonGroup } from '#shared/components/ObjectAttributes/attributes/AttributeRichtext/initializeRichtextButtons.ts'
 import { useSessionStore } from '#shared/stores/session.ts'
 import { htmlCleanup } from '#shared/utils/htmlCleanup.ts'
 import testFlags from '#shared/utils/testFlags.ts'
@@ -45,6 +45,10 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+// A remounted editor of the same form and field must not count as ready before it is.
+if (VITE_TEST_MODE)
+  testFlags.clear(`${props.context.formId}.${props.context.node.name}.editor.ready`)
 
 const placeholder = props.context.placeholder
   ? props.context.placeholder
