@@ -23,14 +23,7 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
     end
 
     let(:text)    { field('Text') }
-    let(:editor)  { text.get_by_role('textbox', name: 'Text') }
     let(:toolbar) { text.get_by_role('toolbar') }
-
-    def type_text(*keys)
-      after_form_update_of(text) do
-        keys.each { |key| key.is_a?(Symbol) ? page.keyboard.press(key.to_s.capitalize) : page.keyboard.type(key) }
-      end
-    end
 
     # The body is sometimes applied to the editor once more after typing, and parsing puts
     #   the href of a link first, so the markup is compared without the attribute order.
@@ -47,7 +40,7 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
     # A toolbar button takes the focus, and the editor gets it back one animation frame later.
     def click_editor_action(label)
       toolbar.get_by_role('button', name: label, exact: true).click
-      expect(editor).to be_focused
+      expect(editor('Text')).to be_focused
     end
 
     it 'creates a new ticket' do
@@ -63,21 +56,20 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
         menu.get_by_role('button').click
       end
 
-      editor.click
-      type_text('# ', 'Heading', :enter)
+      type_in_editor('Text', '# ', 'Heading', :enter)
 
       click_editor_action('Format as bold')
-      type_text('Bold Text ', :enter)
+      type_in_editor('Text', 'Bold Text ', :enter)
       click_editor_action('Format as bold')
 
       click_editor_action('Format as italic')
-      type_text('Italic Text ', :enter)
+      type_in_editor('Text', 'Italic Text ', :enter)
 
       click_editor_action('Add bullet list')
-      type_text('Bullet List ', :enter, :enter)
+      type_in_editor('Text', 'Bullet List ', :enter, :enter)
 
       click_editor_action('Add ordered list')
-      type_text('Ordered List ', :enter, :enter)
+      type_in_editor('Text', 'Ordered List ', :enter, :enter)
 
       toolbar.get_by_role('button', name: 'Add link', exact: true).click
 
@@ -163,6 +155,34 @@ RSpec.describe 'Desktop > Ticket > Create', app: :desktop_view, authenticated_as
     it 'prefills the default values' do
       expect(field('Category').get_by_role('listitem')).to have_text([%r{^Incident › Hardware › Mouse$}])
       expect(field('Topics').get_by_role('listitem')).to have_text([%r{^Incident$}, %r{^Incident › Hardware › Mouse$}])
+    end
+  end
+
+  context 'when a core workflow sets a textarea attribute read-only', db_strategy: :reset do
+    before do
+      create(:object_manager_attribute_textarea, :shown_screen, name: 'notes', display: 'Notes', default: "Line\n" * 20)
+      ObjectManager::Attribute.migration_execute
+      create(:core_workflow,
+             :active_and_screen,
+             object:  'Ticket',
+             screen:  'create_middle',
+             perform: {
+               'ticket.notes': {
+                 operator:     'set_readonly',
+                 set_readonly: true
+               },
+             })
+
+      open_ticket_create
+    end
+
+    # The disabled wrapper turns pointer events off, the textarea has to turn them back
+    #   on, so its overflowing content stays scrollable and selectable (#6494).
+    it 'keeps the overflowing content reachable' do
+      textarea = field('Notes').get_by_role('textbox')
+
+      expect(textarea).to have_attribute('readonly', '')
+      expect(textarea).to have_css('pointer-events', 'auto')
     end
   end
 
