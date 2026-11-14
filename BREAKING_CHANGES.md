@@ -2,21 +2,55 @@
 
 ## Upcoming releases
 
-### Switching into another user's session will require the `admin.user` permission
+### The organization `shared` attribute will become a sharing mode
 
-**Who is affected?** Admins of systems that gave the `admin.session` permission to a role without
-`admin.user` and use that role to switch into other users' sessions through
-`GET /api/v1/sessions/switch/:id`.
+**Who is affected?** API clients, imports and integrations that read or write the `shared` attribute of
+organizations, create organizations without setting it, or create conditions on it.
 
-The endpoint has been permitted for users with either `admin.session` or `admin.user`. `admin.session`
-is meant for listing and ending active sessions; the "View from user's perspective" action in the user
-management already requires `admin.user`, as does impersonating a user through the `From` (formerly
-`X-On-Behalf-Of`) header. Starting with Zammad 7.4, the endpoint will require `admin.user`, and requests
-from users with only `admin.session` will receive `403 Forbidden`.
+The "Shared organization" setting is a boolean today: `true` lets every customer of the organization see
+and update the tickets of all other members, and `false` limits customers to their own tickets. Starting
+with Zammad 7.4, it will be replaced with a sharing mode offering four modes, "No", "Per role",
+"Per member" and "Everyone", so that wider ticket visibility can be granted to selected roles or
+customers only. For the attribute this means:
 
-⚠️ Grant `admin.user` to such roles before updating to Zammad 7.4, or stop relying on the switch.
+- `shared` will change in place from a boolean to the sharing mode. The REST and GraphQL API will return
+  the sharing mode only, never `true` or `false`, because "Per role" and "Per member" have no truthful
+  boolean value. The selected roles or members will also be stored and returned through the API.
+- Writing `true` or `false` through the REST API or a CSV import of organizations will keep working for a
+  transition period: `true` will be stored as "Everyone" and `false` as "No". This compatibility is
+  deprecated and will be removed in Zammad 7.5. The GraphQL API and all other ways of writing the
+  attribute will accept the sharing mode only.
+- Organizations created without `shared` will default to "No" instead of today's `true`, so their
+  customers will no longer see each other's tickets.
+- The sharing mode and its selections will be readable and writable only by users with the
+  `admin.organization` permission, in every interface and through the API. Agents without that
+  permission, who receive the flag in API responses today, and customers will no longer receive them.
 
-**Related issue:** [#6506](https://github.com/zammad/zammad/issues/6506)
+Existing organizations will be migrated automatically (`true` becomes "Everyone", `false` stays "No"), and
+so will stored conditions on "Organization › Shared organization" in overviews, triggers, SLAs, scheduler
+jobs, core workflows and report profiles. Conditions created through the API afterwards will have to use
+the new modes.
+
+⚠️ Before updating to Zammad 7.4, prepare such clients to read the sharing mode instead of a boolean,
+switch GraphQL clients to send it, set it explicitly when creating organizations whose customers should
+see each other's tickets, and run clients and imports with an account that has the `admin.organization`
+permission.
+
+**Related issue:** [#6364](https://github.com/zammad/zammad/issues/6364)
+
+### The REST API and the CSV import will stop accepting `true` and `false` for the organization `shared` attribute
+
+**Who is affected?** REST API clients, integrations and CSV imports of organizations that still write
+`true` or `false` to the `shared` attribute.
+
+When `shared` becomes a sharing mode in Zammad 7.4, the REST API and the CSV import of organizations will
+still map a written `true` to "Everyone" and `false` to "No", as a deprecated compatibility for clients
+and CSV files built against the former boolean. Zammad 7.5 will remove that compatibility, and such
+requests and CSV rows will no longer be accepted.
+
+⚠️ Switch such clients and CSV files to the sharing mode before updating to Zammad 7.5.
+
+**Related issue:** [#6364](https://github.com/zammad/zammad/issues/6364)
 
 ### `String#utf8_encode` and `Object#to_utf8` will be removed
 
@@ -86,6 +120,24 @@ Until then they emit a deprecation warning and return the value that always appl
 instead.
 
 **Related issue:** [#5580](https://github.com/zammad/zammad/issues/5580)
+
+## 7.4
+
+### Switching into another user's session requires the `admin.user` permission
+
+**Who is affected?** Admins of systems that gave the `admin.session` permission to a role without
+`admin.user` and use that role to switch into other users' sessions through
+`GET /api/v1/sessions/switch/:id`.
+
+The endpoint was permitted for users with either `admin.session` or `admin.user`. `admin.session` is
+meant for listing and ending active sessions; the "View from user's perspective" action in the user
+management already requires `admin.user`, as does impersonating a user through the `From` (formerly
+`X-On-Behalf-Of`) header. The restriction was announced with Zammad 7.3: the endpoint now requires
+`admin.user`, and requests from users with only `admin.session` receive `403 Forbidden`.
+
+⚠️ Grant `admin.user` to such roles, or stop relying on the switch.
+
+**Related issue:** [#6506](https://github.com/zammad/zammad/issues/6506)
 
 ## 7.3
 
