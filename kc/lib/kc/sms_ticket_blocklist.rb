@@ -2,6 +2,10 @@
 
 class Kc::SmsTicketBlocklist
   SETTING_NAME = 'kc_sms_ticket_blocked_numbers'.freeze
+  # Narrow permission for editing only this list. Administrators have it through
+  # `admin`; an API token can be given just this one (for example kc-ops) without
+  # full admin rights.
+  PERMISSION_NAME = 'admin.kc_sms_blocklist'.freeze
 
   def self.entries(value)
     return [] if value.nil?
@@ -47,8 +51,28 @@ class Kc::SmsTicketBlocklist
       description: 'Skip ticket imports for SMS conversations containing these numbers, including incoming messages, external outbound captures, and backfills. Messages remain in RingCentral or FreePBX. Existing tickets and voice calls are unchanged. Empty means no blocked numbers.',
       options:     { form: [{ display: 'Blocked numbers', null: true, name: SETTING_NAME, tag: 'textarea' }] },
       state:       '',
-      preferences: { permission: ['admin'], validations: ['Setting::Validation::KcSmsTicketBlocklist'] },
+      preferences: { permission: [PERMISSION_NAME], validations: ['Setting::Validation::KcSmsTicketBlocklist'] },
       frontend:    true,
     )
+  end
+
+  def self.ensure_permission!
+    Permission.create_if_not_exists(
+      name:        PERMISSION_NAME,
+      label:       'SMS ticket blocklist',
+      description: 'Manage the SMS numbers that never create tickets.',
+      preferences: { prio: 1221 },
+    )
+  end
+
+  # Existing databases: create the permission and move the setting onto it.
+  def self.ensure_access!
+    ensure_permission!
+    ensure_setting!
+    setting = Setting.find_by(name: SETTING_NAME)
+    return if setting.nil? || setting.preferences[:permission] == [PERMISSION_NAME]
+
+    setting.preferences[:permission] = [PERMISSION_NAME]
+    setting.save!
   end
 end

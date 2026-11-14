@@ -24,6 +24,19 @@ New installations load the setting through the KC seed hook. Existing databases
 receive the same idempotent setting definition through migration
 `20261104000001`. Changes are validated on the server, including direct API edits.
 
+## Access and API
+
+Editing the list needs the permission `admin.kc_sms_blocklist` (added in
+0.0.14). Administrators have it through `admin`. An API token can be given only
+this permission, so a tool such as kc-ops can manage the list without full admin
+rights:
+
+- read: `GET /api/v1/settings/<id>` (find the id with `GET /api/v1/settings`;
+  a token with only this permission sees only this setting)
+- write: `PUT /api/v1/settings/<id>` with `{"state_current": {"value": "<numbers>"}}`
+
+The server validates every write, whichever way it arrives.
+
 Run focused tests without a database:
 
 ```sh
