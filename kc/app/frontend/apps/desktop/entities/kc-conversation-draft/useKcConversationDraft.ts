@@ -148,10 +148,10 @@ export const useKcConversationDraft = <T extends KcDraftState>({
   })
 
   const stateUpdates = new SubscriptionHandler(
-    useUserCurrentTaskbarItemStateUpdatesSubscription(
-      () => ({ taskbarItemId: currentTaskbarTabId.value! }),
-      () => ({ enabled: !!currentTaskbarTabId.value }),
-    ),
+    useUserCurrentTaskbarItemStateUpdatesSubscription({
+      variables: () => ({ taskbarItemId: currentTaskbarTabId.value! }),
+      enabled: () => !!currentTaskbarTabId.value,
+    }),
   )
 
   stateUpdates.onSubscribed().then(() => {

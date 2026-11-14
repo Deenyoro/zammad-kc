@@ -3,6 +3,18 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.13 (2026-11-14)
+
+- Upstream sync to zammad develop 56a336d5cd (40 commits). All KC patches
+  apply exactly; sync safety SAFE; 39 upstream fingerprints present.
+- Upstream regenerated the desktop GraphQL composables in the vue-apollo 5
+  shape (one options object instead of `variables, options`). KC conversation
+  drafts still called `useUserCurrentTaskbarItemStateUpdatesSubscription`
+  positionally, which the build does not type-check; the call now passes
+  `{ variables, enabled }` like upstream's own callers. Before the fix the
+  subscription received no taskbar item id and no enabled switch.
+- 0.0.12 was released without a tag; this release is tagged.
+
 ## 0.0.12 (2026-11-06)
 
 - Fix the legacy UI staying on "Loading..." for everyone since 2026-11-05:
