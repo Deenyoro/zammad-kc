@@ -3,6 +3,15 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.14 (2026-11-14)
+
+- SMS ticket blocklist gets its own permission, `admin.kc_sms_blocklist`. The
+  setting `kc_sms_ticket_blocked_numbers` now requires it instead of `admin`.
+  Administrators keep access through `admin`; an API token can be given only
+  this permission so automation (kc-ops) can list, add and remove blocked
+  numbers without full admin rights. Migration `20261114000001` creates the
+  permission and moves the existing setting; the stored numbers are unchanged.
+
 ## 0.0.13 (2026-11-14)
 
 - Upstream sync to zammad develop 56a336d5cd (40 commits). All KC patches

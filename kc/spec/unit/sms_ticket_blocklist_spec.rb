@@ -15,6 +15,7 @@ end
 class Ticket
   class Article; end
 end
+class Permission; end
 
 root = File.expand_path('../../..', __dir__)
 require File.join(root, 'kc/lib/kc/sms_ticket_blocklist')
@@ -121,6 +122,36 @@ RSpec.describe Kc::SmsTicketBlocklist do
         expect(Ticket::Article).to receive(:exists?).and_return(true)
         expect(driver.process({}, data, nil)).to be_nil
       end
+    end
+  end
+
+  describe '.ensure_access!' do
+    let(:setting) { Struct.new(:preferences).new({ permission: ['admin'] }) }
+
+    before do
+      allow(Permission).to receive(:create_if_not_exists)
+      allow(Setting).to receive(:create_if_not_exists)
+      allow(Setting).to receive(:find_by).with(name: described_class::SETTING_NAME).and_return(setting)
+    end
+
+    it 'creates the narrow permission and moves the setting onto it' do
+      allow(setting).to receive(:save!)
+      described_class.ensure_access!
+      expect(Permission).to have_received(:create_if_not_exists).with(hash_including(name: 'admin.kc_sms_blocklist'))
+      expect(setting.preferences[:permission]).to eq(['admin.kc_sms_blocklist'])
+      expect(setting).to have_received(:save!)
+    end
+
+    it 'leaves an already migrated setting alone' do
+      setting.preferences[:permission] = ['admin.kc_sms_blocklist']
+      expect(setting).not_to receive(:save!)
+      described_class.ensure_access!
+    end
+
+    it 'defines new installs with the narrow permission' do
+      described_class.ensure_setting!
+      expect(Setting).to have_received(:create_if_not_exists)
+        .with(hash_including(preferences: hash_including(permission: ['admin.kc_sms_blocklist'])))
     end
   end
 end
