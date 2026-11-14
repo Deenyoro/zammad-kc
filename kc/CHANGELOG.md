@@ -3,6 +3,16 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.16 (2026-11-14)
+
+- SMS ticket blocklist: group-chat entries. A line with numbers joined by `&`
+  (`+14125550100 & +14125550101`) skips only conversations in which all of
+  those numbers take part together; one-to-one texts with the same people
+  still create tickets. Single-number lines work as before. Applies wherever
+  the blocklist already applies (RingCentral and FreePBX webhooks, polling,
+  backfills, outbound captures, earlier-conversation context). The setting
+  text explains the format (migration `20261114000002`).
+
 ## 0.0.15 (2026-11-14)
 
 - Microsoft 365 (Graph) mail channels with "keep messages on server" now also
@@ -17,16 +27,6 @@ Upstream's own changes are in the root `CHANGELOG.md`.
   Boot log: `KC: MicrosoftGraphInboundReadMail, ... override is ACTIVE`.
   New CI job `verify-graph-read-mail`; upstream anchors added to
   `kc/upstream-fingerprints.txt`.
-
-## 0.0.16 (2026-11-14)
-
-- SMS ticket blocklist: group-chat entries. A line with numbers joined by `&`
-  (`+14125550100 & +14125550101`) skips only conversations in which all of
-  those numbers take part together; one-to-one texts with the same people
-  still create tickets. Single-number lines work as before. Applies wherever
-  the blocklist already applies (RingCentral and FreePBX webhooks, polling,
-  backfills, outbound captures, earlier-conversation context). The setting
-  text explains the format (migration `20261114000002`).
 
 ## 0.0.14 (2026-11-14)
 
