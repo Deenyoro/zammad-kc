@@ -79,6 +79,7 @@ Rails.application.config.to_prepare do
   # .with_indifferent_access).  See lib/microsoft_graph/api_error.rb.
   kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphErrorHandling')
   kc_prepend.call('MicrosoftGraph', 'Kc::MicrosoftGraphBccInMime')
+  kc_prepend.call('Channel::Driver::MicrosoftGraphInbound', 'Kc::MicrosoftGraphInboundReadMail')
   kc_prepend.call('TicketArticleCommunicateEmailJob', 'Kc::EmailColorStripSignal')
   kc_prepend.call('Service::Ticket::Article::Create', 'Kc::ArticlePreprocessBcc')
   kc_prepend.call('TicketArticleCommunicateEmailJob', 'Kc::EmailJobBcc')

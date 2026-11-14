@@ -3,6 +3,21 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.15 (2026-11-14)
+
+- Microsoft 365 (Graph) mail channels with "keep messages on server" now also
+  import mail that was already read. Upstream lists only unread messages, so
+  an email someone opened in Outlook before Zammad's next fetch was never
+  imported (ticket 188698). `Kc::MicrosoftGraphInboundReadMail` adds the read
+  messages of the channel's folder received in the last
+  `KC_GRAPH_READ_MAIL_WINDOW_HOURS` (default 72, max 336, `0` switches it
+  off) whose Message-ID no article has yet; they are imported and marked read
+  like any other message. Processed Graph message ids are remembered in
+  memcached so a deleted ticket or a filtered message is not imported again.
+  Boot log: `KC: MicrosoftGraphInboundReadMail, ... override is ACTIVE`.
+  New CI job `verify-graph-read-mail`; upstream anchors added to
+  `kc/upstream-fingerprints.txt`.
+
 ## 0.0.14 (2026-11-14)
 
 - SMS ticket blocklist gets its own permission, `admin.kc_sms_blocklist`. The

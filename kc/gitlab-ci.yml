@@ -65,6 +65,14 @@ verify-sms-blocklist:
     - gem install --no-document rspec:3.13.2 activesupport:8.1.4
     - ruby -S rspec --options /dev/null kc/spec/unit/sms_ticket_blocklist_spec.rb
 
+verify-graph-read-mail:
+  stage: test
+  tags: [linux]
+  image: ruby:3.4-slim
+  script:
+    - gem install --no-document rspec:3.13.2 activesupport:8.1.4 activemodel:8.1.4
+    - ruby -S rspec --options /dev/null kc/spec/unit/microsoft_graph_inbound_read_mail_spec.rb
+
 # KC legacy-UI CoffeeScript must not use classes from lib/app_post (App.Event,
 # App.Utils, App.i18n, ...) at load time: they are defined after controllers, and
 # one load-time error leaves the whole UI on "Loading..." (2026-11-06).
@@ -77,7 +85,7 @@ verify-frontend-load-order:
 
 build:
   extends: .docker-build
-  needs: [verify-patches, test-conversation-reopen, verify-sms-blocklist, verify-frontend-load-order]
+  needs: [verify-patches, test-conversation-reopen, verify-sms-blocklist, verify-graph-read-mail, verify-frontend-load-order]
   variables:
     IMAGE: zammad-kc
     CONTEXT: .

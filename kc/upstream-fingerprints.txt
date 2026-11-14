@@ -12,6 +12,11 @@ lib/microsoft_graph.rb::def send_message(mail)
 lib/microsoft_graph.rb::send_as_raw_body:
 lib/microsoft_graph.rb::make_request('sendMail'
 
+# Kc::MicrosoftGraphInboundReadMail wraps these (adds already-read mail to the fetch)
+app/models/channel/driver/microsoft_graph_inbound.rb::def messages_iterator(keep_on_server, options)
+app/models/channel/driver/microsoft_graph_inbound.rb::list_messages(unread_only: keep_on_server
+app/models/channel/driver/microsoft_graph_inbound.rb::def fetch_single_message(message_id, count, count_all)
+
 # Kc::MicrosoftGraphErrorHandling wraps these
 lib/microsoft_graph.rb::def handle_error!(response)
 lib/microsoft_graph.rb::def parse_error(response)
