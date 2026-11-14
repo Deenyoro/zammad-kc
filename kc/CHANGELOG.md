@@ -18,7 +18,7 @@ Upstream's own changes are in the root `CHANGELOG.md`.
   New CI job `verify-graph-read-mail`; upstream anchors added to
   `kc/upstream-fingerprints.txt`.
 
-## 0.0.15 (2026-11-14)
+## 0.0.16 (2026-11-14)
 
 - SMS ticket blocklist: group-chat entries. A line with numbers joined by `&`
   (`+14125550100 & +14125550101`) skips only conversations in which all of
