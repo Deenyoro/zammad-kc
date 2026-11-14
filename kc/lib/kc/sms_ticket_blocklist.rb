@@ -6,6 +6,7 @@ class Kc::SmsTicketBlocklist
   # `admin`; an API token can be given just this one (for example kc-ops) without
   # full admin rights.
   PERMISSION_NAME = 'admin.kc_sms_blocklist'.freeze
+  DESCRIPTION = 'Skip ticket imports for SMS conversations containing these numbers, including incoming messages, external outbound captures, and backfills. One entry per line. To block only a group chat, join its numbers with & (for example +14125550100 & +14125550101): conversations with all of them together are skipped, one-to-one texts with them still create tickets. Messages remain in RingCentral or FreePBX. Existing tickets and voice calls are unchanged. Empty means no blocked numbers.'.freeze
 
   def self.entries(value)
     return [] if value.nil?
@@ -28,15 +29,39 @@ class Kc::SmsTicketBlocklist
     "+#{digits}"
   end
 
+  GROUP_SEPARATOR = '&'.freeze
+
+  # One rule per entry: a single number blocks every conversation it takes part
+  # in; a group entry ("+1 412 555 0100 & +1 412 555 0101") blocks only
+  # conversations in which all of its numbers take part together, so one-to-one
+  # texts with those people still create tickets.
+  def self.rule(entry)
+    parts = entry.split(GROUP_SEPARATOR, -1).map(&:strip)
+    numbers = parts.map { |part| normalize(part) }
+    return if numbers.any?(&:nil?)
+    return if parts.length > 1 && numbers.uniq.length < 2
+
+    numbers.uniq
+  end
+
+  def self.rules(value)
+    entries(value).filter_map { |entry| rule(entry) }
+  end
+
   def self.validate!(value)
     entries(value).each do |entry|
-      raise ArgumentError, 'Enter valid phone numbers, one per line. Use +country code for international numbers.' if normalize(entry).nil?
+      next if rule(entry)
+
+      raise ArgumentError, 'Enter valid phone numbers, one per line. Use +country code for international numbers. ' \
+                           'For a group chat, join two or more numbers with &.'
     end
   end
 
   def self.blocked?(*numbers)
-    blocked = entries(Setting.get(SETTING_NAME)).filter_map { |entry| normalize(entry) }
-    numbers.flatten.filter_map { |number| normalize(number) }.intersect?(blocked)
+    participants = numbers.flatten.filter_map { |number| normalize(number) }
+    return false if participants.empty?
+
+    rules(Setting.get(SETTING_NAME)).any? { |numbers_of_rule| (numbers_of_rule - participants).empty? }
   end
 
   def self.blocked_message?(message)
@@ -48,7 +73,7 @@ class Kc::SmsTicketBlocklist
       title:       'SMS ticket blocked numbers',
       name:        SETTING_NAME,
       area:        'Kc::RingCentralSms',
-      description: 'Skip ticket imports for SMS conversations containing these numbers, including incoming messages, external outbound captures, and backfills. Messages remain in RingCentral or FreePBX. Existing tickets and voice calls are unchanged. Empty means no blocked numbers.',
+      description: DESCRIPTION,
       options:     { form: [{ display: 'Blocked numbers', null: true, name: SETTING_NAME, tag: 'textarea' }] },
       state:       '',
       preferences: { permission: [PERMISSION_NAME], validations: ['Setting::Validation::KcSmsTicketBlocklist'] },
@@ -70,9 +95,11 @@ class Kc::SmsTicketBlocklist
     ensure_permission!
     ensure_setting!
     setting = Setting.find_by(name: SETTING_NAME)
-    return if setting.nil? || setting.preferences[:permission] == [PERMISSION_NAME]
+    return if setting.nil?
+    return if setting.preferences[:permission] == [PERMISSION_NAME] && setting.description == DESCRIPTION
 
     setting.preferences[:permission] = [PERMISSION_NAME]
+    setting.description = DESCRIPTION
     setting.save!
   end
 end

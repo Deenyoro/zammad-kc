@@ -4,7 +4,11 @@ Administrators can manage **SMS ticket blocked numbers** under
 **KC Extensions → RingCentral SMS → Settings**, or the corresponding system
 setting `kc_sms_ticket_blocked_numbers`. Enter one number per line; commas and
 semicolons also separate entries. Ten-digit national numbers use country code
-+1; use an explicit +country code for international numbers. Empty disables the
++1; use an explicit +country code for international numbers. To block only a
+group chat, put its numbers on one line joined with `&` (for example
+`+14125550100 & +14125550101`): a conversation is skipped when all of those
+numbers take part in it together, and one-to-one texts with the same people
+still create tickets. Empty disables the
 blocklist. Removing a number allows future imports again.
 
 The same list applies to RingCentral and FreePBX. Webhooks, fallback polling,

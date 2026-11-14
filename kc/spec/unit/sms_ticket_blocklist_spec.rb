@@ -54,6 +54,45 @@ RSpec.describe Kc::SmsTicketBlocklist do
     end
   end
 
+  context 'with a group chat entry' do
+    let(:blocked) { '+1 775 800 3743 & 7758003749' }
+
+    it 'blocks a conversation only when every number of the group takes part' do
+      expect(described_class.blocked?('+17758003743', ['+14125550199', '+17758003749'])).to be(true)
+      expect(described_class.blocked?('+14125550199', ['+17758003743', '+17758003749', '+14125550111'])).to be(true)
+    end
+
+    it 'leaves one-to-one texts with a group member alone' do
+      expect(described_class.blocked?('+17758003743', '+14125550199')).to be(false)
+      expect(described_class.blocked?('+17758003749', ['+14125550199'])).to be(false)
+    end
+
+    it 'applies to whole messages' do
+      expect(described_class.blocked_message?({ from_phone: '+17758003749', to_phone: '+14125550199',
+                                                to_phones: ['+14125550199', '+17758003743'] })).to be(true)
+      expect(described_class.blocked_message?({ from_phone: '+17758003749', to_phone: '+14125550199',
+                                                to_phones: ['+14125550199'] })).to be(false)
+    end
+  end
+
+  context 'with single numbers and a group together' do
+    let(:blocked) { "+14125550100\n+17758003743 & +17758003749" }
+
+    it 'keeps blocking the single number everywhere' do
+      expect(described_class.blocked?('+14125550100', '+14125550199')).to be(true)
+      expect(described_class.blocked?('+17758003743', '+14125550199')).to be(false)
+    end
+  end
+
+  it 'validates group entries' do
+    expect { described_class.validate!('+17758003743 & +17758003749') }.not_to raise_error
+    expect { described_class.validate!('+17758003743 & ') }.to raise_error(ArgumentError)
+    expect { described_class.validate!('+17758003743 &') }.to raise_error(ArgumentError)
+    expect { described_class.validate!('& +17758003749') }.to raise_error(ArgumentError)
+    expect { described_class.validate!('+17758003743 & +1 775 800 3743') }.to raise_error(ArgumentError)
+    expect { described_class.validate!('+17758003743 & bob') }.to raise_error(ArgumentError)
+  end
+
   it 'rejects malformed configuration rather than silently ignoring it' do
     expect { described_class.validate!('all numbers') }.to raise_error(ArgumentError)
     expect { described_class.validate!(['4125550100']) }.to raise_error(ArgumentError)
@@ -126,7 +165,7 @@ RSpec.describe Kc::SmsTicketBlocklist do
   end
 
   describe '.ensure_access!' do
-    let(:setting) { Struct.new(:preferences).new({ permission: ['admin'] }) }
+    let(:setting) { Struct.new(:preferences, :description).new({ permission: ['admin'] }, 'old text') }
 
     before do
       allow(Permission).to receive(:create_if_not_exists)
@@ -139,11 +178,13 @@ RSpec.describe Kc::SmsTicketBlocklist do
       described_class.ensure_access!
       expect(Permission).to have_received(:create_if_not_exists).with(hash_including(name: 'admin.kc_sms_blocklist'))
       expect(setting.preferences[:permission]).to eq(['admin.kc_sms_blocklist'])
+      expect(setting.description).to include('join its numbers with &')
       expect(setting).to have_received(:save!)
     end
 
     it 'leaves an already migrated setting alone' do
       setting.preferences[:permission] = ['admin.kc_sms_blocklist']
+      setting.description = described_class::DESCRIPTION
       expect(setting).not_to receive(:save!)
       described_class.ensure_access!
     end
