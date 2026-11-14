@@ -31,11 +31,11 @@
   before_script:
     - test -d $HOME/.ssh || mkdir $HOME/.ssh
     - ssh-keyscan github.com >> $HOME/.ssh/known_hosts
-    - eval $(ssh-agent -s)
+    # ssh-agent is setgid, so ld.so would refuse the image's jemalloc LD_PRELOAD with an error.
+    - eval $(LD_PRELOAD= ssh-agent -s)
     - echo "$PUSH_TO_GITHUB_SSH_PRIVATE_KEY" | ssh-add -
     - ssh-add -l
   script:
-    - git fetch --unshallow
     - script/build/sync_repo.sh git@github.com:zammad/zammad.git
   after_script: []
 
@@ -54,7 +54,8 @@
   before_script:
     - test -d $HOME/.ssh || mkdir $HOME/.ssh
     - ssh-keyscan ftp.zammad.com >> $HOME/.ssh/known_hosts
-    - eval $(ssh-agent -s)
+    # ssh-agent is setgid, so ld.so would refuse the image's jemalloc LD_PRELOAD with an error.
+    - eval $(LD_PRELOAD= ssh-agent -s)
     - echo "$FTP_ZAMMAD_COM_SSH_PRIVATE_KEY" | ssh-add -
     - ssh-add -l
   script:

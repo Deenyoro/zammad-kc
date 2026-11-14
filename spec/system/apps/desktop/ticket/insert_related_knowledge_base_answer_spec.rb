@@ -31,8 +31,7 @@ RSpec.describe 'Desktop > Ticket > Insert related knowledge base answer', app: :
   end
 
   before do
-    open_desktop("/tickets/#{ticket.id}")
-    wait_for_form_to_settle("form-ticket-edit-#{ticket.id}")
+    open_desktop_ticket(ticket)
   end
 
   it 'offers the linked and the suggested answer before a search term is typed, and inserts one with its attachment' do
@@ -42,7 +41,7 @@ RSpec.describe 'Desktop > Ticket > Insert related knowledge base answer', app: :
     answers = page.get_by_role('listbox', name: 'Knowledge base articles')
     expect(answers).to contain_text('Start typing to search in knowledge base…')
 
-    linked    = answers.get_by_role('group', name: 'Linked', exact: true).get_by_role('option')
+    linked    = answers.get_by_role('group', name: 'Linked knowledge', exact: true).get_by_role('option')
     suggested = answers.get_by_role('group', name: 'Suggested knowledge', exact: true).get_by_role('option')
 
     expect(linked).to have_count(1)
