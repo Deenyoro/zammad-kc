@@ -40,6 +40,10 @@ class Kc::CommunicateRingcentralSmsJob < ApplicationJob
     to_phones  = Array(article_prefs[:to_phones]).compact_blank.presence ||
                  Array(sms_prefs[:participants]).compact_blank.presence ||
                  [article_prefs[:to_phone] || sms_prefs[:from_phone]].compact_blank
+    # Tickets from before 0.0.17 may list a company extension ("+27") as a
+    # group member; RingCentral rejects the whole send for it.
+    rc_api     = 'Kc::RingcentralApi'.safe_constantize
+    to_phones  = to_phones.select { |n| rc_api.textable_number?(n) } if rc_api.respond_to?(:textable_number?)
     to_phone   = to_phones.first
     channel_id = article_prefs[:channel_id] || sms_prefs[:channel_id] || find_channel_id(ticket)
 

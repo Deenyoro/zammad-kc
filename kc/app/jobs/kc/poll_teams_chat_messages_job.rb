@@ -168,6 +168,8 @@ class Kc::PollTeamsChatMessagesJob < ApplicationJob
     chat_topic = chat_info['topic'] || chat_info[:topic]
     chat_members = chat_info['members'] || chat_info[:members] || []
 
+    Channel::Driver::KcMicrosoftTeamsChat.new.sync_chat_title(channel, chat_id, tenant_id, chat_info) if chat_info.present?
+
     result = graph.list_chat_messages(chat_id, top: 20)
     messages = result['value'] || result[:value] || []
 

@@ -29,9 +29,13 @@
 # Conversation keys:
 #   A conversation is the set of phone numbers in it (our number + every other
 #   participant), stored as a sorted E.164 list joined by ':'. 1:1 threads keep
-#   the historical "our:customer" form; group texts get the full set. Lookups
-#   try the full key plus every our:other pair, because older tickets only hold
-#   a pair and RingCentral orders a group message's recipients inconsistently.
+#   the historical "our:customer" form; group texts get the full set and match
+#   only that set, never a member's 1:1 ticket.
+#
+# Group texts: one ticket per group, titled "Group SMS: <members>", every
+#   article's `to` names the whole group (Kc::ArticleRecipients) and agent
+#   replies go to every participant (Kc::CommunicateRingcentralSmsJob reads
+#   ticket.preferences[:ringcentral_sms][:participants]).
 #
 # Articles are backdated to RingCentral's creationTime so a message caught by
 # the poll after a newer one arrived by webhook still reads in order (see
@@ -224,7 +228,14 @@ class Channel::Driver::KcRingcentralSms
 
   def recipient_list(message_data)
     list = Array(message_data[:to_phones]).presence || [message_data[:to_phone]]
-    list.map { |n| normalize_phone(n) }.compact.uniq
+    list.select { |n| textable_number?(n) }.map { |n| normalize_phone(n) }.compact.uniq
+  end
+
+  def textable_number?(number)
+    rc_class = 'Kc::RingcentralApi'.safe_constantize
+    return rc_class.textable_number?(number) if rc_class.respond_to?(:textable_number?)
+
+    number.to_s.gsub(/\D/, '').length >= 7
   end
 
   # Every number this channel can text from.
@@ -276,7 +287,7 @@ class Channel::Driver::KcRingcentralSms
       return rc_class.conversation_key_candidates(our_phone, others)
     end
 
-    ([conversation_key(our_phone, *others)] + Array(others).map { |o| conversation_key(our_phone, o) }).uniq
+    [conversation_key(our_phone, *others)]
   end
 
   # ------------------------------------------------------------------
@@ -350,7 +361,7 @@ class Channel::Driver::KcRingcentralSms
 
     # Create new ticket
     group = Group.find_by(id: channel.group_id) || Group.first
-    title = build_ticket_title(message_data[:from_phone])
+    title = others.size > 1 ? build_group_ticket_title(others) : build_ticket_title(message_data[:from_phone])
 
     ticket = Ticket.new(
       title:         title,
@@ -365,7 +376,8 @@ class Channel::Driver::KcRingcentralSms
           from_phone:       normalize_phone(message_data[:from_phone]),
           to_phone:         our_phone,
           channel_id:       channel.id,
-        },
+          group:            others.size > 1,
+        }.compact_blank,
       },
       updated_by_id: user.id,
       created_by_id: user.id,
@@ -503,6 +515,31 @@ class Channel::Driver::KcRingcentralSms
     phone = contact_display(from_phone)
     title = template.gsub('{phone}', phone)
     title.truncate(100, omission: '...')
+  end
+
+  # "Group SMS: Jane Smith, Bob Ray, +14125550111" - every participant
+  # except us, by contact name where one is known.
+  def build_group_ticket_title(others)
+    self.class.group_ticket_title(others.map { |n| group_member_name(n) })
+  end
+
+  GROUP_TITLE_TEMPLATE = 'Group SMS: {participants}'.freeze
+  GROUP_TITLE_MAX_NAMES = 4
+
+  def self.group_ticket_title(names)
+    names  = Array(names).compact_blank.uniq
+    listed = names.first(GROUP_TITLE_MAX_NAMES)
+    listed << "+#{names.size - GROUP_TITLE_MAX_NAMES} more" if names.size > GROUP_TITLE_MAX_NAMES
+    template = Setting.get('kc_ringcentral_sms_group_ticket_title_template').to_s.presence || GROUP_TITLE_TEMPLATE
+    template.gsub('{participants}', listed.join(', ')).truncate(100, omission: '...')
+  end
+
+  def group_member_name(number)
+    normalized = normalize_phone(number) || number.to_s
+    contacts   = 'Kc::PhoneContacts'.safe_constantize
+    (contacts && contacts.name_for(normalized)).presence || normalized
+  rescue StandardError
+    normalized
   end
 
   # ------------------------------------------------------------------

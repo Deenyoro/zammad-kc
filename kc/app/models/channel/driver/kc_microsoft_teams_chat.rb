@@ -140,7 +140,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
       Rails.logger.info "KC Teams Chat: Creating agent note for message #{message_data[:message_id]} in ticket #{ticket.id} from #{message_data[:from_email]}"
 
       # Update group chat ticket title if needed
-      maybe_update_group_chat_title(ticket, message_data)
+      maybe_update_group_chat_title(ticket, message_data, channel)
       remember_chat_audience(ticket, channel, message_data)
 
       transaction_class.execute(reset_user_id: true, context: 'teams_chat') do
@@ -157,7 +157,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
         UserInfo.current_user_id = user.id
 
         # Update group chat ticket title if needed (for existing tickets)
-        maybe_update_group_chat_title(ticket, message_data)
+        maybe_update_group_chat_title(ticket, message_data, channel)
         remember_chat_audience(ticket, channel, message_data)
 
         article = create_article(ticket, channel, message_data, user, message_id)
@@ -306,7 +306,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
 
     # Create new ticket
     group = Group.find_by(id: channel.group_id) || Group.first
-    title = build_ticket_title(message_data, user)
+    title = build_ticket_title(message_data, user, channel)
 
     ticket = Ticket.new(
       title:         title,
@@ -319,6 +319,7 @@ class Channel::Driver::KcMicrosoftTeamsChat
           conversation_key: conversation_key,
           chat_id:          message_data[:chat_id],
           tenant_id:        message_data[:tenant_id],
+          auto_title:       title,
         },
       },
       updated_by_id: user.id,
@@ -736,73 +737,85 @@ class Channel::Driver::KcMicrosoftTeamsChat
     nil # default handled by caller
   end
 
-  def build_ticket_title(message_data, user)
-    template = Setting.get('kc_teams_chat_ticket_title_template').to_s.presence || 'Teams Message from {user_name}'
+  def build_ticket_title(message_data, user, channel = nil)
+    name = group_chat_display_name(message_data, channel)
+    return Kc::TeamsChatTitle.group_title(name, template: group_title_template) if name
 
-    display_name = group_chat_display_name(message_data) ||
-                   message_data[:from_display_name].to_s.presence ||
+    display_name = message_data[:from_display_name].to_s.presence ||
                    user.fullname.presence ||
                    'Unknown'
-
-    title = template.gsub('{user_name}', display_name)
-    title.truncate(100, omission: '...')
+    Kc::TeamsChatTitle.person_title(display_name, template: person_title_template)
   end
 
-  # Returns a display name for group chats, or nil for 1:1 chats.
-  # Handles edge cases:
-  #   - Topic is present and reasonable length: use topic
-  #   - Topic is too long (>50 chars): truncate it
-  #   - Topic is missing/blank: use "Group Chat #<short_id>"
-  #   - Topic looks auto-generated (comma-separated names): use "Group Chat #<short_id>"
-  def group_chat_display_name(message_data)
-    chat_type = message_data[:chat_type].to_s
-    return nil unless chat_type == 'group'
-
-    chat_topic = message_data[:chat_topic].to_s.strip
-    chat_id = message_data[:chat_id].to_s
-
-    # Generate a short ID from the chat_id (last 8 chars, or hash if weird format)
-    short_id = if chat_id.length >= 8
-                 chat_id[-8..-1]
-               else
-                 Digest::SHA256.hexdigest(chat_id)[0..7]
-               end
-
-    # If topic is blank or looks auto-generated (multiple names separated by commas),
-    # fall back to "Group Chat #<short_id>"
-    if chat_topic.blank? || chat_topic.count(',') >= 2
-      return "Group Chat ##{short_id}"
-    end
-
-    # Truncate long topics
-    if chat_topic.length > 50
-      return chat_topic.truncate(50, omission: '...')
-    end
-
-    chat_topic
+  def person_title_template
+    Setting.get('kc_teams_chat_ticket_title_template').to_s.presence
   end
 
-  # Updates an existing ticket's title if it's a group chat and the title is wrong.
-  # Called when processing messages for existing tickets.
-  def maybe_update_group_chat_title(ticket, message_data)
-    return unless message_data[:chat_type].to_s == 'group'
+  def group_title_template
+    Setting.get('kc_teams_chat_group_ticket_title_template').to_s.presence
+  end
 
-    expected_name = group_chat_display_name(message_data)
-    return if expected_name.blank?
+  # The chat's topic, else its members' names; nil for 1:1 chats.
+  def group_chat_display_name(message_data, channel = nil)
+    Kc::TeamsChatTitle.chat_name(
+      chat_type:       message_data[:chat_type],
+      topic:           message_data[:chat_topic],
+      members:         message_data[:chat_members],
+      account_user_id: channel&.options&.with_indifferent_access&.dig(:user_id),
+    )
+  end
 
-    template = Setting.get('kc_teams_chat_ticket_title_template').to_s.presence || 'Teams Message from {user_name}'
-    expected_title = template.gsub('{user_name}', expected_name).truncate(100, omission: '...')
+  # Keeps a group chat ticket's title on the chat's current name (topic
+  # renamed, members added). Only titles this integration generated are
+  # replaced; a title an agent typed stays.
+  def maybe_update_group_chat_title(ticket, message_data, channel = nil)
+    return if ticket.nil?
+    return unless Kc::TeamsChatTitle.group?(message_data[:chat_type])
 
-    # Only update if the title is different
-    current_title = ticket.title.to_s
-    return if current_title == expected_title
+    name = group_chat_display_name(message_data, channel)
+    return if name.blank?
 
-    # Update the ticket title
-    ticket.update!(title: expected_title)
-    Rails.logger.info "KC Teams Chat: Updated ticket #{ticket.id} title from '#{current_title}' to '#{expected_title}'"
+    expected_title = Kc::TeamsChatTitle.group_title(name, template: group_title_template)
+    chat           = (ticket.preferences || {}).to_h.with_indifferent_access[:teams_chat].to_h.with_indifferent_access
+    auto_title     = chat[:auto_title]
+    current_title  = ticket.title.to_s
+    return if current_title == expected_title && auto_title == expected_title
+    return unless Kc::TeamsChatTitle.replaceable?(current_title, auto_title: auto_title, template: person_title_template)
+
+    prefs = (ticket.preferences || {}).deep_dup
+    teams = (prefs.delete(:teams_chat) || prefs.delete('teams_chat') || {}).to_h.deep_symbolize_keys
+    prefs[:teams_chat] = teams.merge(auto_title: expected_title)
+    ticket.preferences = prefs
+
+    if current_title == expected_title
+      ticket.update_columns(preferences: ticket.preferences) # rubocop:disable Rails/SkipsModelValidations
+    else
+      ticket.title = expected_title
+      ticket.save!
+      Rails.logger.info "KC Teams Chat: Renamed ticket #{ticket.id} after its group chat"
+    end
   rescue => e
-    Rails.logger.warn "KC Teams Chat: Failed to update ticket #{ticket.id} title: #{e.message}"
+    Rails.logger.warn "KC Teams Chat: Failed to update ticket #{ticket&.id} title: #{e.message}"
   end
+
+  # Called by the poller with fresh chat details even when no new message
+  # arrived, so a renamed chat renames its open ticket.
+  def sync_chat_title(channel, chat_id, tenant_id, chat_info)
+    info = (chat_info || {}).to_h.with_indifferent_access
+    return unless Kc::TeamsChatTitle.group?(info[:chatType])
+
+    message_data = { chat_id: chat_id, tenant_id: tenant_id, chat_type: info[:chatType],
+                     chat_topic: info[:topic], chat_members: Array(info[:members]) }.with_indifferent_access
+    key    = build_conversation_key(channel, message_data)
+    ticket = find_existing_ticket(key, 0)
+    return if ticket.nil?
+
+    maybe_update_group_chat_title(ticket, message_data, channel)
+    remember_chat_audience(ticket, channel, message_data) if info[:members].present?
+  rescue => e
+    Rails.logger.warn "KC Teams Chat: chat title sync failed for #{chat_id}: #{e.message}"
+  end
+  public :sync_chat_title
 
   def build_conversation_key(channel, message_data)
     tenant_id = message_data[:tenant_id] || channel.options&.dig(:tenant_id)

@@ -5,7 +5,7 @@
 //  article.bcc.
 
 import { getNode } from '@formkit/core'
-import { within } from '@testing-library/vue'
+import { getByRole, waitFor, within } from '@testing-library/vue'
 
 import { visitView } from '#tests/support/components/visitView.ts'
 import { mockApplicationConfig } from '#tests/support/mock-applicationConfig.ts'
@@ -109,16 +109,20 @@ describe('Ticket detail view - KC BCC', () => {
     await view.events.click(view.getByRole('link', { name: 'Add CC' }))
     await view.events.click(view.getByRole('link', { name: 'Add BCC' }))
 
+    // Like upstream's "Add CC": the field is revealed with its dropdown open and the search focused.
     const bcc = view.getByLabelText('BCC')
-    expect(bcc.closest('.formkit-outer')).not.toHaveClass('hidden')
-    expect(bcc).toHaveFocus()
+    const bccOuter = bcc.closest('.formkit-outer') as HTMLElement
+    expect(bccOuter).not.toHaveClass('hidden')
+    await waitFor(() => expect(bcc).toHaveAttribute('aria-expanded', 'true'))
+    const bccSearch = getByRole(bccOuter, 'searchbox')
+    await waitFor(() => expect(bccSearch).toHaveFocus())
     expect(view.queryByRole('link', { name: 'Add BCC' })).not.toBeInTheDocument()
 
     mockAutocompleteSearchRecipientQuery({
       autocompleteSearchRecipient: [],
     })
 
-    await view.events.type(within(bcc).getByRole('searchbox'), 'hidden@example.com')
+    await view.events.type(bccSearch, 'hidden@example.com')
     await waitForAutocompleteSearchRecipientQueryCalls()
     await view.events.click(view.getByRole('button', { name: 'add new email address' }))
 

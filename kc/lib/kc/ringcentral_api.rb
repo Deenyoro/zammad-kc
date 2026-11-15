@@ -426,18 +426,25 @@ module Kc
     end
 
     # Every key a conversation between our number and the other participants
-    # may be filed under. New tickets store the full participant set; tickets
-    # created before group-SMS support hold a single our:other pair, and
-    # RingCentral lists a group message's recipients in varying order, so a
-    # lookup has to try each pair as well.
+    # may be filed under. 1:1 threads use the our:other pair. A group text is
+    # its own conversation and matches only the full participant set: falling
+    # back to each our:member pair filed group texts on whatever 1:1 ticket
+    # one member happened to have open, so the group showed up as a 1:1 chat
+    # with replies going to that one person (2026-11-15). Recipient order
+    # does not matter, the key is sorted.
     def self.conversation_key_candidates(our_phone, other_phones)
       ours   = normalize_phone(our_phone)
       others = Array(other_phones).flatten.map { |n| normalize_phone(n) }.compact.uniq - [ours]
       return [] if ours.blank? || others.empty?
 
-      keys = [conversation_key(ours, *others)]
-      others.each { |other| keys << conversation_key(ours, other) }
-      keys.uniq
+      [conversation_key(ours, *others)]
+    end
+
+    # A number we can text: at least seven digits. RingCentral lists company
+    # extensions in a message's `to` by extension number ("27"), which is
+    # not a phone number and made group replies fail.
+    def self.textable_number?(number)
+      number.to_s.gsub(/\D/, '').length >= 7
     end
 
     private

@@ -1,5 +1,5 @@
 diff --git a/app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue b/app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue
-index 00aebe050d..28f3a9d351 100644
+index 5e823dff6e..4661b8d5d5 100644
 --- a/app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue
 +++ b/app/frontend/apps/desktop/pages/ticket-overviews/components/TicketList.vue
 @@ -34,6 +34,7 @@ import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
@@ -10,7 +10,7 @@ index 00aebe050d..28f3a9d351 100644
  import TicketListTable from '#desktop/components/Ticket/TicketListTable.vue'
  import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
  import { useScrollPosition } from '#desktop/composables/useScrollPosition.ts'
-@@ -350,7 +351,7 @@ watch(
+@@ -351,7 +352,7 @@ watch(
    { immediate: true },
  )
  
@@ -19,7 +19,7 @@ index 00aebe050d..28f3a9d351 100644
    forceTicketsByOverviewCacheOnlyFirstPage(
      ticketsQueryVariables.value,
      lastFirstPageCollectionSignature,
-@@ -371,7 +372,13 @@ setOnSuccessCallback(() => {
+@@ -372,7 +373,13 @@ setOnSuccessCallback(() => {
    requestAnimationFrame(() => {
      scrollContainerElement.value?.scrollTo({ top: 0 })
    })

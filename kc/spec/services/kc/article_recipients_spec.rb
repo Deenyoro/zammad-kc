@@ -131,10 +131,11 @@ RSpec.describe Kc::ArticleRecipients do
   end
 
   describe '.group_label' do
-    it 'drops a topic Teams built from member names and caps the list', :aggregate_failures do
+    it 'keeps a topic people set, commas and all, and caps the list', :aggregate_failures do
       names = (1..8).map { |i| "Person #{i}" }
       expect(described_class.group_label('A, B, C', names))
-        .to eq('Group chat (Person 1, Person 2, Person 3, Person 4, Person 5, Person 6, +2 more)')
+        .to eq('Group chat "A, B, C" (Person 1, Person 2, Person 3, Person 4, Person 5, Person 6, +2 more)')
+      expect(described_class.group_label(nil, names.first(2))).to eq('Group chat (Person 1, Person 2)')
       expect(described_class.group_label(nil, [])).to eq('Group chat')
     end
   end

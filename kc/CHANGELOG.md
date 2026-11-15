@@ -3,6 +3,39 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.17 (2026-11-15)
+
+- RingCentral group texts show up as one group conversation. A group text
+  used to be matched to any open or recent 1:1 ticket of one of its members
+  (lookups also tried every our:member pair), so the group landed on that
+  person's ticket, looked like a 1:1 chat and replies went to that person
+  only. Group texts now match only their full participant set (FreePBX texts
+  too), get the title "Group SMS: <members>" (contact names where known) and
+  `preferences.ringcentral_sms.group`, and replies go to every participant.
+  Company extension numbers RingCentral lists among a message's recipients
+  (e.g. "27") are ignored; they made group replies fail.
+- Microsoft Teams group chats are titled after the chat: "Teams group chat:
+  <topic>", or the members' names when nobody set a topic. The old fallback
+  "Group Chat #<last 8 characters of the chat id>" always read
+  "Group Chat #hread.v2". Meeting chats use the meeting title. The generated
+  title follows topic and member changes, also between messages (the poller
+  re-reads the chat), and a title an agent typed is never replaced. A topic
+  containing commas is no longer mistaken for an auto-generated one, in the
+  title and in the article recipient line.
+- `Kc::BackfillGroupChatTitlesJob.new.perform(dry_run:, include_closed:)`
+  retitles existing group tickets (open only by default; Graph is asked for
+  chat details of open tickets and of closed ones with the legacy title).
+- New CI job `verify-group-chats` (`kc/spec/unit/group_chats_spec.rb`).
+- Upstream sync to zammad develop 225273876e (vue-apollo 5 compat layer
+  removed). KC frontend code already used the native v5 composable shape
+  (0.0.13); patches apply exactly, four refreshed for line offsets only
+  (TicketList, email-action-bcc, graphql-types-bcc,
+  useTicketEditForm-bcc). Sync safety SAFE; upstream fingerprints present.
+- New desktop UI: "Add BCC" now focuses the BCC field and opens its
+  recipient dropdown like upstream's "Add CC" (it used to leave focus on CC,
+  whose dropdown handed focus back while closing). The KC BCC Vitest spec
+  follows upstream's CC expectations.
+
 ## 0.0.16 (2026-11-14)
 
 - SMS ticket blocklist: group-chat entries. A line with numbers joined by `&`

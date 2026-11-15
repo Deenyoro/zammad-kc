@@ -1,8 +1,8 @@
 diff --git a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
-index 03d57f733f..fa17de2bd3 100644
+index 184d4ace10..aaf5314780 100644
 --- a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
 +++ b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
-@@ -23,6 +23,7 @@ import type {
+@@ -24,6 +24,7 @@ import type {
  import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
  import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
  import { useApplicationStore } from '#shared/stores/application.ts'
@@ -10,7 +10,7 @@ index 03d57f733f..fa17de2bd3 100644
  
  import type { FormKitNode } from '@formkit/core'
  import type { Ref } from 'vue'
-@@ -87,7 +88,15 @@ export const useTicketEditForm = (
+@@ -88,7 +89,15 @@ export const useTicketEditForm = (
      }
    })
  
@@ -27,7 +27,7 @@ index 03d57f733f..fa17de2bd3 100644
  
    const articleTypeFieldProps = articleTypeFields.reduce((acc, field) => {
      acc[field] = {
-@@ -121,12 +130,34 @@ export const useTicketEditForm = (
+@@ -122,12 +131,34 @@ export const useTicketEditForm = (
      return Array.isArray(cc) ? cc.length > 0 : Boolean(cc)
    })
  
@@ -63,7 +63,7 @@ index 03d57f733f..fa17de2bd3 100644
  
    const additionalAddArticleNotes = computed(
      () => (application.config.ui_ticket_add_article_hint as Record<string, string>) || {},
-@@ -284,6 +315,47 @@ export const useTicketEditForm = (
+@@ -286,6 +317,49 @@ export const useTicketEditForm = (
          classes: { outer: '@md:col-span-1' },
          contact: recipientContact,
          multiple: true,
@@ -86,9 +86,11 @@ index 03d57f733f..fa17de2bd3 100644
 +              onLinkClick: (e: MouseEvent) => {
 +                e.preventDefault()
 +                bccLinkActivated.value = true
-+                nextTick(() => {
++                // After CC's open dropdown (from "Add CC") has closed and handed focus back.
++                setTimeout(() => {
 +                  const bccFieldId = form.value?.getNodeByName('bcc')?.context?.id
-+                  if (bccFieldId) document.getElementById(bccFieldId)?.focus()
++                  const bccField = bccFieldId && document.getElementById(bccFieldId)
++                  if (bccField) autofocusFormField(bccField)
 +                })
 +              },
 +            }),

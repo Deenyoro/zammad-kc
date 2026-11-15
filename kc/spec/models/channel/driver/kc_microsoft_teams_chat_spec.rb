@@ -82,4 +82,57 @@ RSpec.describe Channel::Driver::KcMicrosoftTeamsChat do
       expect(result[:article].to).to eq('KawaConnect Support')
     end
   end
+
+  describe 'group chat titles' do
+    let(:channel) do
+      Channel.create!(area: 'MicrosoftTeamsChat::Account', group: Group.first, active: true,
+                      options: { user_id: 'me', tenant_id: 't1' }, created_by_id: 1, updated_by_id: 1)
+    end
+    let(:members) do
+      [{ 'userId' => 'me', 'displayName' => 'KawaConnect Support' },
+       { 'userId' => 'u1', 'displayName' => 'Ann Lee' },
+       { 'userId' => 'u2', 'displayName' => 'Bob Ray' }]
+    end
+
+    def message(id, topic: nil)
+      { chat_id: '19:abc@thread.v2', message_id: id, from_user_id: 'u1', from_display_name: 'Ann Lee',
+        from_email: 'ann@example.com', body_content: 'hello', body_content_type: 'text',
+        created_at: Time.current.iso8601, tenant_id: 't1', chat_type: 'group', chat_topic: topic,
+        chat_members: members, attachments: [], hosted_contents: [] }
+    end
+
+    before do
+      Ticket::Article::Type.lookup(name: 'teams_chat_message') || create(:ticket_article_type, name: 'teams_chat_message')
+      allow(driver).to receive(:add_context_note)
+      allow(driver).to receive(:download_and_attach_files)
+    end
+
+    it 'names the ticket after the topic, else the members, and follows a rename', :aggregate_failures do
+      ticket = driver.process(channel.options, message('g1'), channel)[:ticket]
+      expect(ticket.reload.title).to eq('Teams group chat: Ann Lee, Bob Ray')
+
+      driver.process(channel.options, message('g2', topic: 'Office move'), channel)
+      expect(ticket.reload.title).to eq('Teams group chat: Office move')
+      expect(ticket.preferences.dig(:teams_chat, :auto_title)).to eq('Teams group chat: Office move')
+
+      driver.sync_chat_title(channel, '19:abc@thread.v2', 't1', { 'chatType' => 'group', 'topic' => 'New office', 'members' => members })
+      expect(ticket.reload.title).to eq('Teams group chat: New office')
+    end
+
+    it 'keeps a title an agent typed' do
+      ticket = driver.process(channel.options, message('g3'), channel)[:ticket]
+      ticket.update!(title: 'Printer contract')
+
+      driver.process(channel.options, message('g4', topic: 'Office move'), channel)
+      expect(ticket.reload.title).to eq('Printer contract')
+    end
+
+    it 'renames a legacy "Group Chat #hread.v2" ticket' do
+      ticket = driver.process(channel.options, message('g5'), channel)[:ticket]
+      ticket.update_columns(title: 'Teams Message from Group Chat #hread.v2', preferences: ticket.preferences.merge(teams_chat: ticket.preferences[:teams_chat].except(:auto_title)))
+
+      driver.process(channel.options, message('g6', topic: 'Office move'), channel)
+      expect(ticket.reload.title).to eq('Teams group chat: Office move')
+    end
+  end
 end

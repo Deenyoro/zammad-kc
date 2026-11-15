@@ -83,7 +83,7 @@ class Kc::ArticleRecipients
       audience = indifferent(indifferent(indifferent(ticket&.preferences)[:teams_chat])[:audience])
       members  = Array(audience[:members]).compact_blank
 
-      if audience[:chat_type].to_s == 'group'
+      if %w[group meeting].include?(audience[:chat_type].to_s)
         group_label(audience[:topic], members)
       elsif sender_name == 'Agent'
         members.join(', ').presence || fallback.presence || ticket&.customer&.fullname.presence
@@ -92,11 +92,10 @@ class Kc::ArticleRecipients
       end
     end
 
-    # 'Group chat "Topic" (Ann Lee, Bob Ray)'; the topic is left out when
-    # Teams made it up from the member names.
+    # 'Group chat "Topic" (Ann Lee, Bob Ray)'. Graph returns no topic for a
+    # chat nobody named, so any topic present was set by a person.
     def group_label(topic, members)
       topic = topic.to_s.strip
-      topic = '' if topic.count(',') >= 2
 
       names = members.first(MAX_MEMBER_NAMES)
       names << "+#{members.size - MAX_MEMBER_NAMES} more" if members.size > MAX_MEMBER_NAMES

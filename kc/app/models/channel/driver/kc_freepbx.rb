@@ -246,7 +246,7 @@ class Channel::Driver::KcFreepbx
     rc_class = 'Kc::RingcentralApi'.safe_constantize
     return rc_class.conversation_key_candidates(our_phone, others) if rc_class.respond_to?(:conversation_key_candidates)
 
-    ([conversation_key(our_phone, *others)] + Array(others).map { |o| conversation_key(our_phone, o) }).uniq
+    [conversation_key(our_phone, *others)]
   end
 
   # ------------------------------------------------------------------
@@ -314,7 +314,12 @@ class Channel::Driver::KcFreepbx
     end
 
     group = Group.find_by(id: channel.group_id) || Group.first
-    title = build_ticket_title(message_data[:from_phone])
+    title = if others.size > 1 && Channel::Driver::KcRingcentralSms.respond_to?(:group_ticket_title)
+              contacts = 'Kc::PhoneContacts'.safe_constantize
+              Channel::Driver::KcRingcentralSms.group_ticket_title(others.map { |n| contacts&.name_for(n).presence || n })
+            else
+              build_ticket_title(message_data[:from_phone])
+            end
 
     ticket = Ticket.new(
       title:         title,
