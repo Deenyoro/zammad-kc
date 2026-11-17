@@ -3,6 +3,14 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.18 (2026-11-17)
+
+- The "Earlier conversation" note on a new SMS ticket only quotes messages
+  that went between exactly the same people. On a group text it used to
+  quote any text between us and members of the group, so a three-person
+  group ticket opened with two unrelated 1:1 texts and got its generated
+  title from them. RingCentral and FreePBX.
+
 ## 0.0.17 (2026-11-15)
 
 - RingCentral group texts show up as one group conversation. A group text

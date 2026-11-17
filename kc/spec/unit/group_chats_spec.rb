@@ -189,3 +189,32 @@ RSpec.describe Kc::TeamsChatTitle do
     end
   end
 end
+
+# 0.0.18: the "Earlier conversation" note of a group ticket quoted 1:1 texts
+# between us and one member (ticket 188770: a three-person group text opened
+# with two unrelated texts we had sent to one of them).
+[Channel::Driver::KcRingcentralSms, Channel::Driver::KcFreepbx].each do |driver_class|
+  RSpec.describe driver_class do
+    subject(:driver) { described_class.new }
+
+    let(:group) { [OURS, ANN, BOB, CARL] }
+
+    it 'takes a message between exactly the group as the same conversation' do
+      expect(driver.send(:same_conversation?, [ANN, OURS, CARL, BOB], group)).to be(true)
+    end
+
+    it 'does not take a 1:1 text with one member as the group conversation', :aggregate_failures do
+      expect(driver.send(:same_conversation?, [OURS, ANN], group)).to be(false)
+      expect(driver.send(:same_conversation?, [OURS, ANN, BOB], group)).to be(false)
+    end
+
+    it 'does not take a larger group or an empty list as this conversation', :aggregate_failures do
+      expect(driver.send(:same_conversation?, group + ['+14125550104'], group)).to be(false)
+      expect(driver.send(:same_conversation?, [], group)).to be(false)
+    end
+
+    it 'still matches a 1:1 conversation with itself' do
+      expect(driver.send(:same_conversation?, [ANN, OURS], [OURS, ANN])).to be(true)
+    end
+  end
+end

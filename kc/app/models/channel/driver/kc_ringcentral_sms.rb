@@ -430,9 +430,7 @@ class Channel::Driver::KcRingcentralSms
       next false if Kc::SmsTicketBlocklist.blocked?(m.dig(:from, :phoneNumber), Array(m[:to]).map { |to| to[:phoneNumber] })
 
       participants = ([m.dig(:from, :phoneNumber)] + Array(m[:to]).map { |t| t[:phoneNumber] }).map { |n| normalize_phone(n) }.compact.uniq
-      # Same conversation: everyone in the message is one of ours/theirs and
-      # at least one other participant is present.
-      (participants - allowed).empty? && (participants & (allowed - [ours])).any?
+      same_conversation?(participants, allowed)
     end
 
     messages = messages.sort_by { |m| m[:creationTime].to_s }.last(count)
@@ -451,6 +449,15 @@ class Channel::Driver::KcRingcentralSms
     create_context_article(ticket, body, messages.first[:creationTime])
   rescue StandardError => e
     Rails.logger.warn "KC RingCentral SMS: could not add context note to ticket #{ticket.id}: #{e.message}"
+  end
+
+  # A message belongs to this conversation only when it went between exactly
+  # the same people. A subset is a different thread: before 0.0.18 a group
+  # ticket's note quoted 1:1 texts between us and one member of the group
+  # (and the generated title described those), because "everyone in the
+  # message is in the group" was enough.
+  def same_conversation?(participants, allowed)
+    participants.present? && participants.sort == allowed.sort
   end
 
   def create_context_article(ticket, body, first_time)
