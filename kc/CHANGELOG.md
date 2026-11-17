@@ -3,6 +3,22 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.19 (2026-11-17)
+
+- Upstream sync to zammad develop ce8a9a6a08 (30 commits since 225273876e).
+  Upstream changes that are visible to users: the urgency a sender states in
+  the email headers is kept and can be matched in postmaster filters
+  (`email-urgency`), ticket search honours a state exclusion for users who
+  are both agent and customer, tickets whose article preferences change
+  value type can be indexed again, customer chat fixes (tags, chat number in
+  the header, knowledge base answers picked with "??"), and doubled digits
+  in desktop date fields. Dependency updates include redis gem 6.0.0, puma
+  8.0.3, dalli 5.3.3, Formkit 2.5 and Tiptap 3.34. No database migrations.
+- No overlay change was needed: all ten patches apply exactly with no line
+  offsets, upstream fingerprints present, sync safety SAFE, legacy UI
+  load-order check OK, type check and the KC Vitest specs pass on the
+  assembled tree.
+
 ## 0.0.18 (2026-11-17)
 
 - The "Earlier conversation" note on a new SMS ticket only quotes messages
