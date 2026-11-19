@@ -302,7 +302,7 @@ The build-time `apply-patches.sh` script applies the patches before asset compil
 
 When upstream fixes what a patch worked around, move the patch to `kc/patches/retired/` (the scripts only read `kc/patches/*.patch`, so it is no longer applied).
 
-**Releases:** the KC version lives in `kc/VERSION` and the changes in `kc/CHANGELOG.md` (upstream's root `VERSION`/`CHANGELOG.md` stay untouched so fork syncs never conflict). Bump +0.0.1, add a changelog entry and push an annotated `vX.Y.Z` tag; the GitLab tag pipeline (`kc/gitlab-ci.yml`) builds `zammad-kc:X.Y.Z` and mirrors it to `ghcr.io/deenyoro/zammad-kc`. Tag only a commit whose `develop` pipeline is fully green, and deploy only an image whose pipeline passed `boot-test-legacy-ui`.
+**Releases:** the KC version lives in `kc/VERSION` and the changes in `kc/CHANGELOG.md` (upstream's root `VERSION`/`CHANGELOG.md` stay untouched so fork syncs never conflict). Bump +0.0.1, add a changelog entry and push an annotated `vX.Y.Z` tag; the GitLab tag pipeline (`kc/gitlab-ci.yml`) builds `zammad-kc:X.Y.Z` into the GitLab registry (`gitlabreg.kawa.link/dean/zammad-kc/zammad-kc`; nothing is pushed to GHCR). Tag only a commit whose `develop` pipeline is fully green, and deploy only an image whose pipeline passed `boot-test-legacy-ui`.
 
 ### Key Rules
 

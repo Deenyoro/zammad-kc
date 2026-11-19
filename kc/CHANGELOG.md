@@ -5,6 +5,9 @@ Upstream's own changes are in the root `CHANGELOG.md`.
 
 ## Unreleased
 
+- Images are published to the GitLab registry only
+  (`gitlabreg.kawa.link/dean/zammad-kc/zammad-kc`); the GHCR mirror is gone. Docs and
+  `kc/deploy/.env.example` point at the GitLab registry.
 - `kc/deploy/docker-compose.yml`: PostgreSQL, Elasticsearch, Redis and
   memcached are published on 127.0.0.1 instead of every interface.
   Elasticsearch runs without security and memcached without auth in this
