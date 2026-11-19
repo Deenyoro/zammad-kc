@@ -139,7 +139,10 @@ All custom code lives in `kc/`. During Docker build, two scripts run in sequence
 1. `kc/script/apply-overlay.sh`: copies NEW files into the Zammad app tree using `rsync --ignore-existing` (never overwrites upstream files, includes collision detection that aborts on conflicts).
 2. `kc/script/apply-patches.sh`: applies unified diffs from `kc/patches/` to EXISTING upstream files (for features like BCC, "Send with text color", and bulk merge that must modify upstream frontend code). If a patch fails to apply (e.g., upstream changed the file), the build fails loudly.
 
-Before the Docker build, CI runs `kc/script/heal-patches.sh` (see build-and-push.yml): any patch that no longer applies exactly is automatically re-anchored with `git apply --3way` (fuzzy `patch` as last resort), regenerated as a zero-drift diff, and committed back to the repo. Fork syncs therefore stay green without manual patch maintenance; only a true conflict, upstream rewrote the very lines a patch changes, still fails the build for a human decision.
+`kc/script/heal-patches.sh` re-anchors a patch that no longer applies exactly: `git apply --3way` first, fuzzy `patch` as last resort, then it rewrites the patch file as an exact diff. Only a true conflict (upstream rewrote the very lines a patch changes) cannot be healed. The two pipelines use it differently:
+
+- **GitLab (`kc/gitlab-ci.yml`, the pipeline that builds the released image):** the `verify-patches` job runs the script and fails if it had to change anything. CI never writes to the repo. Run `bash kc/script/heal-patches.sh` locally, review the diff in `kc/patches/`, commit it.
+- **GitHub (`.github/workflows/build-and-push.yml`, on the mirror):** runs the script with `HEAL_PUSH_BRANCH` set, so healed patches are committed and pushed back to the branch by the workflow.
 
 The `kc/` directory is deleted from the final image.
 
@@ -154,6 +157,39 @@ The `kc/` directory is deleted from the final image.
 | Gems | `kc/Gemfile.local` loaded natively by Zammad's `Gemfile` |
 | Migrations | Standard Rails migrations in `kc/db/migrate/` |
 | Deploy configs | `kc/deploy/`, docker-compose.yml and .env.example (not copied to app tree) |
+
+### KC Tests and CI
+
+`kc/gitlab-ci.yml` is the pipeline for this fork (the GitLab project's CI configuration file setting points at it; upstream's root `.gitlab-ci.yml` is not used). It runs on pushes to `develop`, on `v*` tags and on manual or API runs. Jobs, with the command to run each one locally from the repository root:
+
+| Job | What it checks | Local command |
+|-----|----------------|---------------|
+| `verify-patches` | every `kc/patches/*.patch` applies exactly | `bash kc/script/heal-patches.sh && git diff --stat -- kc/patches` (no output = pass) |
+| `test-conversation-reopen` | 15-minute reopen window (standalone, sqlite) | `ruby kc/test/recent_conversation_reopen_test.rb` |
+| `verify-sms-blocklist` | SMS ticket blocklist | `rspec --options /dev/null kc/spec/unit/sms_ticket_blocklist_spec.rb` |
+| `verify-graph-read-mail` | read mail import | `rspec --options /dev/null kc/spec/unit/microsoft_graph_inbound_read_mail_spec.rb` |
+| `verify-group-chats` | group text and group chat tickets | `rspec --options /dev/null kc/spec/unit/group_chats_spec.rb` |
+| `verify-frontend-load-order` | legacy CoffeeScript uses no `lib/app_post` class at load time | `python3 kc/script/check-frontend-load-order.py .` |
+| `build` | Docker image (overlay, patches, asset compile) | needs all jobs above |
+| `boot-test-legacy-ui` | the compiled legacy bundle from the built image loads in headless Chromium without an error | needs the built image |
+
+The gem versions the standalone jobs install are listed in `kc/gitlab-ci.yml`. A full pipeline takes well over an hour, most of it the image build.
+
+Not run by CI: the other specs under `kc/spec/` (`requests/`, `services/`, `models/`, `jobs/`, `graphql/`, `lib/`) load `rails_helper`, and the Vitest specs under `kc/app/frontend/**/__tests__/` need the frontend toolchain. `spec/` is not one of the overlaid directories, so these only run in a Zammad development checkout that has the overlay and patches applied and the spec files copied next to upstream's (see "Testing" above for the upstream commands). Run the ones for the area you change before pushing, and do not read a green pipeline as proof that they pass.
+
+### Syncing Upstream
+
+History is merge-only: never rebase or rewrite upstream commits.
+
+```bash
+git remote add upstream https://github.com/zammad/zammad.git   # once
+kc/script/check-sync-safety.sh --fetch     # exit 0 = the merge will be clean
+git merge upstream/develop
+bash kc/script/heal-patches.sh             # re-anchor drifted patches, review the diff in kc/patches/
+kc/script/check-sync-safety.sh
+```
+
+Then add a `kc/CHANGELOG.md` entry (upstream range, new migrations, what changed in the patches), commit and push. `kc/script/sync-canary.sh` simulates the next sync in a throwaway worktree without touching yours: the merge, every patch, overlay path collisions, and the upstream methods KC concerns override (`kc/upstream-fingerprints.txt`; add a line there when a new concern overrides an upstream method). The GitHub mirror runs it daily (`sync-canary.yml`) and opens an issue when the next sync needs manual work.
 
 ### Current KC Features
 
@@ -252,20 +288,30 @@ end
 
 **Legacy frontend (CoffeeScript):** Controllers extend `App.Controller` or `App.ControllerModal`. Templates are `.jst.eco` files. Navigation registered via `App.Config.set('KcFeatureName', { prio: N, ... })`. Settings accessed via `App.Setting.get('kc_setting_name')`.
 
-**Frontend patches:** When KC must modify an existing upstream TypeScript/Vue file (no `prepend` equivalent), use a unified diff in `kc/patches/`. Generate with `git diff upstream/develop HEAD -- <file>`. The build-time `apply-patches.sh` script applies these before asset compilation. Ordinary drift after a fork sync is self-healed by CI (`kc/script/heal-patches.sh`); manual work is only needed when the build fails with a real conflict, then re-implement the change against the new upstream code and regenerate the patch.
+**Frontend patches:** When KC must modify an existing upstream TypeScript/Vue file (no `prepend` equivalent), use a unified diff in `kc/patches/`. The patched files are never committed in their patched form (the tree outside `kc/` stays identical to upstream), so write a patch from the working tree:
+
+```bash
+patch -p1 < kc/patches/<name>.patch        # existing patch only: start from its current result
+$EDITOR app/frontend/...                   # make the change in the upstream file
+git diff -- <file> [<file>...] > kc/patches/<name>.patch
+git checkout -- <file> [<file>...]         # leave the upstream file untouched
+git apply --check kc/patches/<name>.patch  # must apply exactly
+```
+
+The build-time `apply-patches.sh` script applies the patches before asset compilation. Ordinary drift after a fork sync is fixed with `bash kc/script/heal-patches.sh` (see "How It Works"); when that reports a conflict, re-implement the change against the new upstream code and write the patch again.
 
 When upstream fixes what a patch worked around, move the patch to `kc/patches/retired/` (the scripts only read `kc/patches/*.patch`, so it is no longer applied).
 
-**Releases:** the KC version lives in `kc/VERSION` and the changes in `kc/CHANGELOG.md` (upstream's root `VERSION`/`CHANGELOG.md` stay untouched so fork syncs never conflict). Bump +0.0.1, add a changelog entry and push an annotated `vX.Y.Z` tag; the GitLab tag pipeline (`kc/gitlab-ci.yml`) builds `zammad-kc:X.Y.Z` and mirrors it to `ghcr.io/deenyoro/zammad-kc`.
+**Releases:** the KC version lives in `kc/VERSION` and the changes in `kc/CHANGELOG.md` (upstream's root `VERSION`/`CHANGELOG.md` stay untouched so fork syncs never conflict). Bump +0.0.1, add a changelog entry and push an annotated `vX.Y.Z` tag; the GitLab tag pipeline (`kc/gitlab-ci.yml`) builds `zammad-kc:X.Y.Z` and mirrors it to `ghcr.io/deenyoro/zammad-kc`. Tag only a commit whose `develop` pipeline is fully green, and deploy only an image whose pipeline passed `boot-test-legacy-ui`.
 
 ### Key Rules
 
-1. **Never create a file in `kc/` that has the same path as an upstream Zammad file**: `rsync --ignore-existing` would silently skip it.
+1. **Never create a file in `kc/` that has the same path as an upstream Zammad file**: `rsync --ignore-existing` never overwrites an upstream file, so the KC file would not be used. `apply-overlay.sh` detects the collision and fails the build.
 2. **Always use the `Kc::` namespace** for new Ruby classes.
 3. **Register every concern prepend in `kc_loader.rb`**: it's the single source of truth for what KC modifies upstream.
 4. **Keep `kc/` self-contained**: only `Dockerfile` and `script/build/cleanup.sh` are modified outside `kc/`, and those edits MUST be **additive-only** (insert new lines; never change or delete an existing upstream line). This guarantees they share no line with upstream, so the GitHub "Sync fork" button never hits a merge conflict. If you need a build tool (e.g. `rsync`), install it in a separate additive KC `RUN` block, do not append to an upstream `apt-get` line.
 5. **Never directly edit upstream frontend files**: use `kc/patches/` for modifications to existing upstream TypeScript/Vue files. New KC frontend files go in the overlay and are discovered via `import.meta.glob`.
-6. **Verify sync safety before/after every fork sync**: run `kc/script/check-sync-safety.sh --fetch`. It simulates the upstream merge (`git merge-tree`) and fails if any out-of-`kc/` upstream file is modified non-additively or any unsanctioned upstream file is touched. Exit 0 = the Sync button will merge cleanly. Note: `.dockerignore` excludes `.git/`, so `git apply --3way` is NOT available at build time, patches rely on plain `patch` (see [[project_kc_patch_rebaseline]]).
+6. **Verify sync safety before/after every fork sync**: run `kc/script/check-sync-safety.sh --fetch`. It simulates the upstream merge (`git merge-tree`) and fails if any out-of-`kc/` upstream file is modified non-additively or any unsanctioned upstream file is touched. Exit 0 = the Sync button will merge cleanly. Note: `.dockerignore` excludes `.git/`, so `git apply --3way` is NOT available at build time, patches rely on plain `patch`. That is why patches must apply exactly before the build (`verify-patches`).
 
 ## Code Style Notes
 
