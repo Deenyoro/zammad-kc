@@ -3,6 +3,20 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## Unreleased
+
+- `kc/deploy/docker-compose.yml`: PostgreSQL, Elasticsearch, Redis and
+  memcached are published on 127.0.0.1 instead of every interface.
+  Elasticsearch runs without security and memcached without auth in this
+  example, so they must not be reachable from the network. If you relied on
+  reaching one of them from another host, use an SSH tunnel.
+- Docs: `kc/MAINTAINING.md` now covers the CI jobs with their local
+  commands, which specs CI does not run, the upstream sync procedure and how
+  to write a patch (the documented `git diff upstream/develop HEAD` command
+  produced an empty diff). `kc/README.md` no longer describes a build smoke
+  test that does not exist, mentions the patch step, and its controller
+  example includes the policy and a scoped lookup.
+
 ## 0.0.20 (2026-11-19)
 
 - Upstream sync to zammad develop 6a04b9626c (17 commits since ce8a9a6a08).

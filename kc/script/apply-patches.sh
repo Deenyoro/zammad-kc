@@ -10,14 +10,16 @@ set -euo pipefail
 # patches modify EXISTING upstream files to inject KC features like BCC,
 # "Send with text color", and bulk merge into the upstream frontend.
 #
-# Each patch is a standard unified diff generated with:
-#   git diff upstream/develop HEAD -- <file> > kc/patches/<name>.patch
+# Each patch is a standard unified diff. The patched files are never
+# committed in patched form, so a patch is written from the working tree:
+#   git diff -- <file> > kc/patches/<name>.patch && git checkout -- <file>
 #
 # If upstream changes a patched file, the patch will fail to apply and
-# the build will fail loudly, this is intentional. To fix:
+# the build will fail loudly, this is intentional. To fix, in a git
+# checkout (not in Docker):
 #   1. Merge upstream into develop
-#   2. Regenerate the patch: git diff upstream/develop HEAD -- <file>
-#   3. Save to kc/patches/
+#   2. bash kc/script/heal-patches.sh   (re-anchors ordinary drift)
+#   3. On a conflict, redo the change by hand, see kc/MAINTAINING.md
 # ---------------------------------------------------------------------------
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -69,7 +71,7 @@ for patch_file in "${PATCHES_DIR}"/*.patch; do
   else
     echo "KC: ERROR, Patch failed to apply: ${patch_name}"
     echo "KC:   This usually means upstream changed the patched file."
-    echo "KC:   Regenerate with: git diff upstream/develop HEAD -- <file>"
+    echo "KC:   In a git checkout run: bash kc/script/heal-patches.sh (see kc/MAINTAINING.md)"
     patch -p1 --dry-run --directory="${APP_ROOT}" < "${patch_file}" 2>&1 || true
     FAIL_COUNT=$((FAIL_COUNT + 1))
   fi

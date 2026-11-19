@@ -96,18 +96,21 @@ At Docker build time, `apply-overlay.sh` copies the contents of `config/`, `app/
 The Dockerfile has these additions (in order):
 
 ```
-1. rsync is added to build-stage packages
+1. rsync is installed in its own RUN block (the upstream apt-get line is not touched)
 2. After "COPY . .", the overlay script runs:
    RUN if [ -x kc/script/apply-overlay.sh ]; then kc/script/apply-overlay.sh; fi
-3. If Gemfile.local was copied, custom gems are installed:
+3. The patches in kc/patches/ are applied to upstream files:
+   RUN if [ -x kc/script/apply-patches.sh ]; then kc/script/apply-patches.sh; fi
+4. If Gemfile.local was copied, custom gems are installed:
    RUN if [ -f Gemfile.local ]; then bundle install ...; fi
-4. Standard Zammad build continues (VERSION stamp, asset precompile)
-5. Smoke test verifies the app boots with the overlay:
-   RUN bundle exec rails runner 'puts "KC overlay: ..."'
-6. cleanup.sh removes the kc/ source directory from the image
+5. Standard Zammad build continues (VERSION stamp, asset precompile)
+6. A check fails the build if asset precompilation left no manifest
+7. cleanup.sh removes the kc/ source directory from the image
 ```
 
-Every step is conditional, if the `kc/` directory is empty or absent, the build behaves identically to upstream Zammad.
+The overlay, patch and gem steps are conditional, if the `kc/` directory is absent they do nothing.
+
+The image build does not boot the application. That is checked after the build by the `boot-test-legacy-ui` CI job (see `kc/MAINTAINING.md`, "KC Tests and CI").
 
 ### What `apply-overlay.sh` does
 
@@ -116,7 +119,12 @@ Every step is conditional, if the `kc/` directory is empty or absent, the build 
    - Runs `rsync --ignore-existing` to copy KC files into the Zammad app tree.
    - `--ignore-existing` is the critical flag, it **skips** any file that already exists in the target, so upstream files are never touched.
    - `.gitkeep` files are excluded from the copy.
-3. Logs every directory overlaid and the number of files copied.
+3. Fails the build if a KC file has the same path as an upstream file (it would otherwise be skipped without notice), or if two migrations share a version number.
+4. Logs every directory overlaid and the number of files copied.
+
+### What `apply-patches.sh` does
+
+Some features have to change an existing upstream frontend file (BCC field, bulk merge button). Those changes are unified diffs in `kc/patches/*.patch`, applied with `patch` after the overlay. A patch that does not apply fails the build. Patches in `kc/patches/retired/` are not applied. How to write and refresh a patch is in `kc/MAINTAINING.md` ("Frontend patches").
 
 ---
 
@@ -127,17 +135,20 @@ Every step is conditional, if the `kc/` directory is empty or absent, the build 
 git remote add upstream https://github.com/zammad/zammad.git
 
 # Sync
-git fetch upstream
-git merge upstream/develop
+kc/script/check-sync-safety.sh --fetch   # exit 0 = the merge will be clean
+git merge upstream/develop               # merge only, never rebase
+bash kc/script/heal-patches.sh           # re-anchor drifted patches, review and commit kc/patches/
 ```
+
+The full procedure, the CI jobs and the tests are in `kc/MAINTAINING.md` ("Syncing Upstream", "KC Tests and CI").
 
 ### What can conflict
 
 | File | KC Changes | Conflict Likelihood |
 |---|---|---|
-| `Dockerfile` | 5 added lines (rsync pkg, overlay RUN, gem install RUN, smoke test RUN) | Low, additions are between existing blocks |
-| `script/build/cleanup.sh` | 1 added line (`rm -rf kc`) | Very low, appended at end of file |
-| Everything in `app/`, `config/`, `lib/`, `db/` | **None**, KC never modifies upstream files | **Zero** |
+| `Dockerfile` | Added lines only (rsync RUN, overlay RUN, patches RUN, gem install RUN, asset manifest check) | Low, additions are between existing blocks |
+| `script/build/cleanup.sh` | Added lines only (`rm -rf kc`) | Very low, appended at end of file |
+| Everything in `app/`, `config/`, `lib/`, `db/` | **None** in git. `kc/patches/` changes a few frontend files at build time only | **Zero** for the merge; a patch can stop applying (see above) |
 
 If a conflict does occur in `Dockerfile` or `cleanup.sh`, it will be a straightforward merge because the KC additions are clearly commented with `# KC:` prefixes.
 
@@ -234,7 +245,9 @@ class Kc::WidgetsController < ApplicationController
   end
 
   def show
-    widget = Kc::Widget.find(params[:id])
+    # Scope lookups to what the caller may see. The controller policy only
+    # checks the permission, not the record.
+    widget = Kc::Widget.find_by!(id: params[:id], user: current_user)
     render json: widget
   end
 
@@ -256,6 +269,18 @@ class Kc::WidgetsController < ApplicationController
   end
 end
 ```
+
+Every controller needs a policy, `authenticate_and_authorize!` looks it up by name. Pick the narrowest permission that fits (`admin`, `ticket.agent`), and authorize the ticket or other record inside the action as well (`authorize!(ticket, :update?)`), the way the existing KC controllers do.
+
+```ruby
+# kc/app/policies/controllers/kc/widgets_controller_policy.rb
+
+class Controllers::Kc::WidgetsControllerPolicy < Controllers::ApplicationControllerPolicy
+  default_permit!('ticket.agent')
+end
+```
+
+A public endpoint (webhook) uses `default_permit!('*')`, excludes the action from `authenticate_and_authorize!` and must authenticate the caller itself with a secret compared by `ActiveSupport::SecurityUtils.secure_compare` (see `kc/app/controllers/kc/freepbx_sms_webhook_controller.rb`).
 
 Then add the route, see [Adding Custom Routes](#adding-custom-routes).
 
@@ -411,7 +436,7 @@ The page will appear in Zammad's navigation automatically based on the `meta` pr
 
 ## Rules and Conventions
 
-1. **Never create a file in `kc/` that has the same path as an upstream Zammad file.** The overlay uses `rsync --ignore-existing`, so it would be silently skipped. This is by design, we only add new files.
+1. **Never create a file in `kc/` that has the same path as an upstream Zammad file.** The overlay uses `rsync --ignore-existing`, so the KC file would never be used; `apply-overlay.sh` fails the build when it finds such a collision. To change an existing upstream file, use a concern (Ruby) or a patch in `kc/patches/` (frontend).
 
 2. **Always use the `Kc::` namespace** for new Ruby classes (models, controllers, services, lib code). This prevents name collisions with upstream and makes KC code instantly identifiable.
 
@@ -435,13 +460,14 @@ The page will appear in Zammad's navigation automatically based on the `meta` pr
 
 ### Build Verification
 
-The Docker build includes a smoke test that verifies the overlay loaded:
+The build output shows what the overlay and patch scripts did, and both stop the build on a problem:
 
 ```
-KC overlay: active
+KC: Overlay applied successfully
+KC: All 10 patch(es) applied successfully
 ```
 
-This line appears in the build output after asset precompilation. If it says `not loaded`, the overlay script or initializer has an issue.
+The image build itself does not boot Zammad. The `boot-test-legacy-ui` CI job loads the compiled legacy UI from the built image, and the runtime check below confirms the Ruby side.
 
 ### Runtime Verification
 
@@ -462,7 +488,7 @@ KC: Applying overlay
   Source: /opt/zammad/kc
   Target: /opt/zammad
 ==========================================
-KC: Copied Gemfile.local to app root
+KC: Installed Gemfile.local
 KC: Overlaid config/ (2 files)
 KC: Overlaid app/ (5 files)
 KC: Overlaid lib/ (1 files)
@@ -494,7 +520,7 @@ bundle exec rails runner 'puts User.ancestors.select { |a| a.name&.start_with?("
 ### Overlay script not running
 
 - Verify the script is executable: `ls -la kc/script/apply-overlay.sh` (should show `-rwxr-xr-x`).
-- Check that `rsync` is installed in the build stage (it's added to the Dockerfile's `apt-get install` line).
+- Check that `rsync` is installed in the build stage (the Dockerfile has a separate KC `RUN` block for it).
 
 ### Concern not loading
 
@@ -516,7 +542,7 @@ bundle exec rails runner 'puts User.ancestors.select { |a| a.name&.start_with?("
 ### Gemfile.local not picked up
 
 - Verify the file exists at `kc/Gemfile.local`.
-- Check the Docker build output for "KC: Copied Gemfile.local to app root".
+- Check the Docker build output for "KC: Installed Gemfile.local".
 - Zammad's Gemfile globs `Gemfile.local*`, the file must be named exactly `Gemfile.local`.
 
 ### Migration not running
