@@ -3,6 +3,26 @@
 Changes to the KawaConnect overlay (`kc/`) on top of upstream Zammad.
 Upstream's own changes are in the root `CHANGELOG.md`.
 
+## 0.0.20 (2026-11-19)
+
+- Upstream sync to zammad develop 6a04b9626c (17 commits since ce8a9a6a08).
+  Upstream changes that are visible to users: the desktop article
+  translation is reworked with a choice of provider (AI, DeepL,
+  LibreTranslate, each with its own settings). One new migration
+  (20261116120000) adds those settings, drops the old unreleased
+  translation config and switches article translation off. Chat agents
+  can insert knowledge base answers, "Reply" can quote the selected text,
+  ticket search by group name works for customers and agent+customer
+  users, inline images without a file extension no longer fill the search
+  index, Zendesk import fix. Ruby 4.0.10, viewpoint 2.0, aws-sdk-s3 1.244,
+  Playwright 1.65.1.
+- Patches re-anchored, no change to what they do: upstream added a field
+  next to the BCC field in the article form types, so
+  article-action-types-bcc.patch no longer applied exactly (CI
+  verify-patches would have failed on the synced commit), and
+  email-action-bcc, graphql-types-bcc and useTicketEditForm-bcc applied only
+  with line offsets. All ten patches apply exactly again.
+
 ## 0.0.19 (2026-11-17)
 
 - Upstream sync to zammad develop ce8a9a6a08 (30 commits since 225273876e).

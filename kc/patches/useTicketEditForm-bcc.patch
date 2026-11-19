@@ -1,8 +1,8 @@
 diff --git a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
-index 184d4ace10..aaf5314780 100644
+index 3d29583fa1..5463bf5912 100644
 --- a/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
 +++ b/app/frontend/shared/entities/ticket/composables/useTicketEditForm.ts
-@@ -24,6 +24,7 @@ import type {
+@@ -27,6 +27,7 @@ import type {
  import { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
  import { getIdFromGraphQLId } from '#shared/graphql/utils.ts'
  import { useApplicationStore } from '#shared/stores/application.ts'
@@ -10,7 +10,7 @@ index 184d4ace10..aaf5314780 100644
  
  import type { FormKitNode } from '@formkit/core'
  import type { Ref } from 'vue'
-@@ -88,7 +89,15 @@ export const useTicketEditForm = (
+@@ -93,7 +94,15 @@ export const useTicketEditForm = (
      }
    })
  
@@ -27,7 +27,7 @@ index 184d4ace10..aaf5314780 100644
  
    const articleTypeFieldProps = articleTypeFields.reduce((acc, field) => {
      acc[field] = {
-@@ -122,12 +131,34 @@ export const useTicketEditForm = (
+@@ -128,12 +137,34 @@ export const useTicketEditForm = (
      return Array.isArray(cc) ? cc.length > 0 : Boolean(cc)
    })
  
@@ -63,7 +63,7 @@ index 184d4ace10..aaf5314780 100644
  
    const additionalAddArticleNotes = computed(
      () => (application.config.ui_ticket_add_article_hint as Record<string, string>) || {},
-@@ -286,6 +317,49 @@ export const useTicketEditForm = (
+@@ -292,6 +323,49 @@ export const useTicketEditForm = (
          classes: { outer: '@md:col-span-1' },
          contact: recipientContact,
          multiple: true,
